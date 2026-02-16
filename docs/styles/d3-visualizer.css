@@ -14,8 +14,8 @@ body {
 }
 
 textarea {
-  width: 30%;
-  height: 150px;
+  width: 98%;
+  height: 100px;
   font-family: monospace;
   margin-bottom: 1rem;
 }
@@ -23,7 +23,7 @@ textarea {
 #graph-container {
   position: relative;
   /* Crucial for relative positioning of children */
-  width: 95%;
+  width: 98%;
   height: 60vh;
   background: #f0f0f0;
 }
@@ -52,6 +52,11 @@ text.label {
   font-size: 10px;
   font-weight: bold;
   fill: gray;
+}
+
+.d3_button {
+  padding: 0rem .75rem 0rem .75rem ;
+  margin: 0.75rem;
 }
 
 #propertyBox {

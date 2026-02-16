@@ -19,13 +19,15 @@
 
 <body data-page-id="visual-lynx">
   <header id="siteHeader" class="sitehdr-root" role="banner" aria-label="Site header"></header>
-
-  <textarea id="jsonInput"></textarea>
-  <!-- Button: load file --> <!-- Button: load stock example -->
-   
-  <button id="loadBfoGraphDataBtn" onclick="loadJsonDataToTextArea()">Get BFO Graph</button>
-  <button id="renderBtn" onclick="renderGraphFromTextarea()">Render</button>
-
+  <div>
+    <span style="margin-left: 2rem;">Focus node:</span></strong><input id="focusNodeInputBox" type="text" style="width: 30%; margin-bottom: 0.5rem;" placeholder="Enter the starting @id (leave blank to show full graph)">
+      <!-- This requires a way to handle RDF and transform it, adding it to textbox -->
+      <button id="loadUserGraphDataBtn" class="d3_button">Upload Graph Data</button>    
+      <button id="loadBfoGraphDataBtn" class="d3_button" onclick="loadJsonDataToTextArea()">Get BFO Graph</button>
+      <button id="renderBtn" class="d3_button"  onclick="renderGraphFromTextarea()">Render</button><br />
+    <textarea id="jsonInput"></textarea>
+  </div>
+  
   <div id="graph-container">
     <svg id="graph"></svg>
     <div id="filterBox">

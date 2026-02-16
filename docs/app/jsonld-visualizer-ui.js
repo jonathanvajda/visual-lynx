@@ -485,7 +485,10 @@ function renderGraphFromTextarea() {{
       return;
     }
 
-    const input = prompt("Enter the starting @id (leave blank to show full graph):", jsonld[0]?.["@id"] || "");
+    const inputElement = document.getElementById("focusNodeInputBox");
+    const input = inputElement.value;
+    
+    // Use the input value, defaulting to null (or empty string) if blank
     const targetId = input && input.trim() !== "" ? input.trim() : null;
 
     renderJsonLDGraph(jsonld, targetId);
@@ -499,7 +502,7 @@ document.addEventListener("click", (event) => {
     box.style.display = "none";
   }
 
-  document.getElementById("hideBNodes").addEventListener("change", drawGraph);
+document.getElementById("hideBNodes").addEventListener("change", drawGraph);
 document.getElementById("hideAxioms").addEventListener("change", drawGraph);
 document.getElementById("typeFilter").addEventListener("change", drawGraph);
 document.getElementById("predicateFilter").addEventListener("change", drawGraph);
