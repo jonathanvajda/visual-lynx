@@ -5,10 +5,20 @@
   <meta charset="UTF-8" />
   <title>D3 Graph Viewer</title>
   <script src="https://d3js.org/d3.v7.min.js"></script>
-  <link rel="stylesheet" src="./styles/d3-visualizer.css">
+    <!-- Public CSS -->
+    <link rel="stylesheet" href="./styles/normalize.css" />
+    <link rel="stylesheet" href="./styles/skeleton.css" />
+
+    <!-- App Global CSS -->
+    <link rel="stylesheet" href="./styles/site-header.css" />
+    <link rel="stylesheet" href="./styles/app-base.css" />
+
+    <!-- App Local CSS -->
+    <link rel="stylesheet" src="./styles/d3-visualizer.css">
 </head>
 
-<body>
+<body data-page-id="visual-lynx">
+  <header id="siteHeader" class="sitehdr-root" role="banner" aria-label="Site header"></header>
 
   <h2>D3 Graph Viewer</h2>
   <textarea id="jsonInput"></textarea>
@@ -33,6 +43,7 @@
     </div>
   </div>
 
+  <script src="./app/site-header.js"></script>
   <script src="./app/jsonld-visualizer-core.js"></script>
   <script src="./app/jsonld-visualizer-ui.js"></script>
   <script id="fetch-json-data">
