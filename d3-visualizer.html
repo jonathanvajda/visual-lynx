@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>D3 Graph Viewer</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+
+<body>
+
+  <h2>D3 Graph Viewer</h2>
+  <textarea id="jsonInput"></textarea>
+  <!-- Button: load file --> <!-- Button: load stock example -->
+  <button id="renderBtn">Render</button>
+  <div id="graph-container">
+    <svg id="graph"></svg>
+    <div id="filterBox">
+      <label><input type="checkbox" id="hideBNodes" checked /> Hide _b Nodes</label><br>
+      <label><input type="checkbox" id="hideAxioms" checked /> Hide Axioms</label><br>
+      <label for="typeFilter">Filter by Type:</label>
+      <select id="typeFilter" multiple size="5">
+      </select>
+      <label for="predicateFilter">Filter by Predicate:</label>
+      <select id="predicateFilter" multiple>
+      </select>
+    </div>
+
+    <div id="propertyBox" class="property-box">
+      <h3>Node Properties</h3>
+      <div id="propertyContent"></div>
+    </div>
+  </div>
+
+  <script src="./app/jsonld-visualizer-core.js"></script>
+  <script src="./app/jsonld-visualizer-ui.js"></script>
+  <script id="fetch-json-data">
+    function loadJsonDataToTextArea() {
+      // Get file that was loaded or the stock example
+
+      // Get file that was loaded
+          // Load file
+          // Recognize MIME type
+          // If it is not JSON-LD, then convert it to JSON-LD. We need the linked data transformer first.
+          // If it is JSON-LD, then pass it over to the textarea
+
+      // Get the stock example
+      fetch('./data/bfo-json-ld.json')
+          .then(response => response.text())
+          .then(content => {
+              document.getElementById('myTextArea').value = content;
+          })
+          .catch(error => {
+              console.error('Error fetching the file:', error);
+              document.getElementById('myTextArea').value = 'Error loading file from server.';
+          });
+    }
+  </script>
+
+</body>
+
+</html>

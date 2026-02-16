@@ -1,0 +1,5614 @@
+[
+    {
+        "@id": "_:b0",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2002/07/owl#unionOf": [
+            {
+                "@id": "_:b1"
+            }
+        ]
+    },
+    {
+        "@id": "_:b1",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000020"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "_:b2"
+            }
+        ]
+    },
+    {
+        "@id": "_:b10",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000031"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "_:b11"
+            }
+        ]
+    },
+    {
+        "@id": "_:b100",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Restriction"
+        ],
+        "http://www.w3.org/2002/07/owl#onProperty": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000132"
+            }
+        ],
+        "http://www.w3.org/2002/07/owl#allValuesFrom": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000011"
+            }
+        ]
+    },
+    {
+        "@id": "_:b101",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Restriction"
+        ],
+        "http://www.w3.org/2002/07/owl#onProperty": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000139"
+            }
+        ],
+        "http://www.w3.org/2002/07/owl#allValuesFrom": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000011"
+            }
+        ]
+    },
+    {
+        "@id": "_:b102",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Restriction"
+        ],
+        "http://www.w3.org/2002/07/owl#onProperty": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000117"
+            }
+        ],
+        "http://www.w3.org/2002/07/owl#allValuesFrom": [
+            {
+                "@id": "_:b105"
+            }
+        ]
+    },
+    {
+        "@id": "_:b103",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Restriction"
+        ],
+        "http://www.w3.org/2002/07/owl#onProperty": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000132"
+            }
+        ],
+        "http://www.w3.org/2002/07/owl#allValuesFrom": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000015"
+            }
+        ]
+    },
+    {
+        "@id": "_:b104",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Restriction"
+        ],
+        "http://www.w3.org/2002/07/owl#onProperty": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000139"
+            }
+        ],
+        "http://www.w3.org/2002/07/owl#allValuesFrom": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000015"
+            }
+        ]
+    },
+    {
+        "@id": "_:b105",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2002/07/owl#unionOf": [
+            {
+                "@id": "_:b106"
+            }
+        ]
+    },
+    {
+        "@id": "_:b106",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000015"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "_:b107"
+            }
+        ]
+    },
+    {
+        "@id": "_:b107",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000035"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"
+            }
+        ]
+    },
+    {
+        "@id": "_:b108",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Restriction"
+        ],
+        "http://www.w3.org/2002/07/owl#onProperty": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000178"
+            }
+        ],
+        "http://www.w3.org/2002/07/owl#allValuesFrom": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000018"
+            }
+        ]
+    },
+    {
+        "@id": "_:b109",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Restriction"
+        ],
+        "http://www.w3.org/2002/07/owl#onProperty": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000178"
+            }
+        ],
+        "http://www.w3.org/2002/07/owl#allValuesFrom": [
+            {
+                "@id": "_:b110"
+            }
+        ]
+    },
+    {
+        "@id": "_:b11",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "_:b12"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"
+            }
+        ]
+    },
+    {
+        "@id": "_:b110",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2002/07/owl#unionOf": [
+            {
+                "@id": "_:b111"
+            }
+        ]
+    },
+    {
+        "@id": "_:b111",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000018"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "_:b112"
+            }
+        ]
+    },
+    {
+        "@id": "_:b112",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000026"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"
+            }
+        ]
+    },
+    {
+        "@id": "_:b113",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Restriction"
+        ],
+        "http://www.w3.org/2002/07/owl#onProperty": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000178"
+            }
+        ],
+        "http://www.w3.org/2002/07/owl#allValuesFrom": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000006"
+            }
+        ]
+    },
+    {
+        "@id": "_:b114",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Restriction"
+        ],
+        "http://www.w3.org/2002/07/owl#onProperty": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000176"
+            }
+        ],
+        "http://www.w3.org/2002/07/owl#allValuesFrom": [
+            {
+                "@id": "_:b117"
+            }
+        ]
+    },
+    {
+        "@id": "_:b115",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Restriction"
+        ],
+        "http://www.w3.org/2002/07/owl#onProperty": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000178"
+            }
+        ],
+        "http://www.w3.org/2002/07/owl#allValuesFrom": [
+            {
+                "@id": "_:b120"
+            }
+        ]
+    },
+    {
+        "@id": "_:b116",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Restriction"
+        ],
+        "http://www.w3.org/2002/07/owl#onProperty": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000210"
+            }
+        ],
+        "http://www.w3.org/2002/07/owl#allValuesFrom": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000028"
+            }
+        ]
+    },
+    {
+        "@id": "_:b117",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2002/07/owl#unionOf": [
+            {
+                "@id": "_:b118"
+            }
+        ]
+    },
+    {
+        "@id": "_:b118",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000029"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "_:b119"
+            }
+        ]
+    },
+    {
+        "@id": "_:b119",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000040"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"
+            }
+        ]
+    },
+    {
+        "@id": "_:b12",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2002/07/owl#intersectionOf": [
+            {
+                "@id": "_:b13"
+            }
+        ]
+    },
+    {
+        "@id": "_:b120",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2002/07/owl#unionOf": [
+            {
+                "@id": "_:b121"
+            }
+        ]
+    },
+    {
+        "@id": "_:b121",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000029"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "_:b122"
+            }
+        ]
+    },
+    {
+        "@id": "_:b122",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000140"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"
+            }
+        ]
+    },
+    {
+        "@id": "_:b123",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Restriction"
+        ],
+        "http://www.w3.org/2002/07/owl#onProperty": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000117"
+            }
+        ],
+        "http://www.w3.org/2002/07/owl#allValuesFrom": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000035"
+            }
+        ]
+    },
+    {
+        "@id": "_:b124",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Restriction"
+        ],
+        "http://www.w3.org/2002/07/owl#onProperty": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000121"
+            }
+        ],
+        "http://www.w3.org/2002/07/owl#allValuesFrom": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000035"
+            }
+        ]
+    },
+    {
+        "@id": "_:b125",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Restriction"
+        ],
+        "http://www.w3.org/2002/07/owl#onProperty": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000132"
+            }
+        ],
+        "http://www.w3.org/2002/07/owl#allValuesFrom": [
+            {
+                "@id": "_:b127"
+            }
+        ]
+    },
+    {
+        "@id": "_:b126",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Restriction"
+        ],
+        "http://www.w3.org/2002/07/owl#onProperty": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000139"
+            }
+        ],
+        "http://www.w3.org/2002/07/owl#allValuesFrom": [
+            {
+                "@id": "_:b130"
+            }
+        ]
+    },
+    {
+        "@id": "_:b127",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2002/07/owl#unionOf": [
+            {
+                "@id": "_:b128"
+            }
+        ]
+    },
+    {
+        "@id": "_:b128",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000015"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "_:b129"
+            }
+        ]
+    },
+    {
+        "@id": "_:b129",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000035"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"
+            }
+        ]
+    },
+    {
+        "@id": "_:b13",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000004"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "_:b14"
+            }
+        ]
+    },
+    {
+        "@id": "_:b130",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2002/07/owl#unionOf": [
+            {
+                "@id": "_:b131"
+            }
+        ]
+    },
+    {
+        "@id": "_:b131",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000015"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "_:b132"
+            }
+        ]
+    },
+    {
+        "@id": "_:b132",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000035"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"
+            }
+        ]
+    },
+    {
+        "@id": "_:b133",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Restriction"
+        ],
+        "http://www.w3.org/2002/07/owl#onProperty": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000121"
+            }
+        ],
+        "http://www.w3.org/2002/07/owl#allValuesFrom": [
+            {
+                "@id": "_:b135"
+            }
+        ]
+    },
+    {
+        "@id": "_:b134",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Restriction"
+        ],
+        "http://www.w3.org/2002/07/owl#onProperty": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000139"
+            }
+        ],
+        "http://www.w3.org/2002/07/owl#allValuesFrom": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000038"
+            }
+        ]
+    },
+    {
+        "@id": "_:b135",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2002/07/owl#unionOf": [
+            {
+                "@id": "_:b136"
+            }
+        ]
+    },
+    {
+        "@id": "_:b136",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000038"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "_:b137"
+            }
+        ]
+    },
+    {
+        "@id": "_:b137",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000148"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"
+            }
+        ]
+    },
+    {
+        "@id": "_:b138",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Restriction"
+        ],
+        "http://www.w3.org/2002/07/owl#onProperty": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000176"
+            }
+        ],
+        "http://www.w3.org/2002/07/owl#allValuesFrom": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000040"
+            }
+        ]
+    },
+    {
+        "@id": "_:b139",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Restriction"
+        ],
+        "http://www.w3.org/2002/07/owl#onProperty": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000178"
+            }
+        ],
+        "http://www.w3.org/2002/07/owl#allValuesFrom": [
+            {
+                "@id": "_:b140"
+            }
+        ]
+    },
+    {
+        "@id": "_:b14",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "_:b15"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"
+            }
+        ]
+    },
+    {
+        "@id": "_:b140",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2002/07/owl#unionOf": [
+            {
+                "@id": "_:b141"
+            }
+        ]
+    },
+    {
+        "@id": "_:b141",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000029"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "_:b142"
+            }
+        ]
+    },
+    {
+        "@id": "_:b142",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000040"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "_:b143"
+            }
+        ]
+    },
+    {
+        "@id": "_:b143",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000140"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"
+            }
+        ]
+    },
+    {
+        "@id": "_:b144",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Restriction"
+        ],
+        "http://www.w3.org/2002/07/owl#onProperty": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000124"
+            }
+        ],
+        "http://www.w3.org/2002/07/owl#allValuesFrom": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000140"
+            }
+        ]
+    },
+    {
+        "@id": "_:b145",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Restriction"
+        ],
+        "http://www.w3.org/2002/07/owl#onProperty": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000178"
+            }
+        ],
+        "http://www.w3.org/2002/07/owl#allValuesFrom": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000140"
+            }
+        ]
+    },
+    {
+        "@id": "_:b146",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Restriction"
+        ],
+        "http://www.w3.org/2002/07/owl#onProperty": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000178"
+            }
+        ],
+        "http://www.w3.org/2002/07/owl#allValuesFrom": [
+            {
+                "@id": "_:b147"
+            }
+        ]
+    },
+    {
+        "@id": "_:b147",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2002/07/owl#unionOf": [
+            {
+                "@id": "_:b148"
+            }
+        ]
+    },
+    {
+        "@id": "_:b148",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000142"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "_:b149"
+            }
+        ]
+    },
+    {
+        "@id": "_:b149",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000147"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"
+            }
+        ]
+    },
+    {
+        "@id": "_:b15",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2002/07/owl#complementOf": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000006"
+            }
+        ]
+    },
+    {
+        "@id": "_:b150",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Restriction"
+        ],
+        "http://www.w3.org/2002/07/owl#onProperty": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000178"
+            }
+        ],
+        "http://www.w3.org/2002/07/owl#allValuesFrom": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000140"
+            }
+        ]
+    },
+    {
+        "@id": "_:b151",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Restriction"
+        ],
+        "http://www.w3.org/2002/07/owl#onProperty": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000178"
+            }
+        ],
+        "http://www.w3.org/2002/07/owl#allValuesFrom": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000147"
+            }
+        ]
+    },
+    {
+        "@id": "_:b152",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Restriction"
+        ],
+        "http://www.w3.org/2002/07/owl#onProperty": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000121"
+            }
+        ],
+        "http://www.w3.org/2002/07/owl#allValuesFrom": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000148"
+            }
+        ]
+    },
+    {
+        "@type": [
+            "http://www.w3.org/2002/07/owl#AllDisjointClasses"
+        ],
+        "http://www.w3.org/2002/07/owl#members": [
+            {
+                "@id": "_:b154"
+            }
+        ]
+    },
+    {
+        "@id": "_:b154",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000004"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "_:b155"
+            }
+        ]
+    },
+    {
+        "@id": "_:b155",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000020"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "_:b156"
+            }
+        ]
+    },
+    {
+        "@id": "_:b156",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000031"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"
+            }
+        ]
+    },
+    {
+        "@type": [
+            "http://www.w3.org/2002/07/owl#AllDisjointClasses"
+        ],
+        "http://www.w3.org/2002/07/owl#members": [
+            {
+                "@id": "_:b158"
+            }
+        ]
+    },
+    {
+        "@id": "_:b158",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000006"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "_:b159"
+            }
+        ]
+    },
+    {
+        "@id": "_:b159",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000029"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "_:b160"
+            }
+        ]
+    },
+    {
+        "@id": "_:b16",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2002/07/owl#unionOf": [
+            {
+                "@id": "_:b17"
+            }
+        ]
+    },
+    {
+        "@id": "_:b160",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000140"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"
+            }
+        ]
+    },
+    {
+        "@type": [
+            "http://www.w3.org/2002/07/owl#AllDisjointClasses"
+        ],
+        "http://www.w3.org/2002/07/owl#members": [
+            {
+                "@id": "_:b162"
+            }
+        ]
+    },
+    {
+        "@id": "_:b162",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000008"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "_:b163"
+            }
+        ]
+    },
+    {
+        "@id": "_:b163",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000011"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "_:b164"
+            }
+        ]
+    },
+    {
+        "@id": "_:b164",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000015"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "_:b165"
+            }
+        ]
+    },
+    {
+        "@id": "_:b165",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000035"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"
+            }
+        ]
+    },
+    {
+        "@type": [
+            "http://www.w3.org/2002/07/owl#AllDisjointClasses"
+        ],
+        "http://www.w3.org/2002/07/owl#members": [
+            {
+                "@id": "_:b167"
+            }
+        ]
+    },
+    {
+        "@id": "_:b167",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000009"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "_:b168"
+            }
+        ]
+    },
+    {
+        "@id": "_:b168",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000018"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "_:b169"
+            }
+        ]
+    },
+    {
+        "@id": "_:b169",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000026"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "_:b170"
+            }
+        ]
+    },
+    {
+        "@id": "_:b17",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000015"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "_:b18"
+            }
+        ]
+    },
+    {
+        "@id": "_:b170",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000028"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"
+            }
+        ]
+    },
+    {
+        "@type": [
+            "http://www.w3.org/2002/07/owl#AllDisjointClasses"
+        ],
+        "http://www.w3.org/2002/07/owl#members": [
+            {
+                "@id": "_:b172"
+            }
+        ]
+    },
+    {
+        "@id": "_:b172",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000142"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "_:b173"
+            }
+        ]
+    },
+    {
+        "@id": "_:b173",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000146"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "_:b174"
+            }
+        ]
+    },
+    {
+        "@id": "_:b174",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000147"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"
+            }
+        ]
+    },
+    {
+        "@id": "_:b18",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000020"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"
+            }
+        ]
+    },
+    {
+        "@id": "_:b19",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2002/07/owl#unionOf": [
+            {
+                "@id": "_:b20"
+            }
+        ]
+    },
+    {
+        "@id": "_:b2",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000031"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "_:b3"
+            }
+        ]
+    },
+    {
+        "@id": "_:b20",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000015"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "_:b21"
+            }
+        ]
+    },
+    {
+        "@id": "_:b21",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000020"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"
+            }
+        ]
+    },
+    {
+        "@id": "_:b22",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2002/07/owl#unionOf": [
+            {
+                "@id": "_:b24"
+            }
+        ]
+    },
+    {
+        "@id": "_:b23",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2002/07/owl#unionOf": [
+            {
+                "@id": "_:b26"
+            }
+        ]
+    },
+    {
+        "@id": "_:b24",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000015"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "_:b25"
+            }
+        ]
+    },
+    {
+        "@id": "_:b25",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000035"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"
+            }
+        ]
+    },
+    {
+        "@id": "_:b26",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000029"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "_:b27"
+            }
+        ]
+    },
+    {
+        "@id": "_:b27",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000040"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"
+            }
+        ]
+    },
+    {
+        "@id": "_:b28",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2002/07/owl#intersectionOf": [
+            {
+                "@id": "_:b29"
+            }
+        ]
+    },
+    {
+        "@id": "_:b29",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000004"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "_:b30"
+            }
+        ]
+    },
+    {
+        "@id": "_:b3",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "_:b4"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"
+            }
+        ]
+    },
+    {
+        "@id": "_:b30",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "_:b31"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"
+            }
+        ]
+    },
+    {
+        "@id": "_:b31",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2002/07/owl#complementOf": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000006"
+            }
+        ]
+    },
+    {
+        "@id": "_:b32",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2002/07/owl#intersectionOf": [
+            {
+                "@id": "_:b33"
+            }
+        ]
+    },
+    {
+        "@id": "_:b33",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000004"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "_:b34"
+            }
+        ]
+    },
+    {
+        "@id": "_:b34",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "_:b35"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"
+            }
+        ]
+    },
+    {
+        "@id": "_:b35",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2002/07/owl#complementOf": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000006"
+            }
+        ]
+    },
+    {
+        "@id": "_:b36",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2002/07/owl#intersectionOf": [
+            {
+                "@id": "_:b38"
+            }
+        ]
+    },
+    {
+        "@id": "_:b37",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2002/07/owl#intersectionOf": [
+            {
+                "@id": "_:b41"
+            }
+        ]
+    },
+    {
+        "@id": "_:b38",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000004"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "_:b39"
+            }
+        ]
+    },
+    {
+        "@id": "_:b39",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "_:b40"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"
+            }
+        ]
+    },
+    {
+        "@id": "_:b4",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2002/07/owl#intersectionOf": [
+            {
+                "@id": "_:b5"
+            }
+        ]
+    },
+    {
+        "@id": "_:b40",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2002/07/owl#complementOf": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000006"
+            }
+        ]
+    },
+    {
+        "@id": "_:b41",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000004"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "_:b42"
+            }
+        ]
+    },
+    {
+        "@id": "_:b42",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "_:b43"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"
+            }
+        ]
+    },
+    {
+        "@id": "_:b43",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2002/07/owl#complementOf": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000006"
+            }
+        ]
+    },
+    {
+        "@id": "_:b44",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2002/07/owl#intersectionOf": [
+            {
+                "@id": "_:b46"
+            }
+        ]
+    },
+    {
+        "@id": "_:b45",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2002/07/owl#intersectionOf": [
+            {
+                "@id": "_:b49"
+            }
+        ]
+    },
+    {
+        "@id": "_:b46",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000004"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "_:b47"
+            }
+        ]
+    },
+    {
+        "@id": "_:b47",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "_:b48"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"
+            }
+        ]
+    },
+    {
+        "@id": "_:b48",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2002/07/owl#complementOf": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000006"
+            }
+        ]
+    },
+    {
+        "@id": "_:b49",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000004"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "_:b50"
+            }
+        ]
+    },
+    {
+        "@id": "_:b5",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000004"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "_:b6"
+            }
+        ]
+    },
+    {
+        "@id": "_:b50",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "_:b51"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"
+            }
+        ]
+    },
+    {
+        "@id": "_:b51",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2002/07/owl#complementOf": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000006"
+            }
+        ]
+    },
+    {
+        "@id": "_:b52",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2002/07/owl#unionOf": [
+            {
+                "@id": "_:b54"
+            }
+        ]
+    },
+    {
+        "@id": "_:b53",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2002/07/owl#unionOf": [
+            {
+                "@id": "_:b56"
+            }
+        ]
+    },
+    {
+        "@id": "_:b54",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000029"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "_:b55"
+            }
+        ]
+    },
+    {
+        "@id": "_:b55",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000040"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"
+            }
+        ]
+    },
+    {
+        "@id": "_:b56",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000015"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "_:b57"
+            }
+        ]
+    },
+    {
+        "@id": "_:b57",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000035"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"
+            }
+        ]
+    },
+    {
+        "@id": "_:b58",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2002/07/owl#unionOf": [
+            {
+                "@id": "_:b59"
+            }
+        ]
+    },
+    {
+        "@id": "_:b59",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000020"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "_:b60"
+            }
+        ]
+    },
+    {
+        "@id": "_:b6",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "_:b7"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"
+            }
+        ]
+    },
+    {
+        "@id": "_:b60",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "_:b61"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"
+            }
+        ]
+    },
+    {
+        "@id": "_:b61",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2002/07/owl#intersectionOf": [
+            {
+                "@id": "_:b62"
+            }
+        ]
+    },
+    {
+        "@id": "_:b62",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000004"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "_:b63"
+            }
+        ]
+    },
+    {
+        "@id": "_:b63",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "_:b64"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"
+            }
+        ]
+    },
+    {
+        "@id": "_:b64",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2002/07/owl#complementOf": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000006"
+            }
+        ]
+    },
+    {
+        "@id": "_:b65",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2002/07/owl#unionOf": [
+            {
+                "@id": "_:b66"
+            }
+        ]
+    },
+    {
+        "@id": "_:b66",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000020"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "_:b67"
+            }
+        ]
+    },
+    {
+        "@id": "_:b67",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "_:b68"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"
+            }
+        ]
+    },
+    {
+        "@id": "_:b68",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2002/07/owl#intersectionOf": [
+            {
+                "@id": "_:b69"
+            }
+        ]
+    },
+    {
+        "@id": "_:b69",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000004"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "_:b70"
+            }
+        ]
+    },
+    {
+        "@id": "_:b7",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2002/07/owl#complementOf": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000006"
+            }
+        ]
+    },
+    {
+        "@id": "_:b70",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "_:b71"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"
+            }
+        ]
+    },
+    {
+        "@id": "_:b71",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2002/07/owl#complementOf": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000006"
+            }
+        ]
+    },
+    {
+        "@id": "_:b72",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2002/07/owl#intersectionOf": [
+            {
+                "@id": "_:b73"
+            }
+        ]
+    },
+    {
+        "@id": "_:b73",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000004"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "_:b74"
+            }
+        ]
+    },
+    {
+        "@id": "_:b74",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "_:b75"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"
+            }
+        ]
+    },
+    {
+        "@id": "_:b75",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2002/07/owl#complementOf": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000006"
+            }
+        ]
+    },
+    {
+        "@id": "_:b76",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2002/07/owl#intersectionOf": [
+            {
+                "@id": "_:b77"
+            }
+        ]
+    },
+    {
+        "@id": "_:b77",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000004"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "_:b78"
+            }
+        ]
+    },
+    {
+        "@id": "_:b78",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "_:b79"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"
+            }
+        ]
+    },
+    {
+        "@id": "_:b79",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2002/07/owl#complementOf": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000006"
+            }
+        ]
+    },
+    {
+        "@id": "_:b8",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2002/07/owl#unionOf": [
+            {
+                "@id": "_:b9"
+            }
+        ]
+    },
+    {
+        "@id": "_:b80",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2002/07/owl#unionOf": [
+            {
+                "@id": "_:b81"
+            }
+        ]
+    },
+    {
+        "@id": "_:b81",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000015"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "_:b82"
+            }
+        ]
+    },
+    {
+        "@id": "_:b82",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000035"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"
+            }
+        ]
+    },
+    {
+        "@id": "_:b83",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2002/07/owl#unionOf": [
+            {
+                "@id": "_:b84"
+            }
+        ]
+    },
+    {
+        "@id": "_:b84",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000015"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "_:b85"
+            }
+        ]
+    },
+    {
+        "@id": "_:b85",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000035"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"
+            }
+        ]
+    },
+    {
+        "@id": "_:b86",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2002/07/owl#intersectionOf": [
+            {
+                "@id": "_:b87"
+            }
+        ]
+    },
+    {
+        "@id": "_:b87",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000004"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "_:b88"
+            }
+        ]
+    },
+    {
+        "@id": "_:b88",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "_:b89"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"
+            }
+        ]
+    },
+    {
+        "@id": "_:b89",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2002/07/owl#complementOf": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000006"
+            }
+        ]
+    },
+    {
+        "@id": "_:b9",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000020"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "_:b10"
+            }
+        ]
+    },
+    {
+        "@id": "_:b90",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Restriction"
+        ],
+        "http://www.w3.org/2002/07/owl#onProperty": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000176"
+            }
+        ],
+        "http://www.w3.org/2002/07/owl#allValuesFrom": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000002"
+            }
+        ]
+    },
+    {
+        "@id": "_:b91",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Restriction"
+        ],
+        "http://www.w3.org/2002/07/owl#onProperty": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000176"
+            }
+        ],
+        "http://www.w3.org/2002/07/owl#allValuesFrom": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000004"
+            }
+        ]
+    },
+    {
+        "@id": "_:b92",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Restriction"
+        ],
+        "http://www.w3.org/2002/07/owl#onProperty": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000176"
+            }
+        ],
+        "http://www.w3.org/2002/07/owl#allValuesFrom": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000006"
+            }
+        ]
+    },
+    {
+        "@id": "_:b93",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Restriction"
+        ],
+        "http://www.w3.org/2002/07/owl#onProperty": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000132"
+            }
+        ],
+        "http://www.w3.org/2002/07/owl#allValuesFrom": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000008"
+            }
+        ]
+    },
+    {
+        "@id": "_:b94",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Restriction"
+        ],
+        "http://www.w3.org/2002/07/owl#onProperty": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000139"
+            }
+        ],
+        "http://www.w3.org/2002/07/owl#allValuesFrom": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000008"
+            }
+        ]
+    },
+    {
+        "@id": "_:b95",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Restriction"
+        ],
+        "http://www.w3.org/2002/07/owl#onProperty": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000178"
+            }
+        ],
+        "http://www.w3.org/2002/07/owl#allValuesFrom": [
+            {
+                "@id": "_:b96"
+            }
+        ]
+    },
+    {
+        "@id": "_:b96",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2002/07/owl#unionOf": [
+            {
+                "@id": "_:b97"
+            }
+        ]
+    },
+    {
+        "@id": "_:b97",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000009"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "_:b98"
+            }
+        ]
+    },
+    {
+        "@id": "_:b98",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000018"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "_:b99"
+            }
+        ]
+    },
+    {
+        "@id": "_:b99",
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#first": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000026"
+            }
+        ],
+        "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest": [
+            {
+                "@id": "http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"
+            }
+        ]
+    },
+    {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000001",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://purl.org/dc/elements/1.1/identifier": [
+            {
+                "@value": "001-BFO"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "entity",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#definition": [
+            {
+                "@value": "(Elucidation) An entity is anything that exists or has existed or will exist",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#example": [
+            {
+                "@value": "Julius Caesar; the Second World War; your body mass index; Verdi's Requiem",
+                "@language": "en"
+            }
+        ]
+    },
+    {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000002",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000001"
+            },
+            {
+                "@id": "_:b90"
+            }
+        ],
+        "http://www.w3.org/2002/07/owl#disjointWith": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000003"
+            }
+        ],
+        "http://purl.org/dc/elements/1.1/identifier": [
+            {
+                "@value": "008-BFO"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "continuant",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#definition": [
+            {
+                "@value": "(Elucidation) A continuant is an entity that persists, endures, or continues to exist through time while maintaining its identity",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#example": [
+            {
+                "@value": "A human being; a tennis ball; a cave; a region of space; someone's temperature",
+                "@language": "en"
+            }
+        ]
+    },
+    {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000003",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000001"
+            }
+        ],
+        "http://purl.org/dc/elements/1.1/identifier": [
+            {
+                "@value": "077-BFO"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "occurrent",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#definition": [
+            {
+                "@value": "(Elucidation) An occurrent is an entity that unfolds itself in time or it is the start or end of such an entity or it is a temporal or spatiotemporal region",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#example": [
+            {
+                "@value": "As for process, history, process boundary, spatiotemporal region, zero-dimensional temporal region, one-dimensional temporal region, temporal interval, temporal instant.",
+                "@language": "en"
+            }
+        ]
+    },
+    {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000004",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000002"
+            },
+            {
+                "@id": "_:b91"
+            }
+        ],
+        "http://purl.org/dc/elements/1.1/identifier": [
+            {
+                "@value": "017-BFO"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "independent continuant",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#definition": [
+            {
+                "@value": "b is an independent continuant =Def b is a continuant & there is no c such that b specifically depends on c or b generically depends on c",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#example": [
+            {
+                "@value": "An atom; a molecule; an organism; a heart; a chair; the bottom right portion of a human torso; a leg; the interior of your mouth; a spatial region; an orchestra",
+                "@language": "en"
+            }
+        ]
+    },
+    {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000006",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000141"
+            },
+            {
+                "@id": "_:b92"
+            }
+        ],
+        "http://purl.org/dc/elements/1.1/identifier": [
+            {
+                "@value": "035-BFO"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "spatial region",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#definition": [
+            {
+                "@value": "(Elucidation) A spatial region is a continuant entity that is a continuant part of the spatial projection of a portion of spacetime at a given time",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#example": [
+            {
+                "@value": "As for zero-dimensional spatial region, one-dimensional spatial region, two-dimensional spatial region, three-dimensional spatial region",
+                "@language": "en"
+            }
+        ]
+    },
+    {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000008",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000003"
+            },
+            {
+                "@id": "_:b93"
+            },
+            {
+                "@id": "_:b94"
+            }
+        ],
+        "http://purl.org/dc/elements/1.1/identifier": [
+            {
+                "@value": "100-BFO"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "temporal region",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#definition": [
+            {
+                "@value": "(Elucidation) A temporal region is an occurrent over which processes can unfold",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#example": [
+            {
+                "@value": "As for zero-dimensional temporal region and one-dimensional temporal region",
+                "@language": "en"
+            }
+        ]
+    },
+    {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000009",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000006"
+            },
+            {
+                "@id": "_:b95"
+            }
+        ],
+        "http://purl.org/dc/elements/1.1/identifier": [
+            {
+                "@value": "039-BFO"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "two-dimensional spatial region",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#definition": [
+            {
+                "@value": "(Elucidation) A two-dimensional spatial region is a spatial region that is a whole consisting of a surface together with zero or more surfaces which may have spatial regions of lower dimension as parts",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#example": [
+            {
+                "@value": "The surface of a sphere-shaped part of space; an infinitely thin plane in space",
+                "@language": "en"
+            }
+        ]
+    },
+    {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000011",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000003"
+            },
+            {
+                "@id": "_:b100"
+            },
+            {
+                "@id": "_:b101"
+            }
+        ],
+        "http://purl.org/dc/elements/1.1/identifier": [
+            {
+                "@value": "095-BFO"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "spatiotemporal region",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#definition": [
+            {
+                "@value": "(Elucidation) A spatiotemporal region is an occurrent that is an occurrent part of spacetime",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#example": [
+            {
+                "@value": "The spatiotemporal region occupied by the development of a cancer tumour; the spatiotemporal region occupied by an orbiting satellite",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#scopeNote": [
+            {
+                "@value": "'Spacetime' here refers to the maximal instance of the universal spatiotemporal region.",
+                "@language": "en"
+            }
+        ]
+    },
+    {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000015",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000003"
+            },
+            {
+                "@id": "_:b102"
+            },
+            {
+                "@id": "_:b103"
+            },
+            {
+                "@id": "_:b104"
+            }
+        ],
+        "http://purl.org/dc/elements/1.1/identifier": [
+            {
+                "@value": "083-BFO"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "process",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#altLabel": [
+            {
+                "@value": "event",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#definition": [
+            {
+                "@value": "(Elucidation) p is a process means p is an occurrent that has some temporal proper part and for some time t, p has some material entity as participant",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#example": [
+            {
+                "@value": "An act of selling; the life of an organism; a process of sleeping; a process of cell-division; a beating of the heart; a process of meiosis; the taxiing of an aircraft; the programming of a computer",
+                "@language": "en"
+            }
+        ]
+    },
+    {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000016",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000017"
+            }
+        ],
+        "http://www.w3.org/2002/07/owl#disjointWith": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000023"
+            }
+        ],
+        "http://purl.org/dc/elements/1.1/identifier": [
+            {
+                "@value": "062-BFO"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "disposition",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#altLabel": [
+            {
+                "@value": "internally-grounded realizable entity",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#definition": [
+            {
+                "@value": "(Elucidation) A disposition b is a realizable entity such that if b ceases to exist then its bearer is physically changed & b's realization occurs when and because this bearer is in some special physical circumstances & this realization occurs in virtue of the bearer's physical make-up",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#example": [
+            {
+                "@value": "An atom of element X has the disposition to decay to an atom of element Y; the cell wall is disposed to transport cellular material through endocytosis and exocytosis; certain people have a predisposition to colon cancer; children are innately disposed to categorize objects in certain ways",
+                "@language": "en"
+            }
+        ]
+    },
+    {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000017",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000020"
+            }
+        ],
+        "http://www.w3.org/2002/07/owl#disjointWith": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000019"
+            }
+        ],
+        "http://purl.org/dc/elements/1.1/identifier": [
+            {
+                "@value": "058-BFO"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "realizable entity",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#definition": [
+            {
+                "@value": "(Elucidation) A realizable entity is a specifically dependent continuant that inheres in some independent continuant which is not a spatial region & which is of a type some instances of which are realized in processes of a correlated type",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#example": [
+            {
+                "@value": "The role of being a doctor; the role of this boundary to delineate where Utah and Colorado meet; the function of your reproductive organs; the disposition of your blood to coagulate; the disposition of this piece of metal to conduct electricity",
+                "@language": "en"
+            }
+        ]
+    },
+    {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000018",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000006"
+            },
+            {
+                "@id": "_:b108"
+            }
+        ],
+        "http://purl.org/dc/elements/1.1/identifier": [
+            {
+                "@value": "037-BFO"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "zero-dimensional spatial region",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#definition": [
+            {
+                "@value": "(Elucidation) A zero-dimensional spatial region is one or a collection of more than one spatially disjoint points in space",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#example": [
+            {
+                "@value": "The spatial region occupied at some time instant by the North Pole",
+                "@language": "en"
+            }
+        ]
+    },
+    {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000019",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000020"
+            }
+        ],
+        "http://purl.org/dc/elements/1.1/identifier": [
+            {
+                "@value": "055-BFO"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "quality",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#definition": [
+            {
+                "@value": "(Elucidation) A quality is a specifically dependent continuant that, in contrast to roles and dispositions, does not require any further process in order to be realized",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#example": [
+            {
+                "@value": "The colour of a tomato; the ambient temperature of this portion of air; the length of the circumference of your waist; the shape of your nose; the shape of your nostril; the mass of this piece of gold",
+                "@language": "en"
+            }
+        ]
+    },
+    {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000020",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000002"
+            }
+        ],
+        "http://purl.org/dc/elements/1.1/identifier": [
+            {
+                "@value": "050-BFO"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "specifically dependent continuant specifically dependent continuant",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#definition": [
+            {
+                "@value": "b is a specifically dependent continuant =Def b is a continuant & there is some independent continuant c which is not a spatial region & which is such that b specifically depends on c",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#example": [
+            {
+                "@value": "(with multiple bearers) John's love for Mary; the ownership relation between John and this statue; the relation of authority between John and his subordinates",
+                "@language": "en"
+            },
+            {
+                "@value": "(with one bearer) The mass of this tomato; the pink colour of a medium rare piece of grilled filet mignon at its centre; the smell of this portion of mozzarella; the disposition of this fish to decay; the role of being a doctor; the function of this heart to pump blood; the shape of this hole",
+                "@language": "en"
+            }
+        ]
+    },
+    {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000023",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000017"
+            }
+        ],
+        "http://purl.org/dc/elements/1.1/identifier": [
+            {
+                "@value": "061-BFO"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "role",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#altLabel": [
+            {
+                "@value": "externally-grounded realizable entity",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#definition": [
+            {
+                "@value": "(Elucidation) A role b is a realizable entity such that b exists because there is some single bearer that is in some special physical, social, or institutional set of circumstances in which this bearer does not have to be & b is not such that, if it ceases to exist, then the physical make-up of the bearer is thereby changed",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#example": [
+            {
+                "@value": "The priest role; the student role; the role of subject in a clinical trial; the role of a stone in marking a property boundary; the role of a boundary to demarcate two neighbouring administrative territories; the role of a building in serving as a military target",
+                "@language": "en"
+            }
+        ]
+    },
+    {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000024",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000040"
+            }
+        ],
+        "http://purl.org/dc/elements/1.1/identifier": [
+            {
+                "@value": "027-BFO"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "fiat object part",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#definition": [
+            {
+                "@value": "(Elucidation) A fiat object part b is a material entity & such that if b exists then it is continuant part of some object c & demarcated from the remainder of c by one or more fiat surfaces",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#example": [
+            {
+                "@value": "The upper and lower lobes of the left lung; the dorsal and ventral surfaces of the body; the Western hemisphere of the Earth; the FMA:regional parts of an intact human body",
+                "@language": "en"
+            }
+        ]
+    },
+    {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000026",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000006"
+            },
+            {
+                "@id": "_:b109"
+            }
+        ],
+        "http://purl.org/dc/elements/1.1/identifier": [
+            {
+                "@value": "038-BFO"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "one-dimensional spatial region",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#definition": [
+            {
+                "@value": "(Elucidation) A one-dimensional spatial region is a whole consisting of a line together with zero or more lines which may have points as parts",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#example": [
+            {
+                "@value": "An edge of a cube-shaped portion of space; a line connecting two points; two parallel lines extended in space",
+                "@language": "en"
+            }
+        ]
+    },
+    {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000027",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000040"
+            }
+        ],
+        "http://purl.org/dc/elements/1.1/identifier": [
+            {
+                "@value": "025-BFO"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "object aggregate",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#definition": [
+            {
+                "@value": "(Elucidation) An object aggregate is a material entity consisting exactly of a plurality (≥1) of objects as member parts which together form a unit",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#example": [
+            {
+                "@value": "The aggregate of the musicians in a symphony orchestra and their instruments; the aggregate of bearings in a constant velocity axle joint; the nitrogen atoms in the atmosphere; a collection of cells in a blood biobank",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#scopeNote": [
+            {
+                "@value": "'Exactly' means that there are no parts of the object aggregate other than its member parts."
+            },
+            {
+                "@value": "The unit can, at certain times, consist of exactly one object, for example, when a wolf litter loses all but one of its pups, but it must at some time have a plurality of member parts."
+            }
+        ]
+    },
+    {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000028",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000006"
+            },
+            {
+                "@id": "_:b113"
+            }
+        ],
+        "http://purl.org/dc/elements/1.1/identifier": [
+            {
+                "@value": "040-BFO"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "three-dimensional spatial region",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#definition": [
+            {
+                "@value": "(Elucidation) A three-dimensional spatial region is a whole consisting of a spatial volume together with zero or more spatial volumes which may have spatial regions of lower dimension as parts",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#example": [
+            {
+                "@value": "A cube-shaped region of space; a sphere-shaped region of space; the region of space occupied by all and only the planets in the solar system at some point in time",
+                "@language": "en"
+            }
+        ]
+    },
+    {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000029",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000141"
+            },
+            {
+                "@id": "_:b114"
+            },
+            {
+                "@id": "_:b115"
+            },
+            {
+                "@id": "_:b116"
+            }
+        ],
+        "http://purl.org/dc/elements/1.1/identifier": [
+            {
+                "@value": "034-BFO"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "site",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#definition": [
+            {
+                "@value": "(Elucidation) A site is a three-dimensional immaterial entity whose boundaries either (partially or wholly) coincide with the boundaries of one or more material entities or have locations determined in relation to some material entity",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#example": [
+            {
+                "@value": "A hole in a portion of cheese; a rabbit hole; the Grand Canyon; the Piazza San Marco; the kangaroo-joey-containing hole of a kangaroo pouch; your left nostril (a fiat part - the opening - of your left nasal cavity); the lumen of your gut; the hold of a ship; the interior of the trunk of your car; hole in an engineered floor joist",
+                "@language": "en"
+            }
+        ]
+    },
+    {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000030",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000040"
+            }
+        ],
+        "http://purl.org/dc/elements/1.1/identifier": [
+            {
+                "@value": "024-BFO"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "object",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#definition": [
+            {
+                "@value": "(Elucidation) An object is a material entity which manifests causal unity & is of a type instances of which are maximal relative to the sort of causal unity manifested",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#example": [
+            {
+                "@value": "An organism; a fish tank; a planet; a laptop; a valve; a block of marble; an ice cube",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#scopeNote": [
+            {
+                "@value": "A description of three primary sorts of causal unity is provided in Basic Formal Ontology 2.0. Specification and User Guide",
+                "@language": "en"
+            }
+        ]
+    },
+    {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000031",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000002"
+            }
+        ],
+        "http://purl.org/dc/elements/1.1/identifier": [
+            {
+                "@value": "074-BFO"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "generically dependent continuant",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#altLabel": [
+            {
+                "@value": "g-dependent continuant",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#definition": [
+            {
+                "@value": "(Elucidation) A generically dependent continuant is an entity that exists in virtue of the fact that there is at least one of what may be multiple copies which is the content or the pattern that multiple copies would share",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#example": [
+            {
+                "@value": "The pdf file on your laptop; the pdf file that is a copy thereof on my laptop; the sequence of this protein molecule; the sequence that is a copy thereof in that protein molecule; the content that is shared by a string of dots and dashes written on a page and the transmitted Morse code signal; the content of a sentence; an engineering blueprint",
+                "@language": "en"
+            }
+        ]
+    },
+    {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000034",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000016"
+            }
+        ],
+        "http://purl.org/dc/elements/1.1/identifier": [
+            {
+                "@value": "064-BFO"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "function",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#definition": [
+            {
+                "@value": "(Elucidation) A function is a disposition that exists in virtue of its bearer's physical make-up & this physical make-up is something the bearer possesses because it came into being either through evolution (in the case of natural biological entities) or through intentional design (in the case of artefacts) in order to realize processes of a certain sort",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#example": [
+            {
+                "@value": "The function of a hammer to drive in nails; the function of a heart pacemaker to regulate the beating of a heart through electricity",
+                "@language": "en"
+            }
+        ]
+    },
+    {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000035",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000003"
+            },
+            {
+                "@id": "_:b123"
+            },
+            {
+                "@id": "_:b124"
+            },
+            {
+                "@id": "_:b125"
+            },
+            {
+                "@id": "_:b126"
+            }
+        ],
+        "http://purl.org/dc/elements/1.1/identifier": [
+            {
+                "@value": "084-BFO"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "process boundary",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#definition": [
+            {
+                "@value": "p is a process boundary =Def p is a temporal part of a process & p has no proper temporal parts",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#example": [
+            {
+                "@value": "The boundary between the 2nd and 3rd year of your life",
+                "@language": "en"
+            }
+        ]
+    },
+    {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000038",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000008"
+            },
+            {
+                "@id": "_:b133"
+            },
+            {
+                "@id": "_:b134"
+            }
+        ],
+        "http://www.w3.org/2002/07/owl#disjointWith": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000148"
+            }
+        ],
+        "http://purl.org/dc/elements/1.1/identifier": [
+            {
+                "@value": "103-BFO"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "one-dimensional temporal region",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#definition": [
+            {
+                "@value": "(Elucidation) A one-dimensional temporal region is a temporal region that is a whole that has a temporal interval and zero or more temporal intervals and temporal instants as parts",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#example": [
+            {
+                "@value": "The temporal region during which a process occurs",
+                "@language": "en"
+            }
+        ]
+    },
+    {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000040",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000004"
+            },
+            {
+                "@id": "_:b138"
+            },
+            {
+                "@id": "_:b139"
+            }
+        ],
+        "http://www.w3.org/2002/07/owl#disjointWith": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000141"
+            }
+        ],
+        "http://purl.org/dc/elements/1.1/identifier": [
+            {
+                "@value": "019-BFO"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "material entity",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#definition": [
+            {
+                "@value": "(Elucidation) A material entity is an independent continuant has some portion of matter as continuant part",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#example": [
+            {
+                "@value": "A human being; the undetached arm of a human being; an aggregate of human beings",
+                "@language": "en"
+            }
+        ]
+    },
+    {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000054",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#ObjectProperty"
+        ],
+        "http://www.w3.org/2002/07/owl#inverseOf": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000055"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#domain": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000017"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#range": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000015"
+            }
+        ],
+        "http://purl.org/dc/elements/1.1/identifier": [
+            {
+                "@value": "206-BFO"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "has realization",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#altLabel": [
+            {
+                "@value": "realized in",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#definition": [
+            {
+                "@value": "b has realization c =Def c realizes b",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#example": [
+            {
+                "@value": "As for realizes",
+                "@language": "en"
+            }
+        ]
+    },
+    {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000055",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#ObjectProperty"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#domain": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000015"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#range": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000017"
+            }
+        ],
+        "http://purl.org/dc/elements/1.1/identifier": [
+            {
+                "@value": "059-BFO"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "realizes",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#definition": [
+            {
+                "@value": "(Elucidation) realizes is a relation between a process b and realizable entity c such that c inheres in some d & for all t, if b has participant d then c exists & the type instantiated by b is correlated with the type instantiated by c",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#example": [
+            {
+                "@value": "A balding process realizes a disposition to go bald; a studying process realizes a student role; a process of pumping blood realizes the pumping function of a heart",
+                "@language": "en"
+            }
+        ]
+    },
+    {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000056",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#ObjectProperty"
+        ],
+        "http://www.w3.org/2002/07/owl#inverseOf": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000057"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#domain": [
+            {
+                "@id": "_:b0"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#range": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000015"
+            }
+        ],
+        "http://purl.org/dc/elements/1.1/identifier": [
+            {
+                "@value": "250-BFO"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "participates in",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#definition": [
+            {
+                "@value": "(Elucidation) participates in holds between some b that is either a specifically dependent continuant or generically dependent continuant or independent continuant that is not a spatial region & some process p such that b participates in p some way",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#scopeNote": [
+            {
+                "@value": "Users that require more sophisticated representations of time are encouraged to import a temporal extension of BFO-Core provided by the BFO development team. See documentation for guidance: <https://github.com/BFO-ontology/BFO-2020/tree/master/src/owl/profiles/temporal%20extensions>",
+                "@language": "en"
+            }
+        ]
+    },
+    {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000057",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#ObjectProperty"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#domain": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000015"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#range": [
+            {
+                "@id": "_:b8"
+            }
+        ],
+        "http://purl.org/dc/elements/1.1/identifier": [
+            {
+                "@value": "248-BFO"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "has participant",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#definition": [
+            {
+                "@value": "p has participant c =Def c participates in p",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#scopeNote": [
+            {
+                "@value": "Users that require more sophisticated representations of time are encouraged to import a temporal extension of BFO-Core provided by the BFO development team. See documentation for guidance: <https://github.com/BFO-ontology/BFO-2020/tree/master/src/owl/profiles/temporal%20extensions>",
+                "@language": "en"
+            }
+        ]
+    },
+    {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000058",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#ObjectProperty"
+        ],
+        "http://www.w3.org/2002/07/owl#inverseOf": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000059"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#domain": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000031"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#range": [
+            {
+                "@id": "_:b16"
+            }
+        ],
+        "http://purl.org/dc/elements/1.1/identifier": [
+            {
+                "@value": "258-BFO"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "is concretized by",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#definition": [
+            {
+                "@value": "c is concretized by b =Def b concretizes c",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#scopeNote": [
+            {
+                "@value": "Users that require more sophisticated representations of time are encouraged to import a temporal extension of BFO-Core provided by the BFO development team. See documentation for guidance: <https://github.com/BFO-ontology/BFO-2020/tree/master/src/owl/profiles/temporal%20extensions>",
+                "@language": "en"
+            }
+        ]
+    },
+    {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000059",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#ObjectProperty"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#domain": [
+            {
+                "@id": "_:b19"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#range": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000031"
+            }
+        ],
+        "http://purl.org/dc/elements/1.1/identifier": [
+            {
+                "@value": "256-BFO"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "concretizes",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#definition": [
+            {
+                "@value": "b concretizes c =Def b is a process or a specifically dependent continuant & c is a generically dependent continuant & there is some time t such that c is the pattern or content which b shares at t with actual or potential copies",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#scopeNote": [
+            {
+                "@value": "Users that require more sophisticated representations of time are encouraged to import a temporal extension of BFO-Core provided by the BFO development team. See documentation for guidance: <https://github.com/BFO-ontology/BFO-2020/tree/master/src/owl/profiles/temporal%20extensions>",
+                "@language": "en"
+            }
+        ]
+    },
+    {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000062",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#ObjectProperty",
+            "http://www.w3.org/2002/07/owl#TransitiveProperty"
+        ],
+        "http://www.w3.org/2002/07/owl#inverseOf": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000063"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#domain": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000003"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#range": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000003"
+            }
+        ],
+        "http://purl.org/dc/elements/1.1/identifier": [
+            {
+                "@value": "213-BFO"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "preceded by",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#definition": [
+            {
+                "@value": "b preceded by c =Def b precedes c",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#example": [
+            {
+                "@value": "The temporal region occupied by the second half of the match is preceded by the temporal region occupied by the first half of the match",
+                "@language": "en"
+            }
+        ]
+    },
+    {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000063",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#ObjectProperty",
+            "http://www.w3.org/2002/07/owl#TransitiveProperty"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#domain": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000003"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#range": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000003"
+            }
+        ],
+        "http://purl.org/dc/elements/1.1/identifier": [
+            {
+                "@value": "270-BFO"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "precedes",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#definition": [
+            {
+                "@value": "(Elucidation) precedes is a relation between occurrents o, o' such that if t is the temporal extent of o & t' is the temporal extent of o' then either the last instant of o is before the first instant of o' or the last instant of o is the first instant of o' & neither o nor o' are temporal instants",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#example": [
+            {
+                "@value": "The temporal region occupied by Mary's birth precedes the temporal region occupied by Mary's death.",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#scopeNote": [
+            {
+                "@value": "Each temporal region is its own temporal extent. The temporal extent of a spatiotemporal region is the temporal region it temporally projects onto. The temporal extent of a process or process boundary that occupies temporal region t is t."
+            },
+            {
+                "@value": "Precedes defines a strict partial order on occurrents."
+            }
+        ]
+    },
+    {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000066",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#ObjectProperty"
+        ],
+        "http://www.w3.org/2002/07/owl#inverseOf": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000183"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#domain": [
+            {
+                "@id": "_:b22"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#range": [
+            {
+                "@id": "_:b23"
+            }
+        ],
+        "http://purl.org/dc/elements/1.1/identifier": [
+            {
+                "@value": "143-BFO"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "occurs in",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#definition": [
+            {
+                "@value": "b occurs in c =Def b is a process or a process boundary & c is a material entity or site & there exists a spatiotemporal region r & b occupies spatiotemporal region r & for all time t, if b exists at t then c exists at t & there exist spatial regions s and s' where b spatially projects onto s at t & c occupies spatial region s' at t & s is a continuant part of s' at t",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#example": [
+            {
+                "@value": "A process of digestion occurs in the interior of an organism; a process of loading artillery rounds into a tank cannon occurs in the interior of the tank",
+                "@language": "en"
+            }
+        ]
+    },
+    {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000084",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#ObjectProperty"
+        ],
+        "http://www.w3.org/2002/07/owl#inverseOf": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000101"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#domain": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000031"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#range": [
+            {
+                "@id": "_:b28"
+            }
+        ],
+        "http://purl.org/dc/elements/1.1/identifier": [
+            {
+                "@value": "252-BFO"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "generically depends on",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#altLabel": [
+            {
+                "@value": "g-depends on",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#definition": [
+            {
+                "@value": "b generically depends on c =Def b is a generically dependent continuant & c is an independent continuant that is not a spatial region & at some time t there inheres in c a specifically dependent continuant which concretizes b at t",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#scopeNote": [
+            {
+                "@value": "Users that require more sophisticated representations of time are encouraged to import a temporal extension of BFO-Core provided by the BFO development team. See documentation for guidance: <https://github.com/BFO-ontology/BFO-2020/tree/master/src/owl/profiles/temporal%20extensions>",
+                "@language": "en"
+            }
+        ]
+    },
+    {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000101",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#ObjectProperty"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#domain": [
+            {
+                "@id": "_:b32"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#range": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000031"
+            }
+        ],
+        "http://purl.org/dc/elements/1.1/identifier": [
+            {
+                "@value": "254-BFO"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "is carrier of",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#definition": [
+            {
+                "@value": "b is carrier of c =Def there is some time t such that c generically depends on b at t",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#scopeNote": [
+            {
+                "@value": "Users that require more sophisticated representations of time are encouraged to import a temporal extension of BFO-Core provided by the BFO development team. See documentation for guidance: <https://github.com/BFO-ontology/BFO-2020/tree/master/src/owl/profiles/temporal%20extensions>",
+                "@language": "en"
+            }
+        ]
+    },
+    {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000108",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#ObjectProperty"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#domain": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000001"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#range": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000008"
+            }
+        ],
+        "http://purl.org/dc/elements/1.1/identifier": [
+            {
+                "@value": "118-BFO"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "exists at",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#definition": [
+            {
+                "@value": "(Elucidation) exists at is a relation between a particular and some temporal region at which the particular exists",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#example": [
+            {
+                "@value": "First World War exists at 1914-1916; Mexico exists at January 1, 2000",
+                "@language": "en"
+            }
+        ]
+    },
+    {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000115",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#ObjectProperty"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#subPropertyOf": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000178"
+            }
+        ],
+        "http://www.w3.org/2002/07/owl#inverseOf": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000129"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#domain": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000040"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#range": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000040"
+            }
+        ],
+        "http://purl.org/dc/elements/1.1/identifier": [
+            {
+                "@value": "230-BFO"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "has member part",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#definition": [
+            {
+                "@value": "b has member part c =Def c member part of b",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#scopeNote": [
+            {
+                "@value": "Users that require more sophisticated representations of time are encouraged to import a temporal extension of BFO-Core provided by the BFO development team. See documentation for guidance: <https://github.com/BFO-ontology/BFO-2020/tree/master/src/owl/profiles/temporal%20extensions>",
+                "@language": "en"
+            }
+        ]
+    },
+    {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000117",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#ObjectProperty",
+            "http://www.w3.org/2002/07/owl#TransitiveProperty"
+        ],
+        "http://www.w3.org/2002/07/owl#inverseOf": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000132"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#domain": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000003"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#range": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000003"
+            }
+        ],
+        "http://purl.org/dc/elements/1.1/identifier": [
+            {
+                "@value": "202-BFO"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "has occurrent part",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#definition": [
+            {
+                "@value": "b has occurrent part c =Def c occurrent part of b",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#example": [
+            {
+                "@value": "Mary's life has occurrent part Mary's 5th birthday",
+                "@language": "en"
+            }
+        ]
+    },
+    {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000121",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#ObjectProperty",
+            "http://www.w3.org/2002/07/owl#TransitiveProperty"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#subPropertyOf": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000117"
+            }
+        ],
+        "http://www.w3.org/2002/07/owl#inverseOf": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000139"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#domain": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000003"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#range": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000003"
+            }
+        ],
+        "http://purl.org/dc/elements/1.1/identifier": [
+            {
+                "@value": "211-BFO"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "has temporal part",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#definition": [
+            {
+                "@value": "b has temporal part c =Def c temporal part of b",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#example": [
+            {
+                "@value": "Your life has temporal part the first year of your life",
+                "@language": "en"
+            }
+        ]
+    },
+    {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000124",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#ObjectProperty"
+        ],
+        "http://www.w3.org/2002/07/owl#inverseOf": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000171"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#domain": [
+            {
+                "@id": "_:b36"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#range": [
+            {
+                "@id": "_:b37"
+            }
+        ],
+        "http://purl.org/dc/elements/1.1/identifier": [
+            {
+                "@value": "236-BFO"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "location of",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#definition": [
+            {
+                "@value": "b location of c =Def c located in b",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#scopeNote": [
+            {
+                "@value": "Users that require more sophisticated representations of time are encouraged to import a temporal extension of BFO-Core provided by the BFO development team. See documentation for guidance: <https://github.com/BFO-ontology/BFO-2020/tree/master/src/owl/profiles/temporal%20extensions>",
+                "@language": "en"
+            }
+        ]
+    },
+    {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000127",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#ObjectProperty"
+        ],
+        "http://www.w3.org/2002/07/owl#inverseOf": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000218"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#domain": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000040"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#range": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000016"
+            }
+        ],
+        "http://purl.org/dc/elements/1.1/identifier": [
+            {
+                "@value": "244-BFO"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "material basis of",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#definition": [
+            {
+                "@value": "b material basis of c =Def c has material basis b",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#scopeNote": [
+            {
+                "@value": "Users that require more sophisticated representations of time are encouraged to import a temporal extension of BFO-Core provided by the BFO development team. See documentation for guidance: <https://github.com/BFO-ontology/BFO-2020/tree/master/src/owl/profiles/temporal%20extensions>",
+                "@language": "en"
+            }
+        ]
+    },
+    {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000129",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#ObjectProperty"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#subPropertyOf": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000176"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#domain": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000040"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#range": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000040"
+            }
+        ],
+        "http://purl.org/dc/elements/1.1/identifier": [
+            {
+                "@value": "228-BFO"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "member part of",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#definition": [
+            {
+                "@value": "b member part of c =Def b is an object & c is a material entity & there is some time t such that b continuant part of c at t & there is a mutually exhaustive and pairwise disjoint partition of c into objects x1, ..., xn (for some n ≠ 1) with b = xi (for some 1 <= i <= n)",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#scopeNote": [
+            {
+                "@value": "Users that require more sophisticated representations of time are encouraged to import a temporal extension of BFO-Core provided by the BFO development team. See documentation for guidance: <https://github.com/BFO-ontology/BFO-2020/tree/master/src/owl/profiles/temporal%20extensions>",
+                "@language": "en"
+            }
+        ]
+    },
+    {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000132",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#ObjectProperty",
+            "http://www.w3.org/2002/07/owl#TransitiveProperty"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#domain": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000003"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#range": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000003"
+            }
+        ],
+        "http://purl.org/dc/elements/1.1/identifier": [
+            {
+                "@value": "003-BFO"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "occurrent part of",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#definition": [
+            {
+                "@value": "(Elucidation) occurrent part of is a relation between occurrents b and c when b is part of c",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#example": [
+            {
+                "@value": "Mary's 5th birthday is an occurrent part of Mary's life; the first set of the tennis match is an occurrent part of the tennis match",
+                "@language": "en"
+            }
+        ]
+    },
+    {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000139",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#ObjectProperty",
+            "http://www.w3.org/2002/07/owl#TransitiveProperty"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#subPropertyOf": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000132"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#domain": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000003"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#range": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000003"
+            }
+        ],
+        "http://purl.org/dc/elements/1.1/identifier": [
+            {
+                "@value": "078-BFO"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "temporal part of",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#definition": [
+            {
+                "@value": "b temporal part of c =Def b occurrent part of c & (b and c are temporal regions) or (b and c are spatiotemporal regions & b temporally projects onto an occurrent part of the temporal region that c temporally projects onto) or (b and c are processes or process boundaries & b occupies a temporal region that is an occurrent part of the temporal region that c occupies)",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#example": [
+            {
+                "@value": "Your heart beating from 4pm to 5pm today is a temporal part of the process of your heart beating; the 4th year of your life is a temporal part of your life, as is the process boundary which separates the 3rd and 4th years of your life; the first quarter of a game of football is a temporal part of the whole game",
+                "@language": "en"
+            }
+        ]
+    },
+    {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000140",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000141"
+            },
+            {
+                "@id": "_:b144"
+            },
+            {
+                "@id": "_:b145"
+            }
+        ],
+        "http://purl.org/dc/elements/1.1/identifier": [
+            {
+                "@value": "029-BFO"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "continuant fiat boundary",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#definition": [
+            {
+                "@value": "(Elucidation) A continuant fiat boundary b is an immaterial entity that is of zero, one or two dimensions & such that there is no time t when b has a spatial region as continuant part & whose location is determined in relation to some material entity",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#example": [
+            {
+                "@value": "As for fiat point, fiat line, fiat surface",
+                "@language": "en"
+            }
+        ]
+    },
+    {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000141",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000004"
+            }
+        ],
+        "http://purl.org/dc/elements/1.1/identifier": [
+            {
+                "@value": "028-BFO"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "immaterial entity",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#definition": [
+            {
+                "@value": "b is an immaterial entity =Def b is an independent continuant which is such that there is no time t when it has a material entity as continuant part",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#example": [
+            {
+                "@value": "As for fiat point, fiat line, fiat surface, site",
+                "@language": "en"
+            }
+        ]
+    },
+    {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000142",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000140"
+            },
+            {
+                "@id": "_:b146"
+            }
+        ],
+        "http://purl.org/dc/elements/1.1/identifier": [
+            {
+                "@value": "032-BFO"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "fiat line",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#definition": [
+            {
+                "@value": "(Elucidation) A fiat line is a one-dimensional continuant fiat boundary that is continuous",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#example": [
+            {
+                "@value": "The Equator; all geopolitical boundaries; all lines of latitude and longitude; the median sulcus of your tongue; the line separating the outer surface of the mucosa of the lower lip from the outer surface of the skin of the chin",
+                "@language": "en"
+            }
+        ]
+    },
+    {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000145",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000019"
+            }
+        ],
+        "http://purl.org/dc/elements/1.1/identifier": [
+            {
+                "@value": "057-BFO"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "relational quality",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#definition": [
+            {
+                "@value": "b is a relational quality =Def b is a quality & there exists c and d such that c and d are not identical & b specifically depends on c & b specifically depends on d",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#example": [
+            {
+                "@value": "A marriage bond; an instance of love; an obligation between one person and another",
+                "@language": "en"
+            }
+        ]
+    },
+    {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000146",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000140"
+            },
+            {
+                "@id": "_:b150"
+            }
+        ],
+        "http://purl.org/dc/elements/1.1/identifier": [
+            {
+                "@value": "033-BFO"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "fiat surface",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#definition": [
+            {
+                "@value": "(Elucidation) A fiat surface is a two-dimensional continuant fiat boundary that is self-connected",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#example": [
+            {
+                "@value": "The surface of the Earth; the plane separating the smoking from the non-smoking zone in a restaurant",
+                "@language": "en"
+            }
+        ]
+    },
+    {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000147",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000140"
+            },
+            {
+                "@id": "_:b151"
+            }
+        ],
+        "http://purl.org/dc/elements/1.1/identifier": [
+            {
+                "@value": "031-BFO"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "fiat point",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#definition": [
+            {
+                "@value": "(Elucidation) A fiat point is a zero-dimensional continuant fiat boundary that consists of a single point",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#example": [
+            {
+                "@value": "The geographic North Pole; the quadripoint where the boundaries of Colorado, Utah, New Mexico and Arizona meet; the point of origin of some spatial coordinate system",
+                "@language": "en"
+            }
+        ]
+    },
+    {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000148",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000008"
+            },
+            {
+                "@id": "_:b152"
+            }
+        ],
+        "http://purl.org/dc/elements/1.1/identifier": [
+            {
+                "@value": "102-BFO"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "zero-dimensional temporal region",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#definition": [
+            {
+                "@value": "(Elucidation) A zero-dimensional temporal region is a temporal region that is a whole consisting of one or more separated temporal instants as parts",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#example": [
+            {
+                "@value": "A temporal region that is occupied by a process boundary; the moment at which a finger is detached in an industrial accident",
+                "@language": "en"
+            }
+        ]
+    },
+    {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000153",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#ObjectProperty",
+            "http://www.w3.org/2002/07/owl#FunctionalProperty"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#domain": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000011"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#range": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000008"
+            }
+        ],
+        "http://purl.org/dc/elements/1.1/identifier": [
+            {
+                "@value": "080-BFO"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "temporally projects onto",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#definition": [
+            {
+                "@value": "(Elucidation) temporally projects onto is a relation between a spatiotemporal region s and some temporal region which is the temporal extent of s",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#example": [
+            {
+                "@value": "The world line of a particle temporally projects onto the temporal region extending from the beginning to the end of the existence of the particle",
+                "@language": "en"
+            }
+        ]
+    },
+    {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000171",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#ObjectProperty"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#domain": [
+            {
+                "@id": "_:b44"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#range": [
+            {
+                "@id": "_:b45"
+            }
+        ],
+        "http://purl.org/dc/elements/1.1/identifier": [
+            {
+                "@value": "234-BFO"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "located in",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#definition": [
+            {
+                "@value": "b located in c =Def b is an independent continuant & c is an independent & neither is a spatial region & there is some time t such that the spatial region which b occupies at t is continuant part of the spatial region which c occupies at t",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#scopeNote": [
+            {
+                "@value": "Users that require more sophisticated representations of time are encouraged to import a temporal extension of BFO-Core provided by the BFO development team. See documentation for guidance: <https://github.com/BFO-ontology/BFO-2020/tree/master/src/owl/profiles/temporal%20extensions>",
+                "@language": "en"
+            }
+        ]
+    },
+    {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000176",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#ObjectProperty"
+        ],
+        "http://www.w3.org/2002/07/owl#inverseOf": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000178"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#domain": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000002"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#range": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000002"
+            }
+        ],
+        "http://purl.org/dc/elements/1.1/identifier": [
+            {
+                "@value": "221-BFO"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "continuant part of",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#definition": [
+            {
+                "@value": "b continuant part of c =Def b and c are continuants & there is some time t such that b and c exist at t & b continuant part of c at t",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#example": [
+            {
+                "@value": "Milk teeth continuant part of human; surgically removed tumour continuant part of organism",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#scopeNote": [
+            {
+                "@value": "Users that require more sophisticated representations of time are encouraged to import a temporal extension of BFO-Core provided by the BFO development team. See documentation for guidance: <https://github.com/BFO-ontology/BFO-2020/tree/master/src/owl/profiles/temporal%20extensions>",
+                "@language": "en"
+            }
+        ]
+    },
+    {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000178",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#ObjectProperty"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#domain": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000002"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#range": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000002"
+            }
+        ],
+        "http://purl.org/dc/elements/1.1/identifier": [
+            {
+                "@value": "271-BFO"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "has continuant part",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#definition": [
+            {
+                "@value": "b has continuant part c =Def c continuant part of b",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#scopeNote": [
+            {
+                "@value": "Users that require more sophisticated representations of time are encouraged to import a temporal extension of BFO-Core provided by the BFO development team. See documentation for guidance: <https://github.com/BFO-ontology/BFO-2020/tree/master/src/owl/profiles/temporal%20extensions>",
+                "@language": "en"
+            }
+        ]
+    },
+    {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000182",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000015"
+            }
+        ],
+        "http://purl.org/dc/elements/1.1/identifier": [
+            {
+                "@value": "138-BFO"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "history",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#definition": [
+            {
+                "@value": "(Elucidation) A history is a process that is the sum of the totality of processes taking place in the spatiotemporal region occupied by the material part of a material entity",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#example": [
+            {
+                "@value": "The life of an organism from the beginning to the end of its existence",
+                "@language": "en"
+            }
+        ]
+    },
+    {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000183",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#ObjectProperty"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#domain": [
+            {
+                "@id": "_:b52"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#range": [
+            {
+                "@id": "_:b53"
+            }
+        ],
+        "http://purl.org/dc/elements/1.1/identifier": [
+            {
+                "@value": "267-BFO"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "environs",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#altLabel": [
+            {
+                "@value": "contains process",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#definition": [
+            {
+                "@value": "b environs c =Def c occurs in b",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#example": [
+            {
+                "@value": "Mouth environs process of mastication; city environs traffic",
+                "@language": "en"
+            }
+        ]
+    },
+    {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000184",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#ObjectProperty",
+            "http://www.w3.org/2002/07/owl#FunctionalProperty",
+            "http://www.w3.org/2002/07/owl#InverseFunctionalProperty"
+        ],
+        "http://www.w3.org/2002/07/owl#inverseOf": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000185"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#domain": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000182"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#range": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000040"
+            }
+        ],
+        "http://purl.org/dc/elements/1.1/identifier": [
+            {
+                "@value": "144-BFO"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "history of",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#definition": [
+            {
+                "@value": "(Elucidation) history of is a relation between history b and material entity c such that b is the unique history of c",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#example": [
+            {
+                "@value": "This life is the history of this organism",
+                "@language": "en"
+            }
+        ]
+    },
+    {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000185",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#ObjectProperty"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#domain": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000040"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#range": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000182"
+            }
+        ],
+        "http://purl.org/dc/elements/1.1/identifier": [
+            {
+                "@value": "145-BFO"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "has history",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#definition": [
+            {
+                "@value": "b has history c =Def c history of b",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#example": [
+            {
+                "@value": "This organism has history this life",
+                "@language": "en"
+            }
+        ]
+    },
+    {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000194",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#ObjectProperty"
+        ],
+        "http://www.w3.org/2002/07/owl#inverseOf": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000195"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#domain": [
+            {
+                "@id": "_:b58"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#range": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000020"
+            }
+        ],
+        "http://purl.org/dc/elements/1.1/identifier": [
+            {
+                "@value": "260-BFO"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "specifically depended on by",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#altLabel": [
+            {
+                "@value": "s-depended on by",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#definition": [
+            {
+                "@value": "b specifically depended on by c =Def c specifically depends on b",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#example": [
+            {
+                "@value": "Coloured object specifically depended on by colour",
+                "@language": "en"
+            }
+        ]
+    },
+    {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000195",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#ObjectProperty"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#domain": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000020"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#range": [
+            {
+                "@id": "_:b65"
+            }
+        ],
+        "http://purl.org/dc/elements/1.1/identifier": [
+            {
+                "@value": "012-BFO"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "specifically depends on",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#altLabel": [
+            {
+                "@value": "s-depends on",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#definition": [
+            {
+                "@value": "(Elucidation) specifically depends on is a relation between a specifically dependent continuant b and specifically dependent continuant or independent continuant that is not a spatial region c such that b and c share no parts in common & b is of a nature such that at all times t it cannot exist unless c exists & b is not a boundary of c",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#example": [
+            {
+                "@value": "A shape specifically depends on the shaped object; hue, saturation and brightness of a colour sample specifically depends on each other",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#scopeNote": [
+            {
+                "@value": "The analogue of specifically depends on for occurrents is has participant.",
+                "@language": "en"
+            }
+        ]
+    },
+    {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000196",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#ObjectProperty"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#subPropertyOf": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000194"
+            }
+        ],
+        "http://www.w3.org/2002/07/owl#inverseOf": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000197"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#domain": [
+            {
+                "@id": "_:b72"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#range": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000020"
+            }
+        ],
+        "http://purl.org/dc/elements/1.1/identifier": [
+            {
+                "@value": "053-BFO"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "bearer of",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#definition": [
+            {
+                "@value": "b bearer of c =Def c inheres in b",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#example": [
+            {
+                "@value": "A patch of ink is the bearer of a colour quality; an organism is the bearer of a temperature quality",
+                "@language": "en"
+            }
+        ]
+    },
+    {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000197",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#ObjectProperty"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#subPropertyOf": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000195"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#domain": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000020"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#range": [
+            {
+                "@id": "_:b76"
+            }
+        ],
+        "http://purl.org/dc/elements/1.1/identifier": [
+            {
+                "@value": "051-BFO"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "inheres in",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#definition": [
+            {
+                "@value": "b inheres in c =Def b is a specifically dependent continuant & c is an independent continuant that is not a spatial region & b specifically depends on c",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#example": [
+            {
+                "@value": "A shape inheres in a shaped object; a mass inheres in a material entity",
+                "@language": "en"
+            }
+        ]
+    },
+    {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000199",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#ObjectProperty",
+            "http://www.w3.org/2002/07/owl#FunctionalProperty"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#domain": [
+            {
+                "@id": "_:b80"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#range": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000008"
+            }
+        ],
+        "http://purl.org/dc/elements/1.1/identifier": [
+            {
+                "@value": "132-BFO"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "occupies temporal region",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#definition": [
+            {
+                "@value": "p occupies temporal region t =Def p is a process or process boundary & the spatiotemporal region occupied by p temporally projects onto t",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#example": [
+            {
+                "@value": "The Second World War occupies the temporal region September 1, 1939 - September 2, 1945",
+                "@language": "en"
+            }
+        ]
+    },
+    {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000200",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#ObjectProperty",
+            "http://www.w3.org/2002/07/owl#FunctionalProperty"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#domain": [
+            {
+                "@id": "_:b83"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#range": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000011"
+            }
+        ],
+        "http://purl.org/dc/elements/1.1/identifier": [
+            {
+                "@value": "082-BFO"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "occupies spatiotemporal region",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#definition": [
+            {
+                "@value": "(Elucidation) occupies spatiotemporal region is a relation between a process or process boundary p and the spatiotemporal region s which is its spatiotemporal extent",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#example": [
+            {
+                "@value": "A particle emitted by a nuclear reactor occupies the spatiotemporal region which is its trajectory",
+                "@language": "en"
+            }
+        ]
+    },
+    {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000202",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000038"
+            }
+        ],
+        "http://purl.org/dc/elements/1.1/identifier": [
+            {
+                "@value": "155-BFO"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "temporal interval",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#definition": [
+            {
+                "@value": "(Elucidation) A temporal interval is a one-dimensional temporal region that is continuous, thus without gaps or breaks",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#example": [
+            {
+                "@value": "The year 2018.",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#scopeNote": [
+            {
+                "@value": "A one-dimensional temporal region can include as parts not only temporal intervals but also temporal instants separated from other parts by gaps.",
+                "@language": "en"
+            }
+        ]
+    },
+    {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000203",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Class"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000148"
+            }
+        ],
+        "http://purl.org/dc/elements/1.1/identifier": [
+            {
+                "@value": "209-BFO"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "temporal instant",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#definition": [
+            {
+                "@value": "(Elucidation) A temporal instant is a zero-dimensional temporal region that has no proper temporal part",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#example": [
+            {
+                "@value": "The millennium",
+                "@language": "en"
+            }
+        ]
+    },
+    {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000210",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#ObjectProperty"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#domain": [
+            {
+                "@id": "_:b86"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#range": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000006"
+            }
+        ],
+        "http://purl.org/dc/elements/1.1/identifier": [
+            {
+                "@value": "232-BFO"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "occupies spatial region",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#definition": [
+            {
+                "@value": "b occupies spatial region r =Def b is an independent continuant that is not a spatial region & r is a spatial region & there is some time t such that every continuant part of b occupies some continuant part of r at t and no continuant part of b occupies any spatial region that is not a continuant part of r at t",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#scopeNote": [
+            {
+                "@value": "Users that require more sophisticated representations of time are encouraged to import a temporal extension of BFO-Core provided by the BFO development team. See documentation for guidance: <https://github.com/BFO-ontology/BFO-2020/tree/master/src/owl/profiles/temporal%20extensions>",
+                "@language": "en"
+            }
+        ]
+    },
+    {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000216",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#ObjectProperty"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#domain": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000011"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#range": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000006"
+            }
+        ],
+        "http://purl.org/dc/elements/1.1/identifier": [
+            {
+                "@value": "246-BFO"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "spatially projects onto",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#definition": [
+            {
+                "@value": "(Elucidation) spatially projects onto is a relation between some spatiotemporal region b and spatial region c such that at some time t, c is the spatial extent of b at t",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#scopeNote": [
+            {
+                "@value": "Users that require more sophisticated representations of time are encouraged to import a temporal extension of BFO-Core provided by the BFO development team. See documentation for guidance: <https://github.com/BFO-ontology/BFO-2020/tree/master/src/owl/profiles/temporal%20extensions>",
+                "@language": "en"
+            }
+        ]
+    },
+    {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000218",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#ObjectProperty"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#domain": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000016"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#range": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000040"
+            }
+        ],
+        "http://purl.org/dc/elements/1.1/identifier": [
+            {
+                "@value": "242-BFO"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "has material basis",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#definition": [
+            {
+                "@value": "b has material basis c =Def b is a disposition & c is a material entity & there is some d bearer of b & there is some time t such that c is a continuant part of d at t & d has disposition b because c is a continuant part of d at t",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#scopeNote": [
+            {
+                "@value": "Users that require more sophisticated representations of time are encouraged to import a temporal extension of BFO-Core provided by the BFO development team. See documentation for guidance: <https://github.com/BFO-ontology/BFO-2020/tree/master/src/owl/profiles/temporal%20extensions>",
+                "@language": "en"
+            }
+        ]
+    },
+    {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000221",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#ObjectProperty"
+        ],
+        "http://www.w3.org/2002/07/owl#inverseOf": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000222"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#domain": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000203"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#range": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000008"
+            }
+        ],
+        "http://purl.org/dc/elements/1.1/identifier": [
+            {
+                "@value": "268-BFO"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "first instant of",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#definition": [
+            {
+                "@value": "t first instant of t' =Def t is a temporal instant & t' is a temporal region t' & t precedes all temporal parts of t' other than t",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#example": [
+            {
+                "@value": "An hour starting at midnight yesterday has first instant midnight yesterday",
+                "@language": "en"
+            }
+        ]
+    },
+    {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000222",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#ObjectProperty",
+            "http://www.w3.org/2002/07/owl#FunctionalProperty"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#domain": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000008"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#range": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000203"
+            }
+        ],
+        "http://purl.org/dc/elements/1.1/identifier": [
+            {
+                "@value": "261-BFO"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "has first instant",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#definition": [
+            {
+                "@value": "t has first instant t' =Def t' first instant of t",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#example": [
+            {
+                "@value": "The first hour of a year has first instant midnight on December 31",
+                "@language": "en"
+            }
+        ]
+    },
+    {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000223",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#ObjectProperty"
+        ],
+        "http://www.w3.org/2002/07/owl#inverseOf": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000224"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#domain": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000203"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#range": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000008"
+            }
+        ],
+        "http://purl.org/dc/elements/1.1/identifier": [
+            {
+                "@value": "269-BFO"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "last instant of",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#definition": [
+            {
+                "@value": "t last instant of t' =Def t is a temporal instant & t' is a temporal region & all temporal parts of t' other than t precede t",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#example": [
+            {
+                "@value": "Last midnight is the last instant of yesterday",
+                "@language": "en"
+            }
+        ]
+    },
+    {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000224",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#ObjectProperty",
+            "http://www.w3.org/2002/07/owl#FunctionalProperty"
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#domain": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000008"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#range": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/BFO_0000203"
+            }
+        ],
+        "http://purl.org/dc/elements/1.1/identifier": [
+            {
+                "@value": "215-BFO"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#label": [
+            {
+                "@value": "has last instant",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#definition": [
+            {
+                "@value": "t has last instant t' =Def t' last instant of t",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2004/02/skos/core#example": [
+            {
+                "@value": "The last hour of a year has last instant midnight December 31",
+                "@language": "en"
+            }
+        ]
+    },
+    {
+        "@id": "http://purl.obolibrary.org/obo/bfo.owl",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#Ontology"
+        ],
+        "http://www.w3.org/2002/07/owl#versionIRI": [
+            {
+                "@id": "http://purl.obolibrary.org/obo/bfo/2020/bfo-core.owl"
+            }
+        ],
+        "http://purl.org/dc/elements/1.1/contributor": [
+            {
+                "@value": "Mathias Brochhausen"
+            },
+            {
+                "@value": "Ron Rudnicki"
+            },
+            {
+                "@value": "Janna Hastings"
+            },
+            {
+                "@value": "Leonard Jacuzzo"
+            },
+            {
+                "@value": "Randall Dipert"
+            },
+            {
+                "@value": "Barry Smith"
+            },
+            {
+                "@value": "Larry Hunter"
+            },
+            {
+                "@value": "Stefan Schulz"
+            },
+            {
+                "@value": "Werner Ceusters"
+            },
+            {
+                "@value": "Jonathan Bona"
+            },
+            {
+                "@value": "Robert Rovetto"
+            },
+            {
+                "@value": "Albert Goldfain"
+            },
+            {
+                "@value": "Yongqun \"Oliver\" He"
+            },
+            {
+                "@value": "Bjoern Peters"
+            },
+            {
+                "@value": "Melanie Courtot"
+            },
+            {
+                "@value": "Alan Ruttenberg"
+            },
+            {
+                "@value": "Bill Duncan"
+            },
+            {
+                "@value": "Ludger Jansen"
+            },
+            {
+                "@value": "Thomas Bittner"
+            },
+            {
+                "@value": "Chris Mungall"
+            },
+            {
+                "@value": "Jie Zheng"
+            },
+            {
+                "@value": "John Beverley"
+            },
+            {
+                "@value": "Mauricio Almeida"
+            },
+            {
+                "@value": "Mark Ressler"
+            },
+            {
+                "@value": "Mark Jensen"
+            },
+            {
+                "@value": "Neil Otte"
+            },
+            {
+                "@value": "David Osumi-Sutherland"
+            },
+            {
+                "@value": "Pierre Grenon"
+            },
+            {
+                "@value": "James A. Overton"
+            },
+            {
+                "@value": "Fabian Neuhaus"
+            }
+        ],
+        "http://purl.org/dc/terms/title": [
+            {
+                "@value": "BFO 2020"
+            }
+        ],
+        "http://purl.org/dc/terms/license": [
+            {
+                "@id": "https://creativecommons.org/licenses/by/4.0/"
+            }
+        ],
+        "http://purl.org/dc/terms/description": [
+            {
+                "@value": "Basic Formal Ontology implemented in the Web Ontology Language (OWL 2) with direct semantics.",
+                "@language": "en"
+            }
+        ],
+        "http://www.w3.org/2000/01/rdf-schema#comment": [
+            {
+                "@value": "The most recent version of this file will always be in the GitHub repository https://github.com/bfo-ontology/bfo-2020"
+            }
+        ]
+    },
+    {
+        "@id": "http://purl.obolibrary.org/obo/bfo/2020/bfo-core.owl"
+    },
+    {
+        "@id": "http://purl.org/dc/elements/1.1/contributor",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#AnnotationProperty"
+        ]
+    },
+    {
+        "@id": "http://purl.org/dc/elements/1.1/identifier",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#AnnotationProperty"
+        ]
+    },
+    {
+        "@id": "http://purl.org/dc/elements/1.1/license",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#AnnotationProperty"
+        ]
+    },
+    {
+        "@id": "http://purl.org/dc/terms/description",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#AnnotationProperty"
+        ]
+    },
+    {
+        "@id": "http://purl.org/dc/terms/license",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#AnnotationProperty"
+        ]
+    },
+    {
+        "@id": "http://purl.org/dc/terms/title",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#AnnotationProperty"
+        ]
+    },
+    {
+        "@id": "http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"
+    },
+    {
+        "@id": "http://www.w3.org/2002/07/owl#AllDisjointClasses"
+    },
+    {
+        "@id": "http://www.w3.org/2002/07/owl#AnnotationProperty"
+    },
+    {
+        "@id": "http://www.w3.org/2002/07/owl#Class"
+    },
+    {
+        "@id": "http://www.w3.org/2002/07/owl#FunctionalProperty"
+    },
+    {
+        "@id": "http://www.w3.org/2002/07/owl#InverseFunctionalProperty"
+    },
+    {
+        "@id": "http://www.w3.org/2002/07/owl#ObjectProperty"
+    },
+    {
+        "@id": "http://www.w3.org/2002/07/owl#Ontology"
+    },
+    {
+        "@id": "http://www.w3.org/2002/07/owl#Restriction"
+    },
+    {
+        "@id": "http://www.w3.org/2002/07/owl#TransitiveProperty"
+    },
+    {
+        "@id": "http://www.w3.org/2004/02/skos/core#altLabel",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#AnnotationProperty"
+        ]
+    },
+    {
+        "@id": "http://www.w3.org/2004/02/skos/core#definition",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#AnnotationProperty"
+        ]
+    },
+    {
+        "@id": "http://www.w3.org/2004/02/skos/core#example",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#AnnotationProperty"
+        ]
+    },
+    {
+        "@id": "http://www.w3.org/2004/02/skos/core#prefLabel",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#AnnotationProperty"
+        ]
+    },
+    {
+        "@id": "http://www.w3.org/2004/02/skos/core#scopeNote",
+        "@type": [
+            "http://www.w3.org/2002/07/owl#AnnotationProperty"
+        ]
+    },
+    {
+        "@id": "https://creativecommons.org/licenses/by/4.0/"
+    }
+]
