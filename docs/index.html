@@ -23,7 +23,10 @@
   <h2>D3 Graph Viewer</h2>
   <textarea id="jsonInput"></textarea>
   <!-- Button: load file --> <!-- Button: load stock example -->
-  <button id="renderBtn">Render</button>
+   
+  <button id="loadBfoGraphDataBtn" onclick="loadJsonDataToTextArea()">Get BFO Graph</button>
+  <button id="renderBtn" onclick="renderGraphFromTextarea()">Render</button>
+
   <div id="graph-container">
     <svg id="graph"></svg>
     <div id="filterBox">
