@@ -20,8 +20,7 @@
 <body data-page-id="visual-lynx">
   <header id="siteHeader" class="sitehdr-root" role="banner" aria-label="Site header"></header>
 
-  <h2>D3 Graph Viewer</h2>
-  <textarea id="jsonInput"></textarea>
+  <textarea id="jsonInput" style="width: 100%;"></textarea>
   <!-- Button: load file --> <!-- Button: load stock example -->
    
   <button id="loadBfoGraphDataBtn" onclick="loadJsonDataToTextArea()">Get BFO Graph</button>
@@ -50,7 +49,7 @@
   <script src="./app/jsonld-visualizer-core.js"></script>
   <script src="./app/jsonld-visualizer-ui.js"></script>
   <script id="fetch-json-data">
-    function loadJsonDataToTextArea() {
+    async function loadJsonDataToTextArea() {
       // Get file that was loaded or the stock example
 
       // Get file that was loaded
@@ -61,14 +60,21 @@
 
       // Get the stock example
       fetch('./data/bfo-json-ld.json')
-          .then(response => response.text())
-          .then(content => {
-              document.getElementById('myTextArea').value = content;
-          })
-          .catch(error => {
-              console.error('Error fetching the file:', error);
-              document.getElementById('myTextArea').value = 'Error loading file from server.';
-          });
+        .then(response => {
+            if (!response.ok) {
+                // Throw an error if the response status is not OK (e.g., 404, 500)
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.text();
+        })
+        .then(content => {
+            document.getElementById('jsonInput').value = content;
+        })
+        .catch(error => {
+            console.error('Error fetching the file:', error);
+            // Display a more specific error message in the textarea
+            document.getElementById('jsonInput').value = `Error loading file from server: ${error.message}`;
+        });
     }
   </script>
 
