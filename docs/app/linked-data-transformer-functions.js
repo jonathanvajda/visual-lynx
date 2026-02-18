@@ -40,8 +40,7 @@ const extensionToMime = Object.freeze({
 /** Map MIME types to N3.js Parser/Writer format strings. */
 const mimeToN3Format = Object.freeze({
   'application/n-triples': 'N-Triples',
-  'text/turtle': 'Turtle',
-  'application/trig': 'TriG',
+  'application/trig': 'application/trig',
   'application/n-quads': 'N-Quads',
 });
 
@@ -65,6 +64,29 @@ const rdflibTermToRdfjs = (term) => {
     }
     default:
       throw new Error(`Unsupported rdflib termType: ${term.termType}`);
+  }
+};
+
+/** Normalize unknown thrown values (strings, Events, etc.) into a readable shape for logging. */
+const describeError = (err) => {
+  try {
+    if (err instanceof Error) {
+      return { name: err.name, message: err.message, stack: err.stack };
+    }
+    if (typeof err === 'string') {
+      return { name: 'Error', message: err, stack: '' };
+    }
+    if (err && typeof err === 'object') {
+      const name = err.name ? String(err.name) : 'Error';
+      const message = err.message ? String(err.message) : (() => {
+        try { return JSON.stringify(err); } catch { return String(err); }
+      })();
+      const stack = err.stack ? String(err.stack) : '';
+      return { name, message, stack };
+    }
+    return { name: 'Error', message: String(err), stack: '' };
+  } catch {
+    return { name: 'Error', message: 'Unprintable error', stack: '' };
   }
 };
 
@@ -100,25 +122,38 @@ const parseWithN3 = ({ text, n3Format, baseIRI, logger }) => {
     const store = new N3.Store();
     const prefixes = {};
 
-    // N3 parser can report prefixes via prefix callback. citeturn0search4
-    const parser = new N3.Parser({ baseIRI, format: n3Format });
+    const parser = new N3.Parser({
+      baseIRI,
+      ...(n3Format ? { format: n3Format } : {}),
+    });
 
-    parser.parse(
-      text,
-      {
-        onQuad: (quad) => {
-          if (quad) store.addQuad(quad);
-        },
-        onPrefix: (prefix, iri) => {
-          prefixes[prefix] = iri;
-        },
+    // Use callback signature for maximum compatibility across N3.js versions.
+    // (N3.Parser.parse supports callback with (error, quad, prefixes).) 
+    let parseError = null;
+    parser.parse(text, (error, quad, parsedPrefixes) => {
+      if (error) {
+        parseError = error;
+        return;
       }
-    );
+      if (quad) {
+        store.addQuad(quad);
+        return;
+      }
+      if (parsedPrefixes && typeof parsedPrefixes === 'object') {
+        Object.assign(prefixes, parsedPrefixes);
+      }
+    });
 
-    logger.info(`Parsed with N3 (${n3Format}). Quads:`, store.size);
+    if (parseError) throw parseError;
+
+    if (store.size === 0 && text.trim().length > 0) {
+      logger.warn('N3 parse produced 0 quads. If this file is not empty, check N3 version/format settings.');
+    }
+
+    logger.info(`Parsed with N3 (${n3Format || 'default'}). Quads:`, store.size);
     return { store, prefixes };
   } catch (error) {
-    logger.error('N3 parse failed:', error);
+    logger.error('N3 parse failed:', describeError(error));
     throw error;
   }
 };
@@ -131,7 +166,7 @@ const parseWithJsonLd = async ({ text, baseIRI, logger }) => {
 
     const doc = JSON.parse(text);
 
-    // jsonld.toRDF can emit N-Quads strings. citeturn0search9
+    // jsonld.toRDF can emit N-Quads strings. 
     const nquads = await jsonld.toRDF(doc, { format: 'application/n-quads' }).catch(async () => {
       // older docs sometimes use application/nquads
       return jsonld.toRDF(doc, { format: 'application/nquads' });
@@ -141,7 +176,7 @@ const parseWithJsonLd = async ({ text, baseIRI, logger }) => {
     logger.info('Parsed JSON-LD via N-Quads. Quads:', store.size);
     return { store, prefixes: {} };
   } catch (error) {
-    logger.error('JSON-LD parse failed:', error);
+    logger.error('JSON-LD parse failed:', describeError(error));
     throw error;
   }
 };
@@ -179,7 +214,7 @@ const parseWithRdflibXml = async ({ text, baseIRI, logger }) => {
     logger.info('Parsed RDF/XML via rdflib. Quads:', store.size);
     return { store, prefixes: {} };
   } catch (error) {
-    logger.error('RDF/XML parse failed:', error);
+    logger.error('RDF/XML parse failed:', describeError(error));
     throw error;
   }
 };
@@ -194,7 +229,7 @@ const parseToStore = async ({ text, inputMime, baseIRI, logger }) => {
   if (mime === 'application/rdf+xml') {
     return parseWithRdflibXml({ text, baseIRI, logger });
   }
-  if (mimeToN3Format[mime]) {
+  if (mime === 'text/turtle' || mimeToN3Format[mime]) {
     return parseWithN3({ text, n3Format: mimeToN3Format[mime], baseIRI, logger });
   }
 
@@ -208,10 +243,14 @@ const serializeWithN3 = async ({ store, outputMime, prefixes, logger }) => {
     const N3 = window.N3;
     if (!N3 || !N3.Writer) throw new Error('N3.Writer not available');
 
-    const format = mimeToN3Format[outputMime];
-    if (!format) throw new Error(`Unsupported N3 output MIME: ${outputMime}`);
+    const format = (outputMime === 'text/turtle') ? undefined : mimeToN3Format[outputMime];
 
-    const writer = new N3.Writer({ format });
+    // For Turtle output, omit `format` so Writer uses its default Turtle behavior. 
+    if (outputMime !== 'text/turtle' && !format) {
+      throw new Error(`Unsupported N3 output MIME: ${outputMime}`);
+    }
+
+    const writer = format ? new N3.Writer({ format }) : new N3.Writer();
 
     if ((outputMime === 'text/turtle' || outputMime === 'application/trig') && prefixes && Object.keys(prefixes).length) {
       writer.addPrefixes(prefixes);
@@ -224,10 +263,10 @@ const serializeWithN3 = async ({ store, outputMime, prefixes, logger }) => {
       writer.end((err, result) => (err ? reject(err) : resolve(result)));
     });
 
-    logger.info(`Serialized with N3 (${format}). Bytes:`, out.length);
+    logger.info(`Serialized with N3 (${format || 'default'}). Bytes:`, out.length);
     return out;
   } catch (error) {
-    logger.error('N3 serialization failed:', error);
+    logger.error('N3 serialization failed:', describeError(error));
     throw error;
   }
 };
@@ -252,7 +291,7 @@ const serializeToJsonLd = async ({ store, logger }) => {
     logger.info('Serialized to JSON-LD. Bytes:', out.length);
     return out;
   } catch (error) {
-    logger.error('JSON-LD serialization failed:', error);
+    logger.error('JSON-LD serialization failed:', describeError(error));
     throw error;
   }
 };
@@ -285,7 +324,7 @@ const serializeToRdfXml = async ({ store, baseIRI, logger }) => {
     logger.info('Serialized to RDF/XML. Bytes:', xml.length);
     return xml;
   } catch (error) {
-    logger.error('RDF/XML serialization failed:', error);
+    logger.error('RDF/XML serialization failed:', describeError(error));
     throw error;
   }
 };
@@ -300,7 +339,7 @@ const serializeFromStore = async ({ store, outputMime, prefixes, baseIRI, logger
   if (mime === 'application/rdf+xml') {
     return serializeToRdfXml({ store, baseIRI, logger });
   }
-  if (mimeToN3Format[mime]) {
+  if (mime === 'text/turtle' || mimeToN3Format[mime]) {
     return serializeWithN3({ store, outputMime: mime, prefixes, logger });
   }
 
@@ -487,7 +526,7 @@ const transformRDF = async ({ file, inputMime, outputMime, baseIRI, logger }) =>
     const out = await serializeFromStore({ store, outputMime, prefixes, baseIRI, logger });
     return out;
   } catch (error) {
-    logger.error('Transformation failed:', error);
+    logger.error('Transformation failed:', describeError(error));
     throw error;
   }
 };
