@@ -1,432 +1,589 @@
-/* linked-data-transformer-functions.v2.js
-   Hybrid transform pipeline:
-   - N3.js: Turtle / N-Triples / TriG parsing + serialization
-   - jsonld.js: JSON-LD parsing + serialization (bridge via N-Quads)
-   - rdflib.js: RDF/XML + OWL/XML parsing + serialization (and RDF/XML output for non-XML inputs)
-*/
 
-/* ----------------------------- Logging ----------------------------- */
+/* linked-data-transformer-functions.hybrid.js
+ * Hybrid RDF transformer (client-side):
+ * - N3.js for Turtle / N-Triples / TriG (+ N-Quads bridging)
+ * - jsonld.js for JSON-LD (via N-Quads bridging)
+ * - rdflib.js ONLY for RDF/XML + OWL/XML parsing/serialization
+ *
+ * This file assumes the HTML uses:
+ *   #fileInput, #transformBtn, #downloadBtn, #outputArea
+ *   input radios: name="input"
+ *   output radios: name="output"
+ */
 
-/** Create a simple logger interface so pure-ish core functions can be tested with a no-op logger. */
-const makeLogger = (overrides = {}) => {
-  const noop = () => {};
-  return {
-    info: overrides.info || console.info.bind(console),
-    warn: overrides.warn || console.warn.bind(console),
-    error: overrides.error || console.error.bind(console),
-    debug: overrides.debug || (console.debug ? console.debug.bind(console) : noop)
-  };
-};
-
-/* ----------------------------- Constants ----------------------------- */
-
-const DEFAULT_BASE_IRI = 'http://example.org/';
-
-const MIME = {
-  NTRIPLES: 'application/n-triples',
-  TURTLE: 'text/turtle',
-  TRIG: 'application/trig',
-  JSONLD: 'application/ld+json',
-  RDFXML: 'application/rdf+xml',
-  OWLXML: 'application/owl+xml',
-  MERMAID: 'text/x-mermaid',
-  D3JSON: 'application/json-d3'
-};
-
-const N3_FORMAT = {
-  [MIME.NTRIPLES]: 'N-Triples',
-  [MIME.TURTLE]: 'Turtle',
-  [MIME.TRIG]: 'TriG'
-};
-
-const EXT_BY_MIME = {
-  [MIME.NTRIPLES]: 'nt',
-  [MIME.TURTLE]: 'ttl',
-  [MIME.TRIG]: 'trig',
-  [MIME.JSONLD]: 'jsonld',
-  [MIME.RDFXML]: 'rdf',
-  [MIME.OWLXML]: 'owl',
-  [MIME.MERMAID]: 'mmd',
-  [MIME.D3JSON]: 'json'
-};
-
-/* ----------------------------- Utilities ----------------------------- */
-
-/** Normalize OWL/XML to RDF/XML for rdflib.js parsing/serialization. */
-const normalizeXmlMime = (mimeType) => (mimeType === MIME.OWLXML ? MIME.RDFXML : mimeType);
-
-/** Extract the selected value for a radio group (throws if none selected). */
-const getSelectedRadioValue = (groupName) => {
-  const selected = document.querySelector(`input[name="${groupName}"]:checked`);
-  if (!selected) throw new Error(`No ${groupName} selected`);
-  return selected.value;
-};
-
-/** Read a File as text. */
-const readFileAsText = (file) => new Promise((resolve, reject) => {
-  const reader = new FileReader();
-  reader.onload = () => resolve(String(reader.result || ''));
-  reader.onerror = () => reject(reader.error || new Error('File read error'));
-  reader.readAsText(file);
+/* ------------------------- Logging helpers ------------------------- */
+/** Create a structured logger (info/warn/error). */
+const makeLogger = (scope = 'ldt') => ({
+  info: (...args) => console.info(`[${scope}]`, ...args),
+  warn: (...args) => console.warn(`[${scope}]`, ...args),
+  error: (...args) => console.error(`[${scope}]`, ...args),
 });
 
-/** Create and trigger a download of the given string content. */
-const downloadContent = (filename, content, mimeType = 'text/plain') => {
-  const blob = new Blob([content], { type: mimeType });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = filename;
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-  URL.revokeObjectURL(url);
-};
+/* ------------------------- Format registry ------------------------- */
+/** Normalize OWL/XML to RDF/XML for parsing/serialization. */
+const normalizeMimeType = (mimeType) =>
+  mimeType === 'application/owl+xml' ? 'application/rdf+xml' : mimeType;
 
-/** Build a safe output filename from input filename + output mime. */
-const buildOutputFilename = (inputFileName, outputMime) => {
-  const base = (inputFileName || 'output').replace(/\.[^.]+$/, '');
-  const ext = EXT_BY_MIME[outputMime] || 'txt';
-  return `${base}.${ext}`;
-};
+/** Map file extensions to MIME types for auto-selection. */
+const extensionToMime = Object.freeze({
+  '.nt': 'application/n-triples',
+  '.ttl': 'text/turtle',
+  '.turtle': 'text/turtle',
+  '.trig': 'application/trig',
+  '.jsonld': 'application/ld+json',
+  '.json-ld': 'application/ld+json',
+  '.rdf': 'application/rdf+xml',
+  '.owl': 'application/owl+xml',
+  '.xml': 'application/rdf+xml', // best-effort; RDF/XML or OWL/XML
+});
 
-/* ----------------------------- Core graph model ----------------------------- */
+/** Map MIME types to N3.js Parser/Writer format strings. */
+const mimeToN3Format = Object.freeze({
+  'application/n-triples': 'N-Triples',
+  'text/turtle': 'Turtle',
+  'application/trig': 'TriG',
+  'application/n-quads': 'N-Quads',
+});
 
-/** 
- * Parse Turtle / N-Triples / TriG with N3.js into { store, prefixes }.
- * Prefixes are preserved for Turtle/TriG where present.
- */
-const parseWithN3 = (text, mimeType, logger = makeLogger()) => {
-  try {
-    const format = N3_FORMAT[mimeType];
-    if (!format) throw new Error(`N3 parser does not support mime: ${mimeType}`);
+/* ------------------------- RDF term conversions ------------------------- */
+/** Convert an rdflib.js term to an RDFJS term using N3 DataFactory. */
+const rdflibTermToRdfjs = (term) => {
+  const DF = (window.N3 && window.N3.DataFactory) ? window.N3.DataFactory : null;
+  if (!DF) throw new Error('N3.DataFactory not found (is n3 loaded?)');
 
-    logger.info(`N3 parsing as ${format}`);
-    const parser = new N3.Parser({ format });
-    const store = new N3.Store();
-    let prefixes = {};
+  if (!term || !term.termType) throw new Error('Invalid rdflib term');
 
-    parser.parse(text, (error, quad, pfx) => {
-      if (error) throw error;
-      if (quad) store.addQuad(quad);
-      if (!quad && pfx) prefixes = pfx;
-    });
-
-    return { kind: 'n3', store, prefixes };
-  } catch (err) {
-    logger.error('N3 parse failed', err);
-    throw new Error('RDF parsing error (N3)');
+  switch (term.termType) {
+    case 'NamedNode':
+      return DF.namedNode(term.value);
+    case 'BlankNode':
+      return DF.blankNode(term.value);
+    case 'Literal': {
+      const dt = term.datatype && term.datatype.value ? term.datatype.value : 'http://www.w3.org/2001/XMLSchema#string';
+      const lang = term.language || '';
+      return lang ? DF.literal(term.value, lang) : DF.literal(term.value, DF.namedNode(dt));
+    }
+    default:
+      throw new Error(`Unsupported rdflib termType: ${term.termType}`);
   }
 };
 
-/**
- * Parse JSON-LD with jsonld.js by converting to N-Quads then parsing with N3.
- * This avoids rdflib.js JSON-LD chunk-loading issues.
- */
-const parseJsonLdToN3 = async (text, logger = makeLogger()) => {
-  try {
-    logger.info('Parsing JSON-LD via jsonld.toRDF → N-Quads');
-    const obj = JSON.parse(text);
+/** Convert an RDFJS term to an rdflib.js term. */
+const rdfjsTermToRdflib = (term) => {
+  const $rdf = window.$rdf;
+  if (!$rdf) throw new Error('$rdf not found (is rdflib loaded?)');
 
-    // NOTE: JSON-LD may try to fetch remote @context unless you supply a custom documentLoader.
-    // For fully offline use, provide a no-network documentLoader and ship contexts locally.
-    const nquads = await jsonld.toRDF(obj, { format: 'application/n-quads' });
-    const parser = new N3.Parser({ format: 'N-Quads' });
-    const store = new N3.Store();
+  if (!term || !term.termType) throw new Error('Invalid RDFJS term');
 
-    parser.parse(nquads, (error, quad) => {
-      if (error) throw error;
-      if (quad) store.addQuad(quad);
-    });
-
-    return { kind: 'n3', store, prefixes: {} };
-  } catch (err) {
-    logger.error('JSON-LD parse failed', err);
-    throw new Error('RDF parsing error (JSON-LD)');
-  }
-};
-
-/**
- * Parse RDF/XML (or OWL/XML normalized to RDF/XML) with rdflib.js.
- */
-const parseWithRdflibXml = (text, mimeType, baseIRI = DEFAULT_BASE_IRI, logger = makeLogger()) => {
-  try {
-    const norm = normalizeXmlMime(mimeType);
-    if (norm !== MIME.RDFXML) throw new Error(`rdflib XML parser only supports RDF/XML, got: ${mimeType}`);
-
-    logger.info('rdflib parsing as RDF/XML');
-    const store = $rdf.graph();
-    $rdf.parse(text, store, baseIRI, MIME.RDFXML);
-    return { kind: 'rdflib', store };
-  } catch (err) {
-    logger.error('rdflib RDF/XML parse failed', err);
-    throw new Error('RDF parsing error (RDF/XML)');
-  }
-};
-
-/**
- * Convert an N3.Store into an rdflib graph. Named graphs are flattened (RDF/XML has no named graphs).
- */
-const n3StoreToRdflibGraph = (n3Store, baseIRI = DEFAULT_BASE_IRI, logger = makeLogger()) => {
-  try {
-    const g = $rdf.graph();
-    const quads = n3Store.getQuads(null, null, null, null);
-
-    quads.forEach((q) => {
-      const s = termToRdflib(q.subject);
-      const p = termToRdflib(q.predicate);
-      const o = termToRdflib(q.object);
-
-      // Flatten graph if present
-      if (q.graph && q.graph.termType && q.graph.termType !== 'DefaultGraph') {
-        logger.warn('Flattening named graph statement for RDF/XML output:', q.graph.value);
-      }
-
-      g.add(s, p, o);
-    });
-
-    return g;
-  } catch (err) {
-    logger.error('Failed converting N3 store to rdflib graph', err);
-    throw new Error('Internal conversion error (N3→rdflib)');
-  }
-};
-
-/** Convert an RDFJS term (from N3) to an rdflib term. */
-const termToRdflib = (term) => {
   switch (term.termType) {
     case 'NamedNode':
       return $rdf.sym(term.value);
     case 'BlankNode':
-      // Keep the same identifier when possible
       return $rdf.blankNode(term.value);
     case 'Literal': {
       const lang = term.language || '';
-      const dt = term.datatype && term.datatype.value ? $rdf.sym(term.datatype.value) : undefined;
-      // rdflib.literal(value, lang, datatype)
-      return $rdf.literal(term.value, lang, dt);
+      const dt = term.datatype && term.datatype.value ? term.datatype.value : 'http://www.w3.org/2001/XMLSchema#string';
+      return lang ? $rdf.literal(term.value, lang) : $rdf.literal(term.value, $rdf.sym(dt));
     }
     default:
-      // DefaultGraph or unknown
-      return $rdf.sym(term.value || DEFAULT_BASE_IRI);
+      throw new Error(`Unsupported RDFJS termType: ${term.termType}`);
   }
 };
 
-/* ----------------------------- Serialization ----------------------------- */
-
-/** Serialize an N3.Store to Turtle / N-Triples / TriG. */
-const serializeWithN3 = (n3Store, outMime, prefixes = {}, logger = makeLogger()) => {
+/* ------------------------- Parsing ------------------------- */
+/** Parse Turtle/N-Triples/TriG/N-Quads with N3.js into a Store (and capture prefixes). */
+const parseWithN3 = ({ text, n3Format, baseIRI, logger }) => {
   try {
-    const format = N3_FORMAT[outMime];
-    if (!format) throw new Error(`N3 writer does not support mime: ${outMime}`);
+    const N3 = window.N3;
+    if (!N3 || !N3.Parser || !N3.Store) throw new Error('N3 library not available');
 
-    logger.info(`N3 serializing as ${format}`);
+    const store = new N3.Store();
+    const prefixes = {};
 
-    const writer = new N3.Writer({ format, prefixes });
-    const quads = n3Store.getQuads(null, null, null, null);
+    // N3 parser can report prefixes via prefix callback. citeturn0search4
+    const parser = new N3.Parser({ baseIRI, format: n3Format });
+
+    parser.parse(
+      text,
+      {
+        onQuad: (quad) => {
+          if (quad) store.addQuad(quad);
+        },
+        onPrefix: (prefix, iri) => {
+          prefixes[prefix] = iri;
+        },
+      }
+    );
+
+    logger.info(`Parsed with N3 (${n3Format}). Quads:`, store.size);
+    return { store, prefixes };
+  } catch (error) {
+    logger.error('N3 parse failed:', error);
+    throw error;
+  }
+};
+
+/** Parse JSON-LD with jsonld.js by converting to N-Quads, then parsing N-Quads with N3.js. */
+const parseWithJsonLd = async ({ text, baseIRI, logger }) => {
+  try {
+    const jsonld = window.jsonld;
+    if (!jsonld) throw new Error('jsonld library not available');
+
+    const doc = JSON.parse(text);
+
+    // jsonld.toRDF can emit N-Quads strings. citeturn0search9
+    const nquads = await jsonld.toRDF(doc, { format: 'application/n-quads' }).catch(async () => {
+      // older docs sometimes use application/nquads
+      return jsonld.toRDF(doc, { format: 'application/nquads' });
+    });
+
+    const { store } = parseWithN3({ text: nquads, n3Format: 'N-Quads', baseIRI, logger });
+    logger.info('Parsed JSON-LD via N-Quads. Quads:', store.size);
+    return { store, prefixes: {} };
+  } catch (error) {
+    logger.error('JSON-LD parse failed:', error);
+    throw error;
+  }
+};
+
+/** Parse RDF/XML (or OWL/XML treated as RDF/XML) with rdflib.js, then convert to an N3 Store. */
+const parseWithRdflibXml = async ({ text, baseIRI, logger }) => {
+  try {
+    const $rdf = window.$rdf;
+    const N3 = window.N3;
+    if (!$rdf) throw new Error('rdflib ($rdf) not available');
+    if (!N3 || !N3.Store || !N3.DataFactory) throw new Error('N3 library not available');
+
+    const graph = $rdf.graph();
+
+    // rdflib.parse is callback-based; wrap in Promise for consistent flow.
+    await new Promise((resolve, reject) => {
+      try {
+        $rdf.parse(text, graph, baseIRI, 'application/rdf+xml', (err) => {
+          if (err) reject(err);
+          else resolve(true);
+        });
+      } catch (e) {
+        reject(e);
+      }
+    });
+
+    const store = new N3.Store();
+    graph.statements.forEach((st) => {
+      const s = rdflibTermToRdfjs(st.subject);
+      const p = rdflibTermToRdfjs(st.predicate);
+      const o = rdflibTermToRdfjs(st.object);
+      store.addQuad(N3.DataFactory.quad(s, p, o));
+    });
+
+    logger.info('Parsed RDF/XML via rdflib. Quads:', store.size);
+    return { store, prefixes: {} };
+  } catch (error) {
+    logger.error('RDF/XML parse failed:', error);
+    throw error;
+  }
+};
+
+/** Parse input text into a canonical N3 Store + captured prefixes. */
+const parseToStore = async ({ text, inputMime, baseIRI, logger }) => {
+  const mime = normalizeMimeType(inputMime);
+
+  if (mime === 'application/ld+json') {
+    return parseWithJsonLd({ text, baseIRI, logger });
+  }
+  if (mime === 'application/rdf+xml') {
+    return parseWithRdflibXml({ text, baseIRI, logger });
+  }
+  if (mimeToN3Format[mime]) {
+    return parseWithN3({ text, n3Format: mimeToN3Format[mime], baseIRI, logger });
+  }
+
+  throw new Error(`Unsupported input MIME: ${inputMime}`);
+};
+
+/* ------------------------- Serialization ------------------------- */
+/** Serialize an N3 Store to Turtle/N-Triples/TriG/N-Quads. */
+const serializeWithN3 = async ({ store, outputMime, prefixes, logger }) => {
+  try {
+    const N3 = window.N3;
+    if (!N3 || !N3.Writer) throw new Error('N3.Writer not available');
+
+    const format = mimeToN3Format[outputMime];
+    if (!format) throw new Error(`Unsupported N3 output MIME: ${outputMime}`);
+
+    const writer = new N3.Writer({ format });
+
+    if ((outputMime === 'text/turtle' || outputMime === 'application/trig') && prefixes && Object.keys(prefixes).length) {
+      writer.addPrefixes(prefixes);
+    }
+
+    const quads = store.getQuads(null, null, null, null);
     writer.addQuads(quads);
 
-    return new Promise((resolve, reject) => {
+    const out = await new Promise((resolve, reject) => {
       writer.end((err, result) => (err ? reject(err) : resolve(result)));
     });
-  } catch (err) {
-    logger.error('N3 serialization failed', err);
-    throw new Error('RDF serialization error (N3)');
+
+    logger.info(`Serialized with N3 (${format}). Bytes:`, out.length);
+    return out;
+  } catch (error) {
+    logger.error('N3 serialization failed:', error);
+    throw error;
   }
 };
 
-/** Serialize an N3.Store to N-Quads string (for JSON-LD bridge). */
-const serializeStoreToNQuads = (n3Store) => new Promise((resolve, reject) => {
-  const writer = new N3.Writer({ format: 'N-Quads' });
-  writer.addQuads(n3Store.getQuads(null, null, null, null));
-  writer.end((err, result) => (err ? reject(err) : resolve(result)));
-});
-
-/** Serialize to JSON-LD using jsonld.fromRDF via N-Quads bridge. */
-const serializeToJsonLd = async (n3Store, logger = makeLogger()) => {
+/** Serialize an N3 Store to JSON-LD via N-Quads using jsonld.js. */
+const serializeToJsonLd = async ({ store, logger }) => {
   try {
-    logger.info('Serializing to JSON-LD via N-Quads → jsonld.fromRDF');
-    const nquads = await serializeStoreToNQuads(n3Store);
-    const jsonObj = await jsonld.fromRDF(nquads, { format: 'application/n-quads' });
-    return JSON.stringify(jsonObj, null, 2);
-  } catch (err) {
-    logger.error('JSON-LD serialization failed', err);
-    throw new Error('RDF serialization error (JSON-LD)');
-  }
-};
+    const jsonld = window.jsonld;
+    const N3 = window.N3;
+    if (!jsonld) throw new Error('jsonld library not available');
+    if (!N3 || !N3.Writer) throw new Error('N3.Writer not available');
 
-/** Serialize to RDF/XML using rdflib.js. Accepts either rdflib store or N3 store (converted). */
-const serializeToRdfXml = (graphOrStore, baseIRI = DEFAULT_BASE_IRI, logger = makeLogger()) => {
-  try {
-    logger.info('Serializing to RDF/XML via rdflib.serialize');
-    // rdflib serialize is callback-based; wrap in Promise
-    return new Promise((resolve, reject) => {
-      $rdf.serialize(
-        null,
-        graphOrStore,
-        baseIRI,
-        MIME.RDFXML,
-        (err, result) => (err ? reject(err) : resolve(String(result || '')))
-      );
+    // First write N-Quads
+    const nquads = await serializeWithN3({ store, outputMime: 'application/n-quads', prefixes: {}, logger });
+
+    // Then jsonld.fromRDF
+    const doc = await jsonld.fromRDF(nquads, { format: 'application/n-quads' }).catch(async () => {
+      return jsonld.fromRDF(nquads, { format: 'application/nquads' });
     });
-  } catch (err) {
-    logger.error('RDF/XML serialization failed', err);
-    throw new Error('RDF serialization error (RDF/XML)');
+
+    const out = JSON.stringify(doc, null, 2);
+    logger.info('Serialized to JSON-LD. Bytes:', out.length);
+    return out;
+  } catch (error) {
+    logger.error('JSON-LD serialization failed:', error);
+    throw error;
   }
 };
 
-/* ----------------------------- Non-RDF Outputs ----------------------------- */
+/** Serialize an N3 Store to RDF/XML using rdflib.js (convert quads into rdflib graph first). */
+const serializeToRdfXml = async ({ store, baseIRI, logger }) => {
+  try {
+    const $rdf = window.$rdf;
+    if (!$rdf) throw new Error('rdflib ($rdf) not available');
 
-/** Convert an N3.Store to Mermaid flowchart syntax. */
-const rdfToMermaidFromN3 = (n3Store) => {
-  const esc = (s) => String(s).replace(/"/g, '\"');
-  let out = 'graph TD\n';
-  const quads = n3Store.getQuads(null, null, null, null);
+    const graph = $rdf.graph();
+    store.getQuads(null, null, null, null).forEach((q) => {
+      const s = rdfjsTermToRdflib(q.subject);
+      const p = rdfjsTermToRdflib(q.predicate);
+      const o = rdfjsTermToRdflib(q.object);
+      graph.add(s, p, o);
+    });
 
-  quads.forEach((q) => {
-    const s = esc(q.subject.value);
-    const p = esc(q.predicate.value);
-    const o = esc(q.object.value);
-    out += `  "${s}" -- "${p}" --> "${o}"\n`;
-  });
+    const xml = await new Promise((resolve, reject) => {
+      try {
+        $rdf.serialize(null, graph, baseIRI, 'application/rdf+xml', (err, str) => {
+          if (err) reject(err);
+          else resolve(str);
+        });
+      } catch (e) {
+        reject(e);
+      }
+    });
 
-  return out;
+    logger.info('Serialized to RDF/XML. Bytes:', xml.length);
+    return xml;
+  } catch (error) {
+    logger.error('RDF/XML serialization failed:', error);
+    throw error;
+  }
 };
 
-/** Convert an N3.Store to a D3 node-link JSON object string. */
-const rdfToD3JsonFromN3 = (n3Store) => {
-  const nodesSet = new Set();
+/** Serialize store to the requested output MIME. */
+const serializeFromStore = async ({ store, outputMime, prefixes, baseIRI, logger }) => {
+  const mime = normalizeMimeType(outputMime);
+
+  if (mime === 'application/ld+json') {
+    return serializeToJsonLd({ store, logger });
+  }
+  if (mime === 'application/rdf+xml') {
+    return serializeToRdfXml({ store, baseIRI, logger });
+  }
+  if (mimeToN3Format[mime]) {
+    return serializeWithN3({ store, outputMime: mime, prefixes, logger });
+  }
+
+  throw new Error(`Unsupported output MIME: ${outputMime}`);
+};
+
+/* ------------------------- Mermaid / D3 (optional) ------------------------- */
+/** Convert an N3 Store to a simple D3 node-link JSON structure. */
+const storeToD3 = ({ store }) => {
+  const nodesById = new Map();
   const links = [];
-  const quads = n3Store.getQuads(null, null, null, null);
 
-  quads.forEach((q) => {
-    nodesSet.add(q.subject.value);
-    nodesSet.add(q.object.value);
-    links.push({ source: q.subject.value, target: q.object.value, predicate: q.predicate.value });
+  const termId = (t) => `${t.termType}:${t.value}`;
+
+  store.getQuads(null, null, null, null).forEach((q) => {
+    const sId = termId(q.subject);
+    const oId = termId(q.object);
+    if (!nodesById.has(sId)) nodesById.set(sId, { id: sId, value: q.subject.value, termType: q.subject.termType });
+    if (!nodesById.has(oId)) nodesById.set(oId, { id: oId, value: q.object.value, termType: q.object.termType });
+    links.push({ source: sId, target: oId, predicate: q.predicate.value });
   });
 
-  const nodes = Array.from(nodesSet).map((id) => ({ id }));
-  return JSON.stringify({ nodes, links }, null, 2);
+  return { nodes: Array.from(nodesById.values()), links };
 };
 
-/* ----------------------------- Orchestration ----------------------------- */
+/** Convert an N3 Store to a basic Mermaid flowchart (very simple). */
+const storeToMermaid = ({ store }) => {
+  const esc = (s) => s.replace(/"/g, '\\"');
+  const termLabel = (t) => {
+    if (t.termType === 'NamedNode') return esc(t.value);
+    if (t.termType === 'BlankNode') return `_:${esc(t.value)}`;
+    return `"${esc(t.value)}"`;
+  };
 
+  const lines = ['graph TD'];
+  let i = 0;
+
+  store.getQuads(null, null, null, null).forEach((q) => {
+    const s = `S${i}`;
+    const o = `O${i}`;
+    lines.push(`${s}["${termLabel(q.subject)}"] -->|${esc(q.predicate.value)}| ${o}["${termLabel(q.object)}"]`);
+    i += 1;
+  });
+
+  return lines.join('\n');
+};
+
+/* ------------------------- UI utilities ------------------------- */
+/** Read a File object as text (impure). */
+const readFileAsText = (file) =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onerror = () => reject(new Error('File read error'));
+    reader.onload = () => resolve(String(reader.result || ''));
+    reader.readAsText(file);
+  });
+
+/** Get selected radio value for a group (impure). */
+const getSelectedRadioValue = (groupName) => {
+  const selected = document.querySelector(`input[name="${groupName}"]:checked`);
+  return selected ? selected.value : null;
+};
+
+/** Set selected radio value for a group (impure). */
+const setSelectedRadioValue = (groupName, value) => {
+  const radio = document.querySelector(`input[name="${groupName}"][value="${value}"]`);
+  if (radio) radio.checked = true;
+};
+
+/** Auto-guess input mime type from filename, then select matching radio. */
+const guessInputFromFilename = ({ filename }) => {
+  const lower = (filename || '').toLowerCase();
+  const match = Object.entries(extensionToMime).find(([ext]) => lower.endsWith(ext));
+  return match ? match[1] : null;
+};
+
+/** Update enabled/disabled output options based on input MIME. */
+const updateOutputOptions = ({ inputMime, logger }) => {
+  const supported = supportedConversions[normalizeMimeType(inputMime)] || [];
+  const outputs = document.querySelectorAll('input[name="output"]');
+  outputs.forEach((o) => {
+    const isAllowed = supported.includes(normalizeMimeType(o.value));
+    o.disabled = !isAllowed;
+    o.parentElement.style.opacity = isAllowed ? '1' : '0.45';
+  });
+
+  // If the currently selected output is now disabled, pick first allowed.
+  const current = getSelectedRadioValue('output');
+  if (!current || !supported.includes(normalizeMimeType(current))) {
+    if (supported.length) setSelectedRadioValue('output', supported[0]);
+  }
+
+  logger.info('Updated output options for input:', inputMime, 'Allowed:', supported);
+};
+
+/** Create a downloadable file (impure). */
+const downloadContent = ({ content, filename, mimeType }) => {
+  const blob = new Blob([content], { type: mimeType || 'text/plain' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(url);
+};
+
+/* ------------------------- Capability matrix ------------------------- */
 /**
- * Transform text from inputMime to outputMime.
- * Returns { outputText, outMimeForDownload }.
+ * Supported conversions given the hybrid stack.
+ * - RDF/XML (and OWL/XML) can be parsed by rdflib then serialized to N3 formats, JSON-LD, RDF/XML.
+ * - Turtle/N-Triples/TriG parsed by N3 then serialized widely.
+ * - JSON-LD parsed by jsonld then serialized widely.
  */
-const transformText = async (text, inputMime, outputMime, baseIRI = DEFAULT_BASE_IRI, logger = makeLogger()) => {
-  // Parse into internal representation:
-  // - N3 store for Turtle/N-Triples/TriG/JSON-LD
-  // - rdflib graph for RDF/XML input (also convertible to N3 if you later add that)
-  if (!text.trim()) throw new Error('Input file is empty');
+const supportedConversions = Object.freeze({
+  'application/n-triples': [
+    'application/n-triples',
+    'text/turtle',
+    'application/trig',
+    'application/ld+json',
+    'application/rdf+xml',
+    'text/mermaid',
+    'application/d3+json',
+  ],
+  'text/turtle': [
+    'application/n-triples',
+    'text/turtle',
+    'application/trig',
+    'application/ld+json',
+    'application/rdf+xml',
+    'text/mermaid',
+    'application/d3+json',
+  ],
+  'application/trig': [
+    'application/n-triples',
+    'text/turtle',
+    'application/trig',
+    'application/ld+json',
+    'application/rdf+xml',
+    'text/mermaid',
+    'application/d3+json',
+  ],
+  'application/ld+json': [
+    'application/n-triples',
+    'text/turtle',
+    'application/trig',
+    'application/ld+json',
+    'application/rdf+xml',
+    'text/mermaid',
+    'application/d3+json',
+  ],
+  'application/rdf+xml': [
+    'application/n-triples',
+    'text/turtle',
+    'application/trig',
+    'application/ld+json',
+    'application/rdf+xml',
+    'text/mermaid',
+    'application/d3+json',
+  ],
+});
+/* ------------------------- Main orchestrator ------------------------- */
+/** Orchestrate: read → parse → serialize → show output. */
+const transformRDF = async ({ file, inputMime, outputMime, baseIRI, logger }) => {
+  try {
+    if (!file) throw new Error('No file selected');
+    if (!inputMime) throw new Error('No input format selected');
+    if (!outputMime) throw new Error('No output format selected');
 
-  // Parse
-  let parsed = null;
+    logger.info('Reading file:', file.name);
+    const text = await readFileAsText(file);
 
-  if (inputMime === MIME.JSONLD) {
-    parsed = await parseJsonLdToN3(text, logger);
-  } else if (inputMime === MIME.RDFXML || inputMime === MIME.OWLXML) {
-    parsed = parseWithRdflibXml(text, inputMime, baseIRI, logger);
-  } else {
-    parsed = parseWithN3(text, inputMime, logger);
+    logger.info('Parsing as:', inputMime);
+    const { store, prefixes } = await parseToStore({ text, inputMime, baseIRI, logger });
+
+    // Mermaid/D3 as special outputs (optional)
+    if (outputMime === 'text/mermaid') {
+      return storeToMermaid({ store });
+    }
+    if (outputMime === 'application/d3+json') {
+      return JSON.stringify(storeToD3({ store }), null, 2);
+    }
+
+    logger.info('Serializing to:', outputMime);
+    const out = await serializeFromStore({ store, outputMime, prefixes, baseIRI, logger });
+    return out;
+  } catch (error) {
+    logger.error('Transformation failed:', error);
+    throw error;
   }
-
-  // Output routing
-  if (outputMime === MIME.MERMAID) {
-    if (parsed.kind !== 'n3') throw new Error('Mermaid output currently supported only for Turtle/N-Triples/TriG/JSON-LD inputs');
-    return { outputText: rdfToMermaidFromN3(parsed.store), outMimeForDownload: 'text/plain' };
-  }
-
-  if (outputMime === MIME.D3JSON) {
-    if (parsed.kind !== 'n3') throw new Error('D3 JSON output currently supported only for Turtle/N-Triples/TriG/JSON-LD inputs');
-    return { outputText: rdfToD3JsonFromN3(parsed.store), outMimeForDownload: 'application/json' };
-  }
-
-  if (outputMime === MIME.JSONLD) {
-    if (parsed.kind !== 'n3') throw new Error('JSON-LD output currently supported only for Turtle/N-Triples/TriG/JSON-LD inputs');
-    return { outputText: await serializeToJsonLd(parsed.store, logger), outMimeForDownload: 'application/ld+json' };
-  }
-
-  if (outputMime === MIME.RDFXML || outputMime === MIME.OWLXML) {
-    // Emit RDF/XML via rdflib. If we parsed with N3, convert N3 store → rdflib graph first.
-    const graph = parsed.kind === 'rdflib' ? parsed.store : n3StoreToRdflibGraph(parsed.store, baseIRI, logger);
-    const xml = await serializeToRdfXml(graph, baseIRI, logger);
-    return { outputText: xml, outMimeForDownload: 'application/rdf+xml' };
-  }
-
-  // N3 writer outputs
-  if (outputMime === MIME.NTRIPLES || outputMime === MIME.TURTLE || outputMime === MIME.TRIG) {
-    if (parsed.kind !== 'n3') throw new Error('Turtle/N-Triples/TriG output currently supported only for Turtle/N-Triples/TriG/JSON-LD inputs');
-    const out = await serializeWithN3(parsed.store, outputMime, parsed.prefixes || {}, logger);
-    return { outputText: out, outMimeForDownload: outputMime };
-  }
-
-  throw new Error(`Unsupported output format: ${outputMime}`);
 };
 
-/* ----------------------------- UI wiring ----------------------------- */
-
-const setStatus = (el, kind, msg) => {
-  el.classList.remove('ldt-status--ok', 'ldt-status--warn', 'ldt-status--err');
-  if (kind === 'ok') el.classList.add('ldt-status--ok');
-  if (kind === 'warn') el.classList.add('ldt-status--warn');
-  if (kind === 'err') el.classList.add('ldt-status--err');
-  el.textContent = msg || '';
-};
-
+/* ------------------------- Setup ------------------------- */
+/** Bind UI events and initialize defaults (impure). */
 const setupEventHandlers = () => {
-  const logger = makeLogger();
+  const logger = makeLogger('ldt');
   const fileInput = document.getElementById('fileInput');
   const transformBtn = document.getElementById('transformBtn');
   const downloadBtn = document.getElementById('downloadBtn');
   const outputArea = document.getElementById('outputArea');
-  const statusEl = document.getElementById('status');
+
+  if (!fileInput || !transformBtn || !downloadBtn || !outputArea) {
+    logger.error('Missing expected DOM elements. Check IDs: fileInput/transformBtn/downloadBtn/outputArea');
+    return;
+  }
+
+  // Library presence checks
+  logger.info('Libraries present:', {
+    N3: !!window.N3,
+    jsonld: !!window.jsonld,
+    rdflib: !!window.$rdf,
+  });
 
   let lastOutput = '';
   let lastOutputMime = 'text/plain';
-  let lastInputName = 'output';
 
-  transformBtn.onclick = async () => {
+  // Input radio change -> update outputs
+  document.querySelectorAll('input[name="input"]').forEach((radio) => {
+    radio.addEventListener('change', () => updateOutputOptions({ inputMime: radio.value, logger }));
+  });
+
+  // File selection -> auto-guess input format + update outputs
+  fileInput.addEventListener('change', () => {
+    const file = fileInput.files && fileInput.files[0];
+    if (!file) return;
+
+    const guessed = guessInputFromFilename({ filename: file.name });
+    if (guessed) {
+      setSelectedRadioValue('input', guessed);
+      updateOutputOptions({ inputMime: guessed, logger });
+      logger.info('Auto-selected input format:', guessed);
+    } else {
+      logger.warn('Could not guess input format from extension:', file.name);
+    }
+  });
+
+  // Transform
+  transformBtn.addEventListener('click', async () => {
     try {
-      setStatus(statusEl, 'warn', 'Working…');
       const file = fileInput.files && fileInput.files[0];
-      if (!file) throw new Error('Please choose a file first.');
-
       const inputMime = getSelectedRadioValue('input');
       const outputMime = getSelectedRadioValue('output');
+      const baseIRI = 'http://example.org/';
 
-      lastInputName = file.name || 'output';
-      logger.info('Reading file:', lastInputName);
-
-      const text = await readFileAsText(file);
-      const { outputText, outMimeForDownload } = await transformText(text, inputMime, outputMime, DEFAULT_BASE_IRI, logger);
-
-      lastOutput = outputText;
-      lastOutputMime = outMimeForDownload;
-
-      outputArea.value = outputText;
-      setStatus(statusEl, 'ok', 'Transformation successful.');
-    } catch (err) {
-      logger.error('Transform failed:', err);
+      const out = await transformRDF({ file, inputMime, outputMime, baseIRI, logger });
+      outputArea.value = out;
+      lastOutput = out;
+      lastOutputMime = outputMime;
+      logger.info('Transformation successful.');
+    } catch (e) {
       outputArea.value = '';
-      lastOutput = '';
-      setStatus(statusEl, 'err', (err && err.message) ? err.message : 'Transformation failed.');
+      logger.error('Transform error:', e);
+      alert(`Transformation failed: ${e && e.message ? e.message : String(e)}`);
     }
-  };
+  });
 
-  downloadBtn.onclick = () => {
+  // Download
+  downloadBtn.addEventListener('click', () => {
     try {
-      if (!lastOutput) throw new Error('Nothing to download yet. Run Transform first.');
-      const outputMime = getSelectedRadioValue('output');
-      const filename = buildOutputFilename(lastInputName, outputMime);
-      downloadContent(filename, lastOutput, lastOutputMime);
-      setStatus(statusEl, 'ok', `Downloaded ${filename}`);
-    } catch (err) {
-      logger.error('Download failed:', err);
-      setStatus(statusEl, 'err', (err && err.message) ? err.message : 'Download failed.');
+      if (!lastOutput) {
+        alert('Nothing to download yet. Run a transformation first.');
+        return;
+      }
+      const ext = ({
+        'application/n-triples': 'nt',
+        'text/turtle': 'ttl',
+        'application/trig': 'trig',
+        'application/ld+json': 'jsonld',
+        'application/rdf+xml': 'rdf',
+        'text/mermaid': 'mmd',
+        'application/d3+json': 'json',
+      })[normalizeMimeType(lastOutputMime)] || 'txt';
+
+      downloadContent({ content: lastOutput, filename: `transformed.${ext}`, mimeType: lastOutputMime });
+    } catch (e) {
+      console.error('Download error:', e);
+      alert(`Download failed: ${e && e.message ? e.message : String(e)}`);
     }
-  };
+  });
+
+  // Initialize output options based on whatever is currently checked (or default)
+  const initialInput = getSelectedRadioValue('input') || 'text/turtle';
+  setSelectedRadioValue('input', initialInput);
+  updateOutputOptions({ inputMime: initialInput, logger });
 };
 
-window.addEventListener('load', setupEventHandlers);
+document.addEventListener('DOMContentLoaded', setupEventHandlers);
