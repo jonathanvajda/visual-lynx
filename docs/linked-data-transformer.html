@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Linked Data Transformer</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 2rem;
+      background-color: #f4f4f4;
+    }
+    .section {
+      background: #fff;
+      border-radius: 8px;
+      padding: 1rem 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    h2 {
+      margin-top: 0;
+    }
+    label {
+      display: inline-block;
+      margin-right: 1rem;
+    }
+    .radio-group {
+      margin: 0.5rem 0 1rem;
+    }
+    textarea {
+      width: 100%;
+      height: 300px;
+      font-family: monospace;
+      margin-top: 1rem;
+      padding: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    button {
+      margin-right: 1rem;
+      padding: 0.5rem 1rem;
+      border: none;
+      background-color: #007acc;
+      color: white;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #005f99;
+    }
+  </style>
+</head>
+<body>
+  <div class="section">
+    <h2>Upload Ontology or other Linked-Data File</h2>
+    <input type="file" id="fileInput" accept=".ttl,.nt,.rdf,.owl,.jsonld,.trig,.xml" />
+  </div>
+
+  <div class="section">
+    <h2>Choose Input Format</h2>
+    <div class="radio-group" id="inputFormat">
+      <label><input type="radio" name="input" value="application/n-triples" /> N-Triples</label>
+      <label><input type="radio" name="input" value="text/turtle" /> Turtle</label>
+      <label><input type="radio" name="input" value="application/ld+json" /> JSON-LD</label>
+      <label><input type="radio" name="input" value="application/rdf+xml" /> RDF/XML</label>
+      <label><input type="radio" name="input" value="application/owl+xml" /> OWL/XML</label>
+      <label><input type="radio" name="input" value="application/trig" /> TriG</label>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Choose Output Format</h2>
+    <div class="radio-group" id="outputFormat">
+      <label><input type="radio" name="output" value="application/n-triples" /> N-Triples</label>
+      <label><input type="radio" name="output" value="text/turtle" /> Turtle</label>
+      <label><input type="radio" name="output" value="application/ld+json" /> JSON-LD</label>
+      <label><input type="radio" name="output" value="application/rdf+xml" /> RDF/XML</label>
+      <label><input type="radio" name="output" value="application/owl+xml" /> OWL/XML</label>
+      <label><input type="radio" name="output" value="application/trig" /> TriG</label>
+      <label><input type="radio" name="output" value="text/x-mermaid" /> Mermaid (flowchart)</label>
+      <label><input type="radio" name="output" value="application/json-d3" /> D3 JSON</label>
+    </div>
+  </div>
+
+  <div class="section">
+    <button id="transformBtn">Transform</button>
+    <button id="downloadBtn">Download</button>
+    <textarea id="outputArea" placeholder="Transformed output will appear here..."></textarea>
+  </div>
+
+  <script src="https://unpkg.com/rdflib/dist/rdflib.min.js"></script>
+  <script src="linked-data-transformer-functions.js"></script>
+</body>
+</html>
