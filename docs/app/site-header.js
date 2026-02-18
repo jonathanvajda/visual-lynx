@@ -15,7 +15,6 @@
         "tom": { src: "./images/tom.svg", alt: "Tabular Ontology Maker" },
         "table-nova": { src: "./images/table-nova-logo.svg", alt: "Table Nova" },
         "axiolotl": { src: "./images/axiolotl.svg", alt: "Axiolotl SPARQL & Inference" },
-        "sparql-pattern-visualizer": { src: "./images/sparql-pattern-visualizer.svg", alt: "SPARQL Pattern Visualizer" },
         "myna-iri-swapper": { src: "./images/myna-iri-swapper.png", alt: "Myna IRI Swapper" },
         "visual-lynx": { src: "./images/visual-lynx.svg", alt: "Visual Lynx" },
       },
