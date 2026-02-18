@@ -21,8 +21,27 @@ const makeLogger = (scope = 'ldt') => ({
 
 /* ------------------------- Format registry ------------------------- */
 /** Normalize OWL/XML to RDF/XML for parsing/serialization. */
-const normalizeMimeType = (mimeType) =>
-  mimeType === 'application/owl+xml' ? 'application/rdf+xml' : mimeType;
+const normalizeMimeType = (mimeType) => {
+  const m = (mimeType || '').toString().trim();
+  if (!m) return m;
+
+  // Common aliases (defensive: supports older HTML values)
+  const lower = m.toLowerCase();
+  if (lower === 'owl' || lower === 'rdfxml' || lower === 'application/rdf+xml') return 'application/rdf+xml'; // treat OWL/XML as RDF/XML
+  if (lower === 'rdf' || lower === 'rdfxml' || lower === 'application/rdf+xml') return 'application/rdf+xml';
+
+  if (lower === 'ttl' || lower === 'turtle' || lower === 'text/turtle') return 'text/turtle';
+  if (lower === 'nt' || lower === 'ntriples' || lower === 'n-triples' || lower === 'application/n-triples') return 'application/n-triples';
+  if (lower === 'trig' || lower === 'application/trig') return 'application/trig';
+
+  if (lower === 'jsonld' || lower === 'json-ld' || lower === 'application/ld+json') return 'application/ld+json';
+
+  if (lower === 'mermaid' || lower === 'text/mermaid') return 'text/mermaid';
+  if (lower === 'd3' || lower === 'd3json' || lower === 'application/d3+json') return 'application/d3+json';
+
+  return m;
+};
+
 
 /** Map file extensions to MIME types for auto-selection. */
 const extensionToMime = Object.freeze({
@@ -33,7 +52,7 @@ const extensionToMime = Object.freeze({
   '.jsonld': 'application/ld+json',
   '.json-ld': 'application/ld+json',
   '.rdf': 'application/rdf+xml',
-  '.owl': 'application/owl+xml',
+  '.owl': 'application/rdf+xml', // treat OWL/XML as RDF/XML
   '.xml': 'application/rdf+xml', // best-effort; RDF/XML or OWL/XML
 });
 
@@ -45,12 +64,45 @@ const mimeToN3Format = Object.freeze({
 });
 
 /* ------------------------- RDF term conversions ------------------------- */
-/** Convert an rdflib.js term to an RDFJS term using N3 DataFactory. */
-const rdflibTermToRdfjs = (term) => {
+/** Convert an rdflib.js term to an RDFJS term using N3 DataFactory.
+ *  NOTE: rdflib may represent RDF lists as termType 'Collection'. We expand them into rdf:first/rest chains in the target store.
+ */
+const rdflibTermToRdfjs = (term, storeForCollections) => {
   const DF = (window.N3 && window.N3.DataFactory) ? window.N3.DataFactory : null;
+  const N3 = window.N3;
   if (!DF) throw new Error('N3.DataFactory not found (is n3 loaded?)');
 
   if (!term || !term.termType) throw new Error('Invalid rdflib term');
+
+  // Expand rdflib Collection (RDF list) into rdf:first/rest triples.
+  const expandCollection = (col) => {
+    if (!storeForCollections || !N3 || !N3.Store) {
+      throw new Error('Internal error: store required to expand rdflib Collection');
+    }
+    const RDF_NS = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#';
+    const rdfFirst = DF.namedNode(`${RDF_NS}first`);
+    const rdfRest = DF.namedNode(`${RDF_NS}rest`);
+    const rdfNil = DF.namedNode(`${RDF_NS}nil`);
+
+    const elements = Array.isArray(col.elements) ? col.elements : [];
+    if (!elements.length) return rdfNil;
+
+    // Use a stable-ish blank node id if present; otherwise auto-generate.
+    const head = (col.id || col.value) ? DF.blankNode((col.id || col.value).toString().replace(/^_:/, '')) : DF.blankNode();
+    let current = head;
+
+    elements.forEach((el, idx) => {
+      const item = rdflibTermToRdfjs(el, storeForCollections);
+      storeForCollections.addQuad(DF.quad(current, rdfFirst, item));
+
+      const next = (idx === elements.length - 1) ? rdfNil : DF.blankNode();
+      storeForCollections.addQuad(DF.quad(current, rdfRest, next));
+
+      current = next;
+    });
+
+    return head;
+  };
 
   switch (term.termType) {
     case 'NamedNode':
@@ -62,6 +114,8 @@ const rdflibTermToRdfjs = (term) => {
       const lang = term.language || '';
       return lang ? DF.literal(term.value, lang) : DF.literal(term.value, DF.namedNode(dt));
     }
+    case 'Collection':
+      return expandCollection(term);
     default:
       throw new Error(`Unsupported rdflib termType: ${term.termType}`);
   }
@@ -205,9 +259,9 @@ const parseWithRdflibXml = async ({ text, baseIRI, logger }) => {
 
     const store = new N3.Store();
     graph.statements.forEach((st) => {
-      const s = rdflibTermToRdfjs(st.subject);
-      const p = rdflibTermToRdfjs(st.predicate);
-      const o = rdflibTermToRdfjs(st.object);
+      const s = rdflibTermToRdfjs(st.subject, store);
+      const p = rdflibTermToRdfjs(st.predicate, store);
+      const o = rdflibTermToRdfjs(st.object, store);
       store.addQuad(N3.DataFactory.quad(s, p, o));
     });
 
@@ -342,8 +396,19 @@ const serializeFromStore = async ({ store, outputMime, prefixes, baseIRI, logger
   if (mime === 'text/turtle' || mimeToN3Format[mime]) {
     return serializeWithN3({ store, outputMime: mime, prefixes, logger });
   }
+if (mime === 'text/mermaid') {
+  const out = storeToMermaid({ store });
+  logger.info('Serialized to Mermaid. Bytes:', out.length);
+  return out;
+}
+if (mime === 'application/d3+json') {
+  const obj = storeToD3({ store });
+  const out = JSON.stringify(obj, null, 2);
+  logger.info('Serialized to D3 JSON. Bytes:', out.length);
+  return out;
+}
 
-  throw new Error(`Unsupported output MIME: ${outputMime}`);
+throw new Error(`Unsupported output MIME: ${outputMime}`);
 };
 
 /* ------------------------- Mermaid / D3 (optional) ------------------------- */
