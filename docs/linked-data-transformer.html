@@ -4,91 +4,82 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Linked Data Transformer</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      margin: 2rem;
-      background-color: #f4f4f4;
-    }
-    .section {
-      background: #fff;
-      border-radius: 8px;
-      padding: 1rem 2rem;
-      margin-bottom: 2rem;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-    h2 {
-      margin-top: 0;
-    }
-    label {
-      display: inline-block;
-      margin-right: 1rem;
-    }
-    .radio-group {
-      margin: 0.5rem 0 1rem;
-    }
-    textarea {
-      width: 100%;
-      height: 300px;
-      font-family: monospace;
-      margin-top: 1rem;
-      padding: 1rem;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
-    button {
-      margin-right: 1rem;
-      padding: 0.5rem 1rem;
-      border: none;
-      background-color: #007acc;
-      color: white;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #005f99;
-    }
-  </style>
+
+  <!-- CSS (recommended order) -->
+  <!-- Put these in /vendor, or swap to your preferred CDN. -->
+  <link rel="stylesheet" href="styles/normalize.css" />
+  <link rel="stylesheet" href="styles/skeleton.css" />
+  <link rel="stylesheet" href="styles/app-base.css" />
+  <link rel="stylesheet" href="styles/site-header.css" />
+  <link rel="stylesheet" href="styles/linked-data-transformer.css" />
 </head>
+
 <body>
-  <div class="section">
-    <h2>Upload Ontology or other Linked-Data File</h2>
-    <input type="file" id="fileInput" accept=".ttl,.nt,.rdf,.owl,.jsonld,.trig,.xml" />
-  </div>
+  <header id="siteHeader" class="sitehdr-root" role="banner" aria-label="Site header"></header>
+ <div id="sitehdr-root" class="sitehdr-root"></div>
+  <div class="container ldt-wrap">
+    <div class="ldt-card">
+      <p class="ldt-subtitle">Client-side RDF transform (N3.js + jsonld.js + rdflib.js for RDF/XML only).</p>
 
-  <div class="section">
-    <h2>Choose Input Format</h2>
-    <div class="radio-group" id="inputFormat">
-      <label><input type="radio" name="input" value="application/n-triples" /> N-Triples</label>
-      <label><input type="radio" name="input" value="text/turtle" /> Turtle</label>
-      <label><input type="radio" name="input" value="application/ld+json" /> JSON-LD</label>
-      <label><input type="radio" name="input" value="application/rdf+xml" /> RDF/XML</label>
-      <label><input type="radio" name="input" value="application/owl+xml" /> OWL/XML</label>
-      <label><input type="radio" name="input" value="application/trig" /> TriG</label>
+      <div class="row">
+        <div class="twelve columns">
+          <label for="fileInput"><strong>Input file</strong></label>
+          <input class="u-full-width" type="file" id="fileInput" accept=".ttl,.nt,.trig,.jsonld,.json,.rdf,.owl,.xml" />
+        </div>
+      </div>
+
+      <div class="ldt-grid" style="margin-top: 1rem;">
+        <fieldset class="ldt-fieldset">
+          <legend>Input format</legend>
+          <label class="ldt-radio"><input type="radio" name="input" value="application/n-triples" /> N-Triples (.nt)</label>
+          <label class="ldt-radio"><input type="radio" name="input" value="text/turtle" checked /> Turtle (.ttl)</label>
+          <label class="ldt-radio"><input type="radio" name="input" value="application/trig" /> TriG (.trig)</label>
+          <label class="ldt-radio"><input type="radio" name="input" value="application/ld+json" /> JSON-LD (.jsonld)</label>
+          <label class="ldt-radio"><input type="radio" name="input" value="application/rdf+xml" /> RDF/XML (.rdf/.xml)</label>
+          <label class="ldt-radio"><input type="radio" name="input" value="application/owl+xml" /> OWL/XML (.owl/.xml) <span style="opacity:.8">(parsed as RDF/XML)</span></label>
+        </fieldset>
+
+        <fieldset class="ldt-fieldset">
+          <legend>Output format</legend>
+          <label class="ldt-radio"><input type="radio" name="output" value="application/n-triples" checked /> N-Triples (.nt)</label>
+          <label class="ldt-radio"><input type="radio" name="output" value="text/turtle" /> Turtle (.ttl)</label>
+          <label class="ldt-radio"><input type="radio" name="output" value="application/trig" /> TriG (.trig)</label>
+          <label class="ldt-radio"><input type="radio" name="output" value="application/ld+json" /> JSON-LD (.jsonld)</label>
+          <label class="ldt-radio"><input type="radio" name="output" value="application/rdf+xml" /> RDF/XML (.rdf)</label>
+          <label class="ldt-radio"><input type="radio" name="output" value="application/owl+xml" /> OWL/XML (.owl) <span style="opacity:.8">(emits RDF/XML)</span></label>
+          <label class="ldt-radio"><input type="radio" name="output" value="text/x-mermaid" /> Mermaid (flowchart)</label>
+          <label class="ldt-radio"><input type="radio" name="output" value="application/json-d3" /> D3 JSON</label>
+        </fieldset>
+      </div>
+
+      <div class="ldt-actions" style="margin-top: 1rem;">
+        <button class="button button-primary" id="transformBtn" type="button">Transform</button>
+        <button class="button" id="downloadBtn" type="button">Download</button>
+      </div>
+
+      <div id="status" class="ldt-status" role="status" aria-live="polite"></div>
+
+      <label for="outputArea" style="margin-top: 1rem;"><strong>Output</strong></label>
+      <textarea id="outputArea" class="ldt-output u-full-width" placeholder="Transformed output will appear here..."></textarea>
+
+      <p class="ldt-note">
+        Notes:
+        <br />• RDF/XML + OWL/XML parsing/serialization uses <code>rdflib.js</code>.
+        <br />• Turtle / N-Triples / TriG parsing & writing uses <code>N3.js</code>.
+        <br />• JSON-LD parsing/writing uses <code>jsonld.js</code> (via N-Quads bridge).
+      </p>
     </div>
   </div>
 
-  <div class="section">
-    <h2>Choose Output Format</h2>
-    <div class="radio-group" id="outputFormat">
-      <label><input type="radio" name="output" value="application/n-triples" /> N-Triples</label>
-      <label><input type="radio" name="output" value="text/turtle" /> Turtle</label>
-      <label><input type="radio" name="output" value="application/ld+json" /> JSON-LD</label>
-      <label><input type="radio" name="output" value="application/rdf+xml" /> RDF/XML</label>
-      <label><input type="radio" name="output" value="application/owl+xml" /> OWL/XML</label>
-      <label><input type="radio" name="output" value="application/trig" /> TriG</label>
-      <label><input type="radio" name="output" value="text/x-mermaid" /> Mermaid (flowchart)</label>
-      <label><input type="radio" name="output" value="application/json-d3" /> D3 JSON</label>
-    </div>
-  </div>
+  <!-- JS libraries (recommended: vendor locally for stable GitHub Pages builds) -->
+  <script src="app/n3.min.js"></script>
+  <script src="app/jsonld.min.js"></script>
+  <script src="app/rdflib.min.js"></script>
 
-  <div class="section">
-    <button id="transformBtn">Transform</button>
-    <button id="downloadBtn">Download</button>
-    <textarea id="outputArea" placeholder="Transformed output will appear here..."></textarea>
-  </div>
+  <!-- Header -->
+   <script src="app/site-header.js"></script>
 
-  <script src="./app/rdflib.min.js"></script>
-  <script src="./app/linked-data-transformer-functions.js"></script>
+  <!-- App logic -->
+  <script src="app/linked-data-transformer-functions.js"></script>
 </body>
 </html>

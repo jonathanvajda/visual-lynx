@@ -1,0 +1,96 @@
+/* Linked Data Transformer (ldt-*) – page-specific styles
+   Designed to sit on top of normalize.css + skeleton.css + app-base.css + site-header.css
+*/
+
+.ldt-wrap {
+  padding: 1.25rem 0;
+}
+
+.ldt-card {
+  background: var(--ont-panel-bg, #fff);
+  border: 1px solid var(--ont-border, #d0d7de);
+  border-radius: 14px;
+  padding: 1rem 1rem;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.04);
+}
+
+.ldt-title {
+  margin: 0 0 0.25rem 0;
+}
+
+.ldt-subtitle {
+  margin: 0 0 1rem 0;
+  color: var(--ont-muted, rgba(0,0,0,0.65));
+}
+
+.ldt-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 900px) {
+  .ldt-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.ldt-fieldset {
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 12px;
+  padding: 0.75rem 0.75rem;
+}
+
+.ldt-fieldset legend {
+  padding: 0 0.5rem;
+  font-weight: 600;
+}
+
+.ldt-radio {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.25rem 0;
+}
+
+.ldt-radio input[type="radio"] {
+  margin: 0;
+}
+
+.ldt-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.ldt-status {
+  margin-top: 0.75rem;
+  padding: 0.75rem;
+  border-radius: 12px;
+  border: 1px solid rgba(0,0,0,0.08);
+  background: rgba(0,0,0,0.02);
+  min-height: 1.2em;
+}
+
+.ldt-status--ok { border-color: rgba(0,128,0,0.25); }
+.ldt-status--warn { border-color: rgba(255,165,0,0.35); }
+.ldt-status--err { border-color: rgba(220,38,38,0.35); }
+
+.ldt-output {
+  width: 100%;
+  min-height: 320px;
+  font-family: var(--ont-font-mono, ui-monospace, SFMono-Regular, Menlo, Consolas, monospace);
+  resize: vertical;
+}
+
+.ldt-note {
+  margin: 0.75rem 0 0 0;
+  color: var(--ont-muted, rgba(0,0,0,0.65));
+  font-size: 0.95rem;
+}
+
+.ldt-note code {
+  font-family: var(--ont-font-mono, ui-monospace, SFMono-Regular, Menlo, Consolas, monospace);
+  font-size: 0.95em;
+}
