@@ -106,14 +106,50 @@
  
 <body data-page-id="visual-lynx">
   <header id="siteHeader" class="sitehdr-root" role="banner" aria-label="Site header"></header>
-  <div>
-    <span style="margin-left: 2rem;">Focus node:</span></strong><input id="focusNodeInputBox" type="text" style="width: 30%; margin-bottom: 0.5rem;" placeholder="Enter the starting @id (leave blank to show full graph)">
-      <!-- This requires a way to handle RDF and transform it, adding it to textbox -->
-      <button id="loadUserGraphDataBtn" class="d3_button">Upload Graph Data</button>    
-      <button id="loadBfoGraphDataBtn" class="d3_button" onclick="loadJsonDataToTextArea()">Get BFO Graph</button>
-      <button id="renderBtn" class="d3_button"  onclick="renderGraphFromTextarea()">Render</button><br />
-    <textarea id="jsonInput"></textarea>
+  <div class="viz-panel">
+  <div class="viz-toolbar">
+    <div class="viz-field viz-field--focus">
+      <label for="focusNodeInputBox">Focus node</label>
+      <input
+        id="focusNodeInputBox"
+        type="text"
+        placeholder="Enter the starting @id (leave blank to show full graph)"
+      />
+    </div>
+
+    <div class="viz-field viz-field--file">
+      <label for="graphFileInput">Graph file</label>
+      <input
+        id="graphFileInput"
+        type="file"
+        accept=".ttl,.turtle,.nt,.trig,.jsonld,.json-ld,.rdf,.owl,.xml,application/ld+json,text/turtle,application/n-triples,application/trig,application/rdf+xml"
+      />
+    </div>
+
+    <div class="viz-field viz-field--format">
+      <label for="graphInputFormat">Input format</label>
+      <select id="graphInputFormat">
+        <option value="auto" selected>Auto-detect</option>
+        <option value="text/turtle">Turtle</option>
+        <option value="application/n-triples">N-Triples</option>
+        <option value="application/trig">TriG</option>
+        <option value="application/ld+json">JSON-LD</option>
+        <option value="application/rdf+xml">RDF/XML</option>
+      </select>
+    </div>
+
+    <div class="viz-actions" aria-label="Graph actions">
+      <button id="loadBfoGraphDataBtn" class="d3_button" type="button">Get BFO Graph</button>
+      <button id="renderBtn" class="d3_button" type="button">Render</button>
+    </div>
   </div>
+
+  <div class="viz-textarea-wrap">
+    <details><summary>JSON-LD data</summary>
+    <textarea id="jsonInput" style="width: 95%;"></textarea>
+    </details>
+  </div>
+</div>
   
   <div id="graph-container">
     <svg id="graph"></svg>
@@ -175,8 +211,15 @@
       })();
     })();
   </script>
+  <!-- Visual Lynx JS -->
   <script src="./app/jsonld-visualizer-core.js"></script>
   <script src="./app/jsonld-visualizer-ui.js"></script>
+  <!-- LD Transformer JS -->
+  <script src="./app/n3.min.js"></script>
+  <script src="./app/jsonld.min.js"></script>
+  <script src="./app/rdflib.min.js"></script>
+  <script type="module" src="./app/jsonld-visualizer-loader.js"></script>
+  <!-- Header JS -->
   <script id="fetch-json-data">
     async function loadJsonDataToTextArea() {
       // Get file that was loaded or the stock example

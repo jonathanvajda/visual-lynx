@@ -13,9 +13,89 @@ body {
   height: 100%;
 }
 
+
+.viz-panel {
+  padding: 1rem 1.5rem 0.75rem;
+}
+
+.viz-toolbar {
+  display: grid;
+  grid-template-columns: minmax(24rem, 2.2fr) minmax(18rem, 1.4fr) minmax(11rem, 0.8fr) auto;
+  gap: 0.9rem 1rem;
+  align-items: end;
+  margin-bottom: 1rem;
+}
+
+.viz-field {
+  min-width: 0;
+}
+
+.viz-field label,
+.viz-textarea-wrap label {
+  display: block;
+  margin-bottom: 0.35rem;
+  font-weight: 600;
+}
+
+.viz-field input,
+.viz-field select,
+.viz-textarea-wrap textarea {
+  width: 100%;
+  margin-bottom: 0;
+}
+
+.viz-actions {
+  display: flex;
+  gap: 0.75rem;
+  align-items: end;
+  flex-wrap: wrap;
+}
+
+.viz-actions .button,
+.viz-actions button,
+.viz-actions .d3_button {
+  margin-bottom: 0;
+}
+
+.viz-textarea-wrap {
+  width: 100%;
+}
+
+#jsonInput {
+  width: 100%;
+  min-height: 20em;
+  resize: vertical;
+  font-family: var(--ont-font-mono, ui-monospace, SFMono-Regular, Consolas, monospace);
+  white-space: pre;
+}
+
+@media (max-width: 1100px) {
+  .viz-toolbar {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .viz-actions {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 700px) {
+  .viz-toolbar {
+    grid-template-columns: 1fr;
+  }
+
+  .viz-actions {
+    grid-column: auto;
+  }
+}
+
 #graph-container {
+  padding-left: 1rem;
+  position: relative;
   color: #1f2937;
-  background: #f8fafc;
+  width: 98%;
+  height: 66vh;
+  background: #f0f0f0;
 }
 
 textarea {
@@ -23,14 +103,6 @@ textarea {
   height: 100px;
   font-family: monospace;
   margin-bottom: 1rem;
-}
-
-#graph-container {
-  position: relative;
-  /* Crucial for relative positioning of children */
-  width: 98%;
-  height: 60vh;
-  background: #f0f0f0;
 }
 
 #graph {
