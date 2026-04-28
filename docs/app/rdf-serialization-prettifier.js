@@ -140,6 +140,48 @@
     return sparqlBase ? sparqlBase[1] : '';
   };
 
+  const extractTurtlePrefixes = (text) => {
+    const prefixes = {};
+    const source = String(text || '');
+    const prefixPattern = /(?:@prefix\s+([A-Za-z_][\w.-]*|):\s*<([^>]+)>\s*\.|PREFIX\s+([A-Za-z_][\w.-]*|):\s*<([^>]+)>)/gi;
+    let match;
+
+    while ((match = prefixPattern.exec(source)) !== null) {
+      const prefix = match[1] ?? match[3] ?? '';
+      const iri = match[2] ?? match[4] ?? '';
+      prefixes[prefix] = iri;
+    }
+
+    return prefixes;
+  };
+
+  const extractRdfXmlPrefixes = (text) => {
+    const prefixes = {};
+    const source = String(text || '');
+    const rootMatch = source.match(/<rdf:RDF\b[^>]*>/i) || source.match(/<[^!?][^>]*>/);
+    const root = rootMatch ? rootMatch[0] : '';
+    const attrPattern = /\sxmlns(?::([A-Za-z_][\w.-]*))?=(["'])(.*?)\2/g;
+    let match;
+
+    while ((match = attrPattern.exec(root)) !== null) {
+      const prefix = match[1] || '';
+      const iri = match[3];
+      if (!iri || (iri.includes(':') && !/^[A-Za-z][A-Za-z0-9+.-]*:\/\//.test(iri) && !iri.startsWith('urn:'))) {
+        continue;
+      }
+      prefixes[prefix] = iri;
+    }
+
+    return prefixes;
+  };
+
+  const extractSourcePrefixes = (text, mimeType) => {
+    const mime = normalizeMimeType(mimeType);
+    if (mime === 'application/rdf+xml') return extractRdfXmlPrefixes(text);
+    if (mime === 'text/turtle' || mime === 'application/trig') return extractTurtlePrefixes(text);
+    return {};
+  };
+
   const parseWithN3 = (text, mimeType, baseIRI) => {
     const N3 = global.N3;
     if (!N3 || !N3.Parser || !N3.Store) {
@@ -527,6 +569,106 @@
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;');
 
+  const collectNamespaceDeclarations = (root) => {
+    const namespaces = new Map();
+    const visit = (node) => {
+      if (!node || node.nodeType !== Node.ELEMENT_NODE) return;
+
+      if (node.prefix && node.namespaceURI) namespaces.set(node.prefix, node.namespaceURI);
+
+      Array.from(node.attributes || []).forEach((attr) => {
+        if (attr.name === 'xmlns') namespaces.set('', attr.value);
+        else if (attr.name.startsWith('xmlns:')) namespaces.set(attr.name.slice(6), attr.value);
+        else if (attr.prefix && attr.namespaceURI) namespaces.set(attr.prefix, attr.namespaceURI);
+      });
+
+      Array.from(node.childNodes || []).forEach(visit);
+    };
+
+    visit(root);
+    return namespaces;
+  };
+
+  const xmlEscapeAttribute = (value) => String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+
+  const preferredPrefixMap = (serializedNamespaces, sourcePrefixes) => {
+    const byIri = new Map();
+    Object.entries(DEFAULT_PREFIXES).forEach(([prefix, iri]) => byIri.set(iri, prefix));
+    Object.entries(sourcePrefixes || {}).forEach(([prefix, iri]) => {
+      if (prefix && iri) byIri.set(iri, prefix);
+    });
+
+    const preferredNamespaces = new Map();
+    const aliases = new Map();
+
+    serializedNamespaces.forEach((iri, prefix) => {
+      const preferred = byIri.get(iri) || prefix;
+      preferredNamespaces.set(preferred, iri);
+      if (prefix && preferred && prefix !== preferred) aliases.set(prefix, preferred);
+    });
+
+    Object.entries(sourcePrefixes || {}).forEach(([prefix, iri]) => {
+      if (prefix && iri) preferredNamespaces.set(prefix, iri);
+    });
+
+    Object.entries(DEFAULT_PREFIXES).forEach(([prefix, iri]) => {
+      if (!preferredNamespaces.has(prefix)) preferredNamespaces.set(prefix, iri);
+    });
+
+    return { aliases, preferredNamespaces };
+  };
+
+  const rewriteXmlName = (name, aliases) => {
+    const text = String(name || '');
+    const colonIndex = text.indexOf(':');
+    if (colonIndex < 0) return text;
+    const prefix = text.slice(0, colonIndex);
+    const local = text.slice(colonIndex + 1);
+    return aliases.has(prefix) ? `${aliases.get(prefix)}:${local}` : text;
+  };
+
+  const rewriteXmlPrefixes = (xml, aliases) => {
+    let result = String(xml || '');
+    aliases.forEach((preferred, current) => {
+      if (!current || !preferred || current === preferred) return;
+      const escaped = current.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      result = result
+        .replace(new RegExp(`(<\\/?|\\s)${escaped}:`, 'g'), `$1${preferred}:`)
+        .replace(new RegExp(`xmlns:${escaped}=`, 'g'), `xmlns:${preferred}=`);
+    });
+    return result;
+  };
+
+  const removeNamespaceAttributes = (node) => {
+    if (!node || node.nodeType !== Node.ELEMENT_NODE) return;
+    Array.from(node.attributes || []).forEach((attr) => {
+      if (attr.name === 'xmlns' || attr.name.startsWith('xmlns:')) {
+        node.removeAttribute(attr.name);
+      }
+    });
+    Array.from(node.childNodes || []).forEach(removeNamespaceAttributes);
+  };
+
+  const applyNamespaceDeclarations = (root, namespaces) => {
+    namespaces.forEach((iri, prefix) => {
+      if (!iri) return;
+      if (prefix) root.setAttribute(`xmlns:${prefix}`, iri);
+      else root.setAttribute('xmlns', iri);
+    });
+  };
+
+  const formatXmlAttributes = (node, aliases, options = {}) => {
+    const includeNamespaces = !!options.includeNamespaces;
+    return Array.from(node.attributes || [])
+      .filter((attr) => includeNamespaces || (attr.name !== 'xmlns' && !attr.name.startsWith('xmlns:')))
+      .map((attr) => `${rewriteXmlName(attr.name, aliases)}="${xmlEscapeAttribute(attr.value)}"`)
+      .join(' ');
+  };
+
   const classifyXmlElement = (node) => {
     const name = node.localName || node.nodeName;
     if (name === 'Ontology') return 'ontology';
@@ -539,8 +681,7 @@
     return 'extraAnnotations';
   };
 
-  const formatXml = (node, level) => {
-    const serializer = new XMLSerializer();
+  const formatXml = (node, level, aliases = new Map()) => {
     const indent = '    '.repeat(level);
     if (node.nodeType === Node.COMMENT_NODE) return `${indent}<!-- ${node.nodeValue.trim()} -->`;
     if (node.nodeType === Node.TEXT_NODE) return `${indent}${escapeXmlText(node.nodeValue.trim())}`;
@@ -550,20 +691,27 @@
       return child.nodeType === Node.ELEMENT_NODE || child.nodeType === Node.COMMENT_NODE ||
         (child.nodeType === Node.TEXT_NODE && child.nodeValue.trim());
     });
-    if (!children.length) return `${indent}${serializer.serializeToString(node)}`;
+    const nodeName = rewriteXmlName(node.nodeName, aliases);
+    const attrs = formatXmlAttributes(node, aliases);
+    const open = attrs ? `<${nodeName} ${attrs}>` : `<${nodeName}>`;
+    if (!children.length) return attrs ? `${indent}<${nodeName} ${attrs}/>` : `${indent}<${nodeName}/>`;
 
-    const clone = node.cloneNode(false);
-    const open = serializer.serializeToString(clone).replace(/\/>$/, '>');
-    const close = `</${node.nodeName}>`;
-    const childText = children.map((child) => formatXml(child, level + 1)).filter(Boolean).join('\n');
+    const close = `</${nodeName}>`;
+    const childText = children.map((child) => formatXml(child, level + 1, aliases)).filter(Boolean).join('\n');
     return `${indent}${open}\n${childText}\n${indent}${close}`;
   };
 
-  const prettifyRdfXml = ({ text }) => {
+  const prettifyRdfXml = ({ text, sourceText, sourceMimeType }) => {
     const parser = new DOMParser();
     const doc = parser.parseFromString(text, 'application/xml');
     if (doc.querySelector('parsererror')) throw new Error('RDF/XML could not be parsed for prettification');
     const root = doc.documentElement;
+    const namespaces = collectNamespaceDeclarations(root);
+    const sourcePrefixes = extractSourcePrefixes(sourceText, sourceMimeType);
+    const { aliases, preferredNamespaces } = preferredPrefixMap(namespaces, sourcePrefixes);
+    removeNamespaceAttributes(root);
+    applyNamespaceDeclarations(root, preferredNamespaces);
+
     const children = Array.from(root.childNodes).filter((node) => node.nodeType === Node.ELEMENT_NODE);
     const sections = {
       ontology: [],
@@ -579,17 +727,17 @@
     children.forEach((child) => sections[classifyXmlElement(child)].push(child));
     Object.keys(sections).forEach((key) => sections[key].sort((a, b) => elementKey(a).localeCompare(elementKey(b))));
 
-    const serializer = new XMLSerializer();
-    const rootClone = root.cloneNode(false);
-    const rootOpen = serializer.serializeToString(rootClone).replace(/\/>$/, '>');
+    const rootName = rewriteXmlName(root.nodeName, aliases);
+    const rootAttrs = formatXmlAttributes(root, aliases, { includeNamespaces: true });
+    const rootOpen = rootAttrs ? `<${rootName} ${rootAttrs}>` : `<${rootName}>`;
     const parts = ['<?xml version="1.0"?>', rootOpen];
 
-    sections.ontology.forEach((node) => parts.push(formatXml(node, 1)));
+    sections.ontology.forEach((node) => parts.push(formatXml(node, 1, aliases)));
 
     SECTION_TYPES.forEach((section) => {
       if (!sections[section.key].length) return;
       parts.push('', sectionComment(section.label, 'application/rdf+xml'), '');
-      sections[section.key].forEach((node) => parts.push(formatXml(node, 1), ''));
+      sections[section.key].forEach((node) => parts.push(formatXml(node, 1, aliases), ''));
     });
 
     [
@@ -598,14 +746,14 @@
     ].forEach((section) => {
       if (!sections[section.key].length) return;
       parts.push('', sectionComment(section.label, 'application/rdf+xml'), '');
-      sections[section.key].forEach((node) => parts.push(formatXml(node, 1), ''));
+      sections[section.key].forEach((node) => parts.push(formatXml(node, 1, aliases), ''));
     });
 
-    parts.push(`</${root.nodeName}>`);
-    return `${parts.join('\n').replace(/\n{4,}/g, '\n\n\n')}\n`;
+    parts.push(`</${rootName}>`);
+    return `${rewriteXmlPrefixes(parts.join('\n').replace(/\n{4,}/g, '\n\n\n'), aliases)}\n`;
   };
 
-  const prettify = ({ text, mimeType, baseIRI, logger } = {}) => {
+  const prettify = ({ text, mimeType, sourceText, sourceMimeType, baseIRI, logger } = {}) => {
     const mime = normalizeMimeType(mimeType);
     if (!supportsInlineComments(mime)) {
       return { text, applied: false, warnings: [`${mimeType} does not support inline comments.`] };
@@ -613,7 +761,7 @@
 
     try {
       if (mime === 'application/rdf+xml') {
-        return { text: prettifyRdfXml({ text }), applied: true, warnings: [] };
+        return { text: prettifyRdfXml({ text, sourceText, sourceMimeType }), applied: true, warnings: [] };
       }
       return { text: prettifyN3Like({ text, mimeType: mime, baseIRI }), applied: true, warnings: [] };
     } catch (error) {

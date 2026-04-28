@@ -153,6 +153,8 @@ function setupEventHandlers() {
         const result = prettifier.prettify({
           text: out,
           mimeType: outputMime,
+          sourceText: text,
+          sourceMimeType: inputMime,
           baseIRI,
           logger,
         });
