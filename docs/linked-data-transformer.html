@@ -140,6 +140,13 @@
         </fieldset>
       </div>
 
+      <div class="ldt-options">
+        <label class="ldt-checkbox" for="prettifyRdfOutput">
+          <input type="checkbox" id="prettifyRdfOutput" checked />
+          OWLAPI-style RDF sections
+        </label>
+      </div>
+
       <div class="ldt-actions" style="margin-top: 1rem;">
         <button class="button button-primary" id="transformBtn" type="button">Transform</button>
         <button class="button" id="downloadBtn" type="button">Download</button>
@@ -208,6 +215,7 @@
   </script>
 
   <!-- App logic -->
+  <script src="./app/rdf-serialization-prettifier.js"></script>
   <script src="./app/linked-data-transformer-functions.js"></script>
 </body>
 </html>

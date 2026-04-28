@@ -181,24 +181,9 @@ const parseWithN3 = ({ text, n3Format, baseIRI, logger }) => {
       ...(n3Format ? { format: n3Format } : {}),
     });
 
-    // Use callback signature for maximum compatibility across N3.js versions.
-    // (N3.Parser.parse supports callback with (error, quad, prefixes).) 
-    let parseError = null;
-    parser.parse(text, (error, quad, parsedPrefixes) => {
-      if (error) {
-        parseError = error;
-        return;
-      }
-      if (quad) {
-        store.addQuad(quad);
-        return;
-      }
-      if (parsedPrefixes && typeof parsedPrefixes === 'object') {
-        Object.assign(prefixes, parsedPrefixes);
-      }
-    });
-
-    if (parseError) throw parseError;
+    const quads = parser.parse(text);
+    quads.forEach((quad) => store.addQuad(quad));
+    Object.assign(prefixes, parser._prefixes || {});
 
     if (store.size === 0 && text.trim().length > 0) {
       logger.warn('N3 parse produced 0 quads. If this file is not empty, check N3 version/format settings.');
@@ -474,6 +459,17 @@ const setSelectedRadioValue = (groupName, value) => {
   if (radio) radio.checked = true;
 };
 
+/** Update the optional OWLAPI-style prettifier checkbox based on output format. */
+const updatePrettifierOption = ({ outputMime }) => {
+  const checkbox = document.getElementById('prettifyRdfOutput');
+  if (!checkbox) return;
+
+  const prettifier = window.RdfSerilalizationPrettifier;
+  const isSupported = !!(prettifier && prettifier.supportsInlineComments(outputMime));
+  checkbox.disabled = !isSupported;
+  checkbox.parentElement.style.opacity = isSupported ? '1' : '0.45';
+};
+
 /** Auto-guess input mime type from filename, then select matching radio. */
 const guessInputFromFilename = ({ filename }) => {
   const lower = (filename || '').toLowerCase();
@@ -497,6 +493,7 @@ const updateOutputOptions = ({ inputMime, logger }) => {
     if (supported.length) setSelectedRadioValue('output', supported[0]);
   }
 
+  updatePrettifierOption({ outputMime: getSelectedRadioValue('output') });
   logger.info('Updated output options for input:', inputMime, 'Allowed:', supported);
 };
 
@@ -604,6 +601,7 @@ const setupEventHandlers = () => {
   const transformBtn = document.getElementById('transformBtn');
   const downloadBtn = document.getElementById('downloadBtn');
   const outputArea = document.getElementById('outputArea');
+  const prettifyCheckbox = document.getElementById('prettifyRdfOutput');
 
   if (!fileInput || !transformBtn || !downloadBtn || !outputArea) {
     logger.error('Missing expected DOM elements. Check IDs: fileInput/transformBtn/downloadBtn/outputArea');
@@ -615,6 +613,7 @@ const setupEventHandlers = () => {
     N3: !!window.N3,
     jsonld: !!window.jsonld,
     rdflib: !!window.$rdf,
+    rdfPrettifier: !!window.RdfSerilalizationPrettifier,
   });
 
   let lastOutput = '';
@@ -623,6 +622,10 @@ const setupEventHandlers = () => {
   // Input radio change -> update outputs
   document.querySelectorAll('input[name="input"]').forEach((radio) => {
     radio.addEventListener('change', () => updateOutputOptions({ inputMime: radio.value, logger }));
+  });
+
+  document.querySelectorAll('input[name="output"]').forEach((radio) => {
+    radio.addEventListener('change', () => updatePrettifierOption({ outputMime: radio.value }));
   });
 
   // File selection -> auto-guess input format + update outputs
@@ -648,7 +651,15 @@ const setupEventHandlers = () => {
       const outputMime = getSelectedRadioValue('output');
       const baseIRI = 'http://example.org/';
 
-      const out = await transformRDF({ file, inputMime, outputMime, baseIRI, logger });
+      let out = await transformRDF({ file, inputMime, outputMime, baseIRI, logger });
+      const shouldPrettify = !!(prettifyCheckbox && prettifyCheckbox.checked && !prettifyCheckbox.disabled);
+      if (shouldPrettify && window.RdfSerilalizationPrettifier) {
+        const result = window.RdfSerilalizationPrettifier.prettify({ text: out, mimeType: outputMime, baseIRI, logger });
+        out = result.text;
+        if (!result.applied && result.warnings && result.warnings.length) {
+          logger.warn('Prettifier returned original output:', result.warnings.join('; '));
+        }
+      }
       outputArea.value = out;
       lastOutput = out;
       lastOutputMime = outputMime;
