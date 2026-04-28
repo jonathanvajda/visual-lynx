@@ -144,6 +144,27 @@ const describeError = (err) => {
   }
 };
 
+const extractRdfXmlPrefixes = (text) => {
+  const prefixes = {};
+  const source = String(text || '');
+  const rootMatch = source.match(/<rdf:RDF\b[^>]*>/i) || source.match(/<[^!?][^>]*>/);
+  const root = rootMatch ? rootMatch[0] : '';
+  const attrPattern = /\sxmlns(?::([A-Za-z_][\w.-]*))?=(["'])(.*?)\2/g;
+  let match;
+
+  while ((match = attrPattern.exec(root)) !== null) {
+    const prefix = match[1] || '';
+    const iri = match[3];
+
+    if (!iri || (iri.includes(':') && !/^[A-Za-z][A-Za-z0-9+.-]*:\/\//.test(iri) && !iri.startsWith('urn:'))) {
+      continue;
+    }
+    prefixes[prefix] = iri;
+  }
+
+  return prefixes;
+};
+
 /** Convert an RDFJS term to an rdflib.js term. */
 const rdfjsTermToRdflib = (term) => {
   const $rdf = window.$rdf;
@@ -251,7 +272,7 @@ const parseWithRdflibXml = async ({ text, baseIRI, logger }) => {
     });
 
     logger.info('Parsed RDF/XML via rdflib. Quads:', store.size);
-    return { store, prefixes: {} };
+    return { store, prefixes: extractRdfXmlPrefixes(text) };
   } catch (error) {
     logger.error('RDF/XML parse failed:', describeError(error));
     throw error;
@@ -464,7 +485,7 @@ const updatePrettifierOption = ({ outputMime }) => {
   const checkbox = document.getElementById('prettifyRdfOutput');
   if (!checkbox) return;
 
-  const prettifier = window.RdfSerilalizationPrettifier;
+  const prettifier = window.RdfSerializationPrettifier;
   const isSupported = !!(prettifier && prettifier.supportsInlineComments(outputMime));
   checkbox.disabled = !isSupported;
   checkbox.parentElement.style.opacity = isSupported ? '1' : '0.45';
@@ -613,7 +634,7 @@ const setupEventHandlers = () => {
     N3: !!window.N3,
     jsonld: !!window.jsonld,
     rdflib: !!window.$rdf,
-    rdfPrettifier: !!window.RdfSerilalizationPrettifier,
+    rdfPrettifier: !!window.RdfSerializationPrettifier,
   });
 
   let lastOutput = '';
@@ -653,8 +674,8 @@ const setupEventHandlers = () => {
 
       let out = await transformRDF({ file, inputMime, outputMime, baseIRI, logger });
       const shouldPrettify = !!(prettifyCheckbox && prettifyCheckbox.checked && !prettifyCheckbox.disabled);
-      if (shouldPrettify && window.RdfSerilalizationPrettifier) {
-        const result = window.RdfSerilalizationPrettifier.prettify({ text: out, mimeType: outputMime, baseIRI, logger });
+      if (shouldPrettify && window.RdfSerializationPrettifier) {
+        const result = window.RdfSerializationPrettifier.prettify({ text: out, mimeType: outputMime, baseIRI, logger });
         out = result.text;
         if (!result.applied && result.warnings && result.warnings.length) {
           logger.warn('Prettifier returned original output:', result.warnings.join('; '));

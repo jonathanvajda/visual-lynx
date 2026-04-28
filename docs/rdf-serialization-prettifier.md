@@ -2,7 +2,7 @@
 
 `docs/app/rdf-serialization-prettifier.js` is a browser-friendly helper for adding OWLAPI-inspired organization to RDF serializations after a normal RDF transformation step.
 
-It is intentionally separate from `linked-data-transformer-functions.js` so other tools can reuse it without adopting the linked-data transformer UI.
+It is intentionally separate from the linked-data transformer core and UI modules so other tools can reuse it without adopting the linked-data transformer interface.
 
 ## Load Order
 
@@ -21,7 +21,7 @@ Load the RDF libraries first, then the prettifier, then the tool that calls it:
 The file exposes one global object:
 
 ```js
-window.RdfSerilalizationPrettifier
+window.RdfSerializationPrettifier
 ```
 
 ### `supportsInlineComments(mimeType)`
@@ -29,7 +29,7 @@ window.RdfSerilalizationPrettifier
 Returns `true` for output formats where inline comments are allowed:
 
 ```js
-const canPrettify = window.RdfSerilalizationPrettifier.supportsInlineComments('text/turtle');
+const canPrettify = window.RdfSerializationPrettifier.supportsInlineComments('text/turtle');
 ```
 
 Supported comment-capable formats:
@@ -57,7 +57,7 @@ Returns an object:
 Example:
 
 ```js
-const result = window.RdfSerilalizationPrettifier.prettify({
+const result = window.RdfSerializationPrettifier.prettify({
   text: serializedRdf,
   mimeType: 'text/turtle',
   baseIRI: 'https://example.org/my-ontology',
@@ -101,8 +101,8 @@ A reusable wrapper usually looks like this:
 ```js
 let serialized = await serializeRdfSomehow();
 
-if (window.RdfSerilalizationPrettifier.supportsInlineComments(outputMime)) {
-  const pretty = window.RdfSerilalizationPrettifier.prettify({
+if (window.RdfSerializationPrettifier.supportsInlineComments(outputMime)) {
+  const pretty = window.RdfSerializationPrettifier.prettify({
     text: serialized,
     mimeType: outputMime,
     baseIRI,
