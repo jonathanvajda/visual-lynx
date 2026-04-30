@@ -1,4 +1,4 @@
-# RDF Serialization Prettifier
+# Sugar Serial: RDF Serialization Prettifier
 
 The RDF serialization sugar helpers are browser-friendly modules for adding OWLAPI-inspired organization to RDF serializations after a normal RDF transformation step.
 

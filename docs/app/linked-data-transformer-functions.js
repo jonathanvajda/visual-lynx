@@ -489,7 +489,7 @@ const getSugarSerial = (mimeType) => {
   ].find((module) => module && module.supports && module.supports(mime)) || null;
 };
 
-/** Update the optional OWLAPI-style prettifier checkbox based on output format. */
+/** Update the optional Sugar Serial checkbox based on output format. */
 const updatePrettifierOption = ({ outputMime }) => {
   const checkbox = document.getElementById('prettifyRdfOutput');
   if (!checkbox) return;
