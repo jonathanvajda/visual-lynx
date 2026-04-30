@@ -480,13 +480,21 @@ const setSelectedRadioValue = (groupName, value) => {
   if (radio) radio.checked = true;
 };
 
+/** Pick the focused RDF serialization sugar module for an output format. */
+const getSugarSerial = (mimeType) => {
+  const mime = normalizeMimeType(mimeType);
+  return [
+    window.N3SugarSerial,
+    window.RdflibSugarSerial,
+  ].find((module) => module && module.supports && module.supports(mime)) || null;
+};
+
 /** Update the optional OWLAPI-style prettifier checkbox based on output format. */
 const updatePrettifierOption = ({ outputMime }) => {
   const checkbox = document.getElementById('prettifyRdfOutput');
   if (!checkbox) return;
 
-  const prettifier = window.RdfSerializationPrettifier;
-  const isSupported = !!(prettifier && prettifier.supportsInlineComments(outputMime));
+  const isSupported = !!getSugarSerial(outputMime);
   checkbox.disabled = !isSupported;
   checkbox.parentElement.style.opacity = isSupported ? '1' : '0.45';
 };
@@ -634,7 +642,8 @@ const setupEventHandlers = () => {
     N3: !!window.N3,
     jsonld: !!window.jsonld,
     rdflib: !!window.$rdf,
-    rdfPrettifier: !!window.RdfSerializationPrettifier,
+    n3SugarSerial: !!window.N3SugarSerial,
+    rdflibSugarSerial: !!window.RdflibSugarSerial,
   });
 
   let lastOutput = '';
@@ -673,12 +682,20 @@ const setupEventHandlers = () => {
       const baseIRI = 'http://example.org/';
 
       let out = await transformRDF({ file, inputMime, outputMime, baseIRI, logger });
+      const sugarSerial = getSugarSerial(outputMime);
       const shouldPrettify = !!(prettifyCheckbox && prettifyCheckbox.checked && !prettifyCheckbox.disabled);
-      if (shouldPrettify && window.RdfSerializationPrettifier) {
-        const result = window.RdfSerializationPrettifier.prettify({ text: out, mimeType: outputMime, baseIRI, logger });
+      if (shouldPrettify && sugarSerial) {
+        const result = sugarSerial.prettify({
+          text: out,
+          mimeType: outputMime,
+          sourceText: text,
+          sourceMimeType: inputMime,
+          baseIRI,
+          logger,
+        });
         out = result.text;
         if (!result.applied && result.warnings && result.warnings.length) {
-          logger.warn('Prettifier returned original output:', result.warnings.join('; '));
+          logger.warn('RDF serialization sugar returned original output:', result.warnings.join('; '));
         }
       }
       outputArea.value = out;

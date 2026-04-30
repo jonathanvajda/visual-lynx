@@ -58,6 +58,70 @@ function extractRdfXmlPrefixes(text) {
   return prefixes;
 }
 
+function normalizeNamespaceIri(iri) {
+  const text = String(iri || '').trim();
+  if (!text) return '';
+  return /[#/]$/.test(text) ? text : `${text}#`;
+}
+
+function repairRdfXmlUnqualifiedElements({ text, baseIRI }) {
+  if (typeof DOMParser === 'undefined' || typeof XMLSerializer === 'undefined') return text;
+
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(text, 'application/xml');
+  if (doc.querySelector('parsererror')) return text;
+
+  const root = doc.documentElement;
+  if (!root) return text;
+
+  const namespaceIri = normalizeNamespaceIri(baseIRI);
+  if (!namespaceIri) return text;
+
+  let prefix = 'base';
+  let suffix = 0;
+  while (root.getAttribute(`xmlns:${prefix}`) && root.getAttribute(`xmlns:${prefix}`) !== namespaceIri) {
+    suffix += 1;
+    prefix = `base${suffix}`;
+  }
+
+  let changed = false;
+  const replacementFor = (node) => {
+    const replacement = doc.createElementNS(namespaceIri, `${prefix}:${node.nodeName}`);
+
+    Array.from(node.attributes || []).forEach((attr) => {
+      if (attr.namespaceURI) {
+        replacement.setAttributeNS(attr.namespaceURI, attr.name, attr.value);
+      } else {
+        replacement.setAttribute(attr.name, attr.value);
+      }
+    });
+
+    while (node.firstChild) replacement.appendChild(node.firstChild);
+    return replacement;
+  };
+
+  const visit = (node) => {
+    Array.from(node.childNodes || []).forEach((child) => {
+      if (child.nodeType !== Node.ELEMENT_NODE) return;
+
+      if (!child.prefix && !child.namespaceURI) {
+        const replacement = replacementFor(child);
+        child.parentNode.replaceChild(replacement, child);
+        changed = true;
+        visit(replacement);
+      } else {
+        visit(child);
+      }
+    });
+  };
+
+  visit(root);
+  if (!changed) return text;
+
+  root.setAttribute(`xmlns:${prefix}`, namespaceIri);
+  return new XMLSerializer().serializeToString(doc);
+}
+
 export function createTransformer({ N3, jsonld, $rdf }) {
   function ensureLogger(logger) {
     return logger || defaultLogger();
@@ -198,10 +262,13 @@ export function createTransformer({ N3, jsonld, $rdf }) {
       if (!N3?.Store || !N3?.DataFactory) throw new Error('N3 library not available');
 
       const graph = $rdf.graph();
+      const rdfXmlText = globalThis.RdflibSugarSerial?.repairInput
+        ? globalThis.RdflibSugarSerial.repairInput({ text, mimeType: 'application/rdf+xml', baseIRI })
+        : repairRdfXmlUnqualifiedElements({ text, baseIRI });
 
       await new Promise((resolve, reject) => {
         try {
-          $rdf.parse(text, graph, baseIRI, 'application/rdf+xml', (err) => {
+          $rdf.parse(rdfXmlText, graph, baseIRI, 'application/rdf+xml', (err) => {
             if (err) reject(err);
             else resolve(true);
           });
@@ -223,6 +290,9 @@ export function createTransformer({ N3, jsonld, $rdf }) {
       log.info('Parsed RDF/XML via rdflib. Quads:', store.size);
       return { store, prefixes };
     } catch (error) {
+      if (/No namespace for html\b/i.test(error?.message || String(error))) {
+        throw new Error('RDF/XML parse failed on an unqualified <html> element. If this is BFO-2020.owl from a browser or GitHub page, download the raw .owl file. If it is XML-literal markup inside RDF/XML, refresh the tool so the RDFLib sugar repair module is loaded.');
+      }
       log.error('RDF/XML parse failed:', describeError(error));
       throw error;
     }

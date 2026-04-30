@@ -28,16 +28,20 @@ function setSelectedRadioValue(groupName, value) {
   if (radio) radio.checked = true;
 }
 
-function getSerializationPrettifier() {
-  return window.RdfSerializationPrettifier || null;
+function getSugarSerial(mimeType) {
+  const mime = normalizeMimeType(mimeType);
+  return [
+    window.N3SugarSerial,
+    window.RdflibSugarSerial,
+  ].find((module) => module?.supports?.(mime)) || null;
 }
 
 function updatePrettifierOption({ outputMime }) {
   const checkbox = document.getElementById('prettifyRdfOutput');
   if (!checkbox) return;
 
-  const prettifier = getSerializationPrettifier();
-  const isSupported = !!prettifier?.supportsInlineComments(outputMime);
+  const sugarSerial = getSugarSerial(outputMime);
+  const isSupported = !!sugarSerial;
 
   checkbox.disabled = !isSupported;
 
@@ -90,7 +94,8 @@ function setupEventHandlers() {
     N3: !!window.N3,
     jsonld: !!window.jsonld,
     rdflib: !!window.$rdf,
-    rdfSerializationPrettifier: !!getSerializationPrettifier(),
+    n3SugarSerial: !!window.N3SugarSerial,
+    rdflibSugarSerial: !!window.RdflibSugarSerial,
   });
 
   let lastOutput = '';
@@ -141,16 +146,16 @@ function setupEventHandlers() {
         logger,
       });
 
-      const prettifier = getSerializationPrettifier();
+      const sugarSerial = getSugarSerial(outputMime);
       const shouldPrettify = !!(
-        prettifier &&
+        sugarSerial &&
         prettifyCheckbox &&
         prettifyCheckbox.checked &&
         !prettifyCheckbox.disabled
       );
 
       if (shouldPrettify) {
-        const result = prettifier.prettify({
+        const result = sugarSerial.prettify({
           text: out,
           mimeType: outputMime,
           sourceText: text,
@@ -161,7 +166,7 @@ function setupEventHandlers() {
 
         out = result.text;
         if (!result.applied && result.warnings?.length) {
-          logger.warn('RDF serialization prettifier returned original output:', result.warnings.join('; '));
+          logger.warn('RDF serialization sugar returned original output:', result.warnings.join('; '));
         }
       }
 
