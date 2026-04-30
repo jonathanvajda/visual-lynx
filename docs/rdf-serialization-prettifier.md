@@ -1,27 +1,34 @@
 # RDF Serialization Prettifier
 
-`docs/app/rdf-serialization-prettifier.js` is a browser-friendly helper for adding OWLAPI-inspired organization to RDF serializations after a normal RDF transformation step.
+The RDF serialization sugar helpers are browser-friendly modules for adding OWLAPI-inspired organization to RDF serializations after a normal RDF transformation step.
 
-It is intentionally separate from `linked-data-transformer-functions.js` so other tools can reuse it without adopting the linked-data transformer UI.
+The code is split by serialization engine:
+
+- `docs/app/n3-sugar-serial.js` owns N3.js-supported serializations: Turtle, TriG, N-Triples, and N-Quads.
+- `docs/app/rdflib-sugar-serial.js` owns RDFLib/RDF-XML behavior, including XML repairs.
+
+These modules are intentionally separate from the linked-data transformer core and UI modules so other tools can reuse them without adopting the linked-data transformer interface.
 
 ## Load Order
 
-Load the RDF libraries first, then the prettifier, then the tool that calls it:
+Load the RDF libraries first, then the sugar modules, then the tool that calls them:
 
 ```html
 <script src="./app/n3.min.js"></script>
 <script src="./app/rdflib.min.js"></script>
-<script src="./app/rdf-serialization-prettifier.js"></script>
+<script src="./app/n3-sugar-serial.js"></script>
+<script src="./app/rdflib-sugar-serial.js"></script>
 ```
 
 `N3.js` is required for Turtle, TriG, N-Triples, and N-Quads prettification. RDF/XML prettification uses browser `DOMParser` and `XMLSerializer`.
 
 ## API
 
-The file exposes one global object:
+The focused modules expose two global objects:
 
 ```js
-window.RdfSerilalizationPrettifier
+window.N3SugarSerial
+window.RdflibSugarSerial
 ```
 
 ### `supportsInlineComments(mimeType)`
@@ -29,7 +36,7 @@ window.RdfSerilalizationPrettifier
 Returns `true` for output formats where inline comments are allowed:
 
 ```js
-const canPrettify = window.RdfSerilalizationPrettifier.supportsInlineComments('text/turtle');
+const canPrettify = window.N3SugarSerial.supports('text/turtle');
 ```
 
 Supported comment-capable formats:
@@ -57,7 +64,7 @@ Returns an object:
 Example:
 
 ```js
-const result = window.RdfSerilalizationPrettifier.prettify({
+const result = window.N3SugarSerial.prettify({
   text: serializedRdf,
   mimeType: 'text/turtle',
   baseIRI: 'https://example.org/my-ontology',
@@ -88,11 +95,21 @@ For Turtle and default-graph-only TriG, the helper:
 - sorts subjects by rendered name
 - sorts predicates alphabetically by rendered predicate
 
+Prefixes from the source document are preferred over the helper's built-in fallback prefixes. If a source file uses `dct:` for `http://purl.org/dc/terms/`, the helper should not also emit its fallback `dcterms:` prefix for the same namespace.
+
 For TriG with named graphs, the helper currently returns the original serialization and a warning so it does not erase graph names.
 
 For N-Triples and N-Quads, the helper can add comment headers and sort/group lines, but it keeps the line-based serialization style. These formats do not support prefixes or compact multi-predicate subject blocks.
 
 For RDF/XML, the helper inserts XML comment section headers and sorts top-level OWL entity elements when the RDF/XML contains direct OWL elements such as `<owl:Class>` or `<owl:ObjectProperty>`. RDF/XML emitted only as generic `<rdf:Description>` nodes is placed under extra axioms because the element type is not visible without reinterpreting the graph.
+
+The RDF/XML formatter also repairs a narrow serializer artifact where `rdf:parseType="Resource"` incorrectly wraps a single typed anonymous node such as `<owl:Class>`, `<owl:Restriction>`, or `<rdf:Description>`. Leaving that pattern intact causes OWL tooling to read the typed node element as a predicate instead of an anonymous class expression.
+
+Literal-only RDF/XML elements are kept inline, for example `<rdfs:label>Example</rdfs:label>`, so pretty-printing does not add indentation whitespace to annotation literal values.
+
+If the upstream serializer emits an unqualified property element such as `<style>` for a predicate in the base namespace, the formatter adds an explicit prefix and namespace declaration, for example `<base:style>`, so the result remains valid RDF/XML. Unqualified HTML-like elements inside `rdf:parseType="Literal"` content are treated as XHTML literal markup instead.
+
+The linked data transformer also applies this unqualified-element repair before parsing RDF/XML input, because rdflib rejects bare elements with errors such as `No namespace for style` or `No namespace for html`. If the document root is `<html>`, the tool reports that the selected file appears to be an HTML page rather than a raw ontology file.
 
 ## Integration Pattern
 
@@ -100,9 +117,13 @@ A reusable wrapper usually looks like this:
 
 ```js
 let serialized = await serializeRdfSomehow();
+const sugarSerial = [
+  window.N3SugarSerial,
+  window.RdflibSugarSerial,
+].find((module) => module?.supports?.(outputMime));
 
-if (window.RdfSerilalizationPrettifier.supportsInlineComments(outputMime)) {
-  const pretty = window.RdfSerilalizationPrettifier.prettify({
+if (sugarSerial) {
+  const pretty = sugarSerial.prettify({
     text: serialized,
     mimeType: outputMime,
     baseIRI,

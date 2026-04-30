@@ -37,6 +37,91 @@ function describeError(err) {
   }
 }
 
+function extractRdfXmlPrefixes(text) {
+  const prefixes = {};
+  const source = String(text || '');
+  const rootMatch = source.match(/<rdf:RDF\b[^>]*>/i) || source.match(/<[^!?][^>]*>/);
+  const root = rootMatch ? rootMatch[0] : '';
+  const attrPattern = /\sxmlns(?::([A-Za-z_][\w.-]*))?=(["'])(.*?)\2/g;
+  let match;
+
+  while ((match = attrPattern.exec(root)) !== null) {
+    const prefix = match[1] || '';
+    const iri = match[3];
+
+    if (!iri || iri.includes(':') && !/^[A-Za-z][A-Za-z0-9+.-]*:\/\//.test(iri) && !iri.startsWith('urn:')) {
+      continue;
+    }
+    prefixes[prefix] = iri;
+  }
+
+  return prefixes;
+}
+
+function normalizeNamespaceIri(iri) {
+  const text = String(iri || '').trim();
+  if (!text) return '';
+  return /[#/]$/.test(text) ? text : `${text}#`;
+}
+
+function repairRdfXmlUnqualifiedElements({ text, baseIRI }) {
+  if (typeof DOMParser === 'undefined' || typeof XMLSerializer === 'undefined') return text;
+
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(text, 'application/xml');
+  if (doc.querySelector('parsererror')) return text;
+
+  const root = doc.documentElement;
+  if (!root) return text;
+
+  const namespaceIri = normalizeNamespaceIri(baseIRI);
+  if (!namespaceIri) return text;
+
+  let prefix = 'base';
+  let suffix = 0;
+  while (root.getAttribute(`xmlns:${prefix}`) && root.getAttribute(`xmlns:${prefix}`) !== namespaceIri) {
+    suffix += 1;
+    prefix = `base${suffix}`;
+  }
+
+  let changed = false;
+  const replacementFor = (node) => {
+    const replacement = doc.createElementNS(namespaceIri, `${prefix}:${node.nodeName}`);
+
+    Array.from(node.attributes || []).forEach((attr) => {
+      if (attr.namespaceURI) {
+        replacement.setAttributeNS(attr.namespaceURI, attr.name, attr.value);
+      } else {
+        replacement.setAttribute(attr.name, attr.value);
+      }
+    });
+
+    while (node.firstChild) replacement.appendChild(node.firstChild);
+    return replacement;
+  };
+
+  const visit = (node) => {
+    Array.from(node.childNodes || []).forEach((child) => {
+      if (child.nodeType !== Node.ELEMENT_NODE) return;
+
+      if (!child.prefix && !child.namespaceURI) {
+        const replacement = replacementFor(child);
+        child.parentNode.replaceChild(replacement, child);
+        changed = true;
+        visit(replacement);
+      } else {
+        visit(child);
+      }
+    });
+  };
+
+  visit(root);
+  if (!changed) return text;
+
+  root.setAttribute(`xmlns:${prefix}`, namespaceIri);
+  return new XMLSerializer().serializeToString(doc);
+}
+
 export function createTransformer({ N3, jsonld, $rdf }) {
   function ensureLogger(logger) {
     return logger || defaultLogger();
@@ -128,23 +213,9 @@ export function createTransformer({ N3, jsonld, $rdf }) {
         ...(n3Format ? { format: n3Format } : {}),
       });
 
-      let parseError = null;
-
-      parser.parse(text, (error, quad, parsedPrefixes) => {
-        if (error) {
-          parseError = error;
-          return;
-        }
-        if (quad) {
-          store.addQuad(quad);
-          return;
-        }
-        if (parsedPrefixes && typeof parsedPrefixes === 'object') {
-          Object.assign(prefixes, parsedPrefixes);
-        }
-      });
-
-      if (parseError) throw parseError;
+      const quads = parser.parse(text);
+      quads.forEach((quad) => store.addQuad(quad));
+      Object.assign(prefixes, parser._prefixes || {});
 
       if (store.size === 0 && text.trim().length > 0) {
         log.warn('N3 parse produced 0 quads.');
@@ -191,10 +262,13 @@ export function createTransformer({ N3, jsonld, $rdf }) {
       if (!N3?.Store || !N3?.DataFactory) throw new Error('N3 library not available');
 
       const graph = $rdf.graph();
+      const rdfXmlText = globalThis.RdflibSugarSerial?.repairInput
+        ? globalThis.RdflibSugarSerial.repairInput({ text, mimeType: 'application/rdf+xml', baseIRI })
+        : repairRdfXmlUnqualifiedElements({ text, baseIRI });
 
       await new Promise((resolve, reject) => {
         try {
-          $rdf.parse(text, graph, baseIRI, 'application/rdf+xml', (err) => {
+          $rdf.parse(rdfXmlText, graph, baseIRI, 'application/rdf+xml', (err) => {
             if (err) reject(err);
             else resolve(true);
           });
@@ -212,9 +286,13 @@ export function createTransformer({ N3, jsonld, $rdf }) {
         store.addQuad(N3.DataFactory.quad(s, p, o));
       });
 
+      const prefixes = extractRdfXmlPrefixes(text);
       log.info('Parsed RDF/XML via rdflib. Quads:', store.size);
-      return { store, prefixes: {} };
+      return { store, prefixes };
     } catch (error) {
+      if (/No namespace for html\b/i.test(error?.message || String(error))) {
+        throw new Error('RDF/XML parse failed on an unqualified <html> element. If this is BFO-2020.owl from a browser or GitHub page, download the raw .owl file. If it is XML-literal markup inside RDF/XML, refresh the tool so the RDFLib sugar repair module is loaded.');
+      }
       log.error('RDF/XML parse failed:', describeError(error));
       throw error;
     }
@@ -298,13 +376,18 @@ export function createTransformer({ N3, jsonld, $rdf }) {
     }
   }
 
-  async function serializeToRdfXml({ store, baseIRI, logger }) {
+  async function serializeToRdfXml({ store, prefixes, baseIRI, logger }) {
     const log = ensureLogger(logger);
 
     try {
       if (!$rdf) throw new Error('rdflib ($rdf) not available');
 
       const graph = $rdf.graph();
+      if (prefixes && typeof graph.setPrefixForURI === 'function') {
+        Object.entries(prefixes).forEach(([prefix, iri]) => {
+          if (prefix && iri) graph.setPrefixForURI(prefix, iri);
+        });
+      }
 
       store.getQuads(null, null, null, null).forEach((q) => {
         graph.add(
@@ -396,7 +479,7 @@ export function createTransformer({ N3, jsonld, $rdf }) {
       return serializeToJsonLd({ store, logger });
     }
     if (mime === 'application/rdf+xml') {
-      return serializeToRdfXml({ store, baseIRI, logger });
+      return serializeToRdfXml({ store, prefixes, baseIRI, logger });
     }
     if (mime === 'text/turtle' || mimeToN3Format[mime]) {
       return serializeWithN3({ store, outputMime: mime, prefixes, logger });

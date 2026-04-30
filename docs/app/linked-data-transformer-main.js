@@ -28,6 +28,27 @@ function setSelectedRadioValue(groupName, value) {
   if (radio) radio.checked = true;
 }
 
+function getSugarSerial(mimeType) {
+  const mime = normalizeMimeType(mimeType);
+  return [
+    window.N3SugarSerial,
+    window.RdflibSugarSerial,
+  ].find((module) => module?.supports?.(mime)) || null;
+}
+
+function updatePrettifierOption({ outputMime }) {
+  const checkbox = document.getElementById('prettifyRdfOutput');
+  if (!checkbox) return;
+
+  const sugarSerial = getSugarSerial(outputMime);
+  const isSupported = !!sugarSerial;
+
+  checkbox.disabled = !isSupported;
+
+  const wrapper = checkbox.parentElement;
+  if (wrapper) wrapper.style.opacity = isSupported ? '1' : '0.45';
+}
+
 function updateOutputOptions({ inputMime, logger }) {
   const supported = supportedConversions[normalizeMimeType(inputMime)] || [];
   const outputs = document.querySelectorAll('input[name="output"]');
@@ -45,6 +66,7 @@ function updateOutputOptions({ inputMime, logger }) {
     if (supported.length) setSelectedRadioValue('output', supported[0]);
   }
 
+  updatePrettifierOption({ outputMime: getSelectedRadioValue('output') });
   logger.info('Updated output options for input:', inputMime, 'Allowed:', supported);
 }
 
@@ -61,6 +83,7 @@ function setupEventHandlers() {
   const transformBtn = document.getElementById('transformBtn');
   const downloadBtn = document.getElementById('downloadBtn');
   const outputArea = document.getElementById('outputArea');
+  const prettifyCheckbox = document.getElementById('prettifyRdfOutput');
 
   if (!fileInput || !transformBtn || !downloadBtn || !outputArea) {
     logger.error('Missing expected DOM elements.');
@@ -71,6 +94,8 @@ function setupEventHandlers() {
     N3: !!window.N3,
     jsonld: !!window.jsonld,
     rdflib: !!window.$rdf,
+    n3SugarSerial: !!window.N3SugarSerial,
+    rdflibSugarSerial: !!window.RdflibSugarSerial,
   });
 
   let lastOutput = '';
@@ -79,6 +104,12 @@ function setupEventHandlers() {
   document.querySelectorAll('input[name="input"]').forEach((radio) => {
     radio.addEventListener('change', () => {
       updateOutputOptions({ inputMime: radio.value, logger });
+    });
+  });
+
+  document.querySelectorAll('input[name="output"]').forEach((radio) => {
+    radio.addEventListener('change', () => {
+      updatePrettifierOption({ outputMime: radio.value });
     });
   });
 
@@ -107,13 +138,37 @@ function setupEventHandlers() {
 
       const text = await readFileAsText(file);
 
-      const out = await transformer.transformText({
+      let out = await transformer.transformText({
         text,
         inputMime,
         outputMime,
         baseIRI,
         logger,
       });
+
+      const sugarSerial = getSugarSerial(outputMime);
+      const shouldPrettify = !!(
+        sugarSerial &&
+        prettifyCheckbox &&
+        prettifyCheckbox.checked &&
+        !prettifyCheckbox.disabled
+      );
+
+      if (shouldPrettify) {
+        const result = sugarSerial.prettify({
+          text: out,
+          mimeType: outputMime,
+          sourceText: text,
+          sourceMimeType: inputMime,
+          baseIRI,
+          logger,
+        });
+
+        out = result.text;
+        if (!result.applied && result.warnings?.length) {
+          logger.warn('RDF serialization sugar returned original output:', result.warnings.join('; '));
+        }
+      }
 
       outputArea.value = out;
       lastOutput = out;
