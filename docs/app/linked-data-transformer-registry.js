@@ -1,6 +1,9 @@
 // ./docs/app/linked-data-transformer-registry.js
 
 export function normalizeMimeType(mimeType) {
+  const normalized = globalThis.FormatRegistry?.normalizeSupportedMimeType?.(mimeType);
+  if (normalized?.ok) return normalized.value.mimeType;
+
   const lower = (mimeType || '').toString().trim().toLowerCase();
 
   if (!lower) return '';
@@ -37,18 +40,25 @@ export const extensionToMime = Object.freeze({
   '.trig': 'application/trig',
   '.jsonld': 'application/ld+json',
   '.json-ld': 'application/ld+json',
+  '.json': 'application/ld+json',
   '.rdf': 'application/rdf+xml',
   '.owl': 'application/rdf+xml',
   '.xml': 'application/rdf+xml',
 });
 
 export function guessInputMimeFromFilename(filename) {
+  const detected = globalThis.FormatRegistry?.getSupportedMimeTypeForFilename?.(filename);
+  if (detected?.ok && detected.value.category === 'rdf') return detected.value.mimeType;
+
   const lower = (filename || '').toLowerCase();
   const match = Object.entries(extensionToMime).find(([ext]) => lower.endsWith(ext));
   return match ? match[1] : null;
 }
 
 export function getDownloadExtension(mimeType) {
+  const preferred = globalThis.FormatRegistry?.getPreferredExtensionForMimeType?.(mimeType);
+  if (preferred?.ok) return preferred.value;
+
   const normalized = normalizeMimeType(mimeType);
   return ({
     'application/n-triples': 'nt',

@@ -10,6 +10,11 @@ export function readFileAsText(file) {
 }
 
 export function downloadContent({ content, filename, mimeType = 'text/plain' }) {
+  if (globalThis.FormatRegistry?.downloadTextFile) {
+    globalThis.FormatRegistry.downloadTextFile(filename, content, { mimeType });
+    return;
+  }
+
   const blob = new Blob([content], { type: mimeType });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
