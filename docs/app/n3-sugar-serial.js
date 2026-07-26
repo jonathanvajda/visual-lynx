@@ -7,6 +7,11 @@
  * - prettify({ text, mimeType, baseIRI, logger })
  * - extractPrefixes({ text, mimeType })
  */
+import { namespacePrefixMapFromRegistry } from './shared/namespace-registry/namespace-registry.js';
+import { normalizePrefixMap } from './shared/namespace-registry/prefix-map.js';
+import { compactIriToCurie, findLongestPrefixMatch } from './shared/namespace-registry/curie.js';
+import { extractTurtlePrefixDeclarations } from './shared/namespace-registry/rdf-prefixes.js';
+
 (function (global) {
   'use strict';
 
@@ -31,15 +36,7 @@
     { key: 'individuals', label: 'Individuals', iri: `${OWL}NamedIndividual` },
   ]);
 
-  const DEFAULT_PREFIXES = Object.freeze({
-    dc: DC,
-    dcterms: DCTERMS,
-    owl: OWL,
-    rdf: RDF,
-    rdfs: RDFS,
-    skos: SKOS,
-    xsd: XSD,
-  });
+  const DEFAULT_PREFIXES = namespacePrefixMapFromRegistry();
 
   const normalizeMimeType = (mimeType) => {
     const lower = String(mimeType || '').trim().toLowerCase();
@@ -93,18 +90,7 @@
     const mime = normalizeMimeType(mimeType);
     if (mime !== 'text/turtle' && mime !== 'application/trig') return {};
 
-    const prefixes = {};
-    const source = String(text || '');
-    const prefixPattern = /(?:@prefix\s+([A-Za-z_][\w.-]*|):\s*<([^>]+)>\s*\.|PREFIX\s+([A-Za-z_][\w.-]*|):\s*<([^>]+)>)/gi;
-    let match;
-
-    while ((match = prefixPattern.exec(source)) !== null) {
-      const prefix = match[1] ?? match[3] ?? '';
-      const iri = match[2] ?? match[4] ?? '';
-      prefixes[prefix] = iri;
-    }
-
-    return prefixes;
+    return extractTurtlePrefixDeclarations(text);
   };
 
   const getPrefixes = (parsedPrefixes) => {
@@ -116,7 +102,7 @@
       const alreadyNamed = Object.values(prefixes).some((existingIri) => existingIri === iri);
       if (!alreadyNamed && !prefixes[key]) prefixes[key] = iri;
     });
-    return prefixes;
+    return normalizePrefixMap(prefixes).prefixes;
   };
 
   const prefixEntries = (prefixes) => Object.entries(prefixes || {})
@@ -124,14 +110,13 @@
     .sort((a, b) => b[1].length - a[1].length || a[0].localeCompare(b[0]));
 
   const namedNodeToText = (iri, prefixes) => {
-    const match = prefixEntries(prefixes).find(([prefix, ns]) => {
-      if (!iri.startsWith(ns)) return false;
-      const local = iri.slice(ns.length);
-      return /^[A-Za-z_][A-Za-z0-9._-]*$/.test(local) || (prefix === '' && local);
-    });
-    if (match) {
-      const [prefix, ns] = match;
-      return `${prefix ? `${prefix}:` : ':'}${iri.slice(ns.length)}`;
+    const compacted = compactIriToCurie(iri, prefixes);
+    if (compacted.ok) return compacted.value;
+
+    const match = findLongestPrefixMatch(iri, prefixes);
+    if (match.ok) {
+      const local = iri.slice(match.namespaceIri.length);
+      if (match.prefix === '' && local) return `:${local}`;
     }
     return `<${escapeIri(iri)}>`;
   };

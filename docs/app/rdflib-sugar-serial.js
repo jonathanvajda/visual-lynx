@@ -8,6 +8,13 @@
  * - prettify({ text, mimeType, sourceText, sourceMimeType, baseIRI, logger })
  * - extractPrefixes({ text, mimeType })
  */
+import { namespacePrefixMapFromRegistry } from './shared/namespace-registry/namespace-registry.js';
+import {
+  extractTurtlePrefixDeclarations,
+  extractXmlNamespacePrefixes
+} from './shared/namespace-registry/rdf-prefixes.js';
+import { normalizePrefixMap } from './shared/namespace-registry/prefix-map.js';
+
 (function (global) {
   'use strict';
 
@@ -28,15 +35,7 @@
     { key: 'individuals', label: 'Individuals', iri: `${OWL}NamedIndividual` },
   ]);
 
-  const DEFAULT_PREFIXES = Object.freeze({
-    dc: DC,
-    dcterms: DCTERMS,
-    owl: OWL,
-    rdf: RDF,
-    rdfs: RDFS,
-    skos: SKOS,
-    xsd: XSD,
-  });
+  const DEFAULT_PREFIXES = namespacePrefixMapFromRegistry();
 
   const HTML_LITERAL_ELEMENTS = new Set([
     'a',
@@ -95,38 +94,11 @@
   };
 
   const extractTurtlePrefixes = (text) => {
-    const prefixes = {};
-    const source = String(text || '');
-    const prefixPattern = /(?:@prefix\s+([A-Za-z_][\w.-]*|):\s*<([^>]+)>\s*\.|PREFIX\s+([A-Za-z_][\w.-]*|):\s*<([^>]+)>)/gi;
-    let match;
-
-    while ((match = prefixPattern.exec(source)) !== null) {
-      const prefix = match[1] ?? match[3] ?? '';
-      const iri = match[2] ?? match[4] ?? '';
-      prefixes[prefix] = iri;
-    }
-
-    return prefixes;
+    return extractTurtlePrefixDeclarations(text);
   };
 
   const extractRdfXmlPrefixes = (text) => {
-    const prefixes = {};
-    const source = String(text || '');
-    const rootMatch = source.match(/<rdf:RDF\b[^>]*>/i) || source.match(/<[^!?][^>]*>/);
-    const root = rootMatch ? rootMatch[0] : '';
-    const attrPattern = /\sxmlns(?::([A-Za-z_][\w.-]*))?=(["'])(.*?)\2/g;
-    let match;
-
-    while ((match = attrPattern.exec(root)) !== null) {
-      const prefix = match[1] || '';
-      const iri = match[3];
-      if (!iri || (iri.includes(':') && !/^[A-Za-z][A-Za-z0-9+.-]*:\/\//.test(iri) && !iri.startsWith('urn:'))) {
-        continue;
-      }
-      prefixes[prefix] = iri;
-    }
-
-    return prefixes;
+    return normalizePrefixMap(extractXmlNamespacePrefixes(text)).prefixes;
   };
 
   const extractPrefixes = ({ text, mimeType } = {}) => {

@@ -1,4 +1,10 @@
 
+import { normalizePrefixMap } from './shared/namespace-registry/prefix-map.js';
+import {
+  createN3WriterOptionsWithPrefixes
+} from './shared/namespace-registry/rdf-serialization-prefixes.js';
+import { extractXmlNamespacePrefixes } from './shared/namespace-registry/rdf-prefixes.js';
+
 /* linked-data-transformer-functions.hybrid.js
  * Hybrid RDF transformer (client-side):
  * - N3.js for Turtle / N-Triples / TriG (+ N-Quads bridging)
@@ -144,26 +150,7 @@ const describeError = (err) => {
   }
 };
 
-const extractRdfXmlPrefixes = (text) => {
-  const prefixes = {};
-  const source = String(text || '');
-  const rootMatch = source.match(/<rdf:RDF\b[^>]*>/i) || source.match(/<[^!?][^>]*>/);
-  const root = rootMatch ? rootMatch[0] : '';
-  const attrPattern = /\sxmlns(?::([A-Za-z_][\w.-]*))?=(["'])(.*?)\2/g;
-  let match;
-
-  while ((match = attrPattern.exec(root)) !== null) {
-    const prefix = match[1] || '';
-    const iri = match[3];
-
-    if (!iri || (iri.includes(':') && !/^[A-Za-z][A-Za-z0-9+.-]*:\/\//.test(iri) && !iri.startsWith('urn:'))) {
-      continue;
-    }
-    prefixes[prefix] = iri;
-  }
-
-  return prefixes;
-};
+const extractRdfXmlPrefixes = (text) => normalizePrefixMap(extractXmlNamespacePrefixes(text)).prefixes;
 
 /** Convert an RDFJS term to an rdflib.js term. */
 const rdfjsTermToRdflib = (term) => {
@@ -204,7 +191,7 @@ const parseWithN3 = ({ text, n3Format, baseIRI, logger }) => {
 
     const quads = parser.parse(text);
     quads.forEach((quad) => store.addQuad(quad));
-    Object.assign(prefixes, parser._prefixes || {});
+    Object.assign(prefixes, normalizePrefixMap(parser._prefixes || {}).prefixes);
 
     if (store.size === 0 && text.trim().length > 0) {
       logger.warn('N3 parse produced 0 quads. If this file is not empty, check N3 version/format settings.');
@@ -313,7 +300,7 @@ const serializeWithN3 = async ({ store, outputMime, prefixes, logger }) => {
     const writer = format ? new N3.Writer({ format }) : new N3.Writer();
 
     if ((outputMime === 'text/turtle' || outputMime === 'application/trig') && prefixes && Object.keys(prefixes).length) {
-      writer.addPrefixes(prefixes);
+      writer.addPrefixes(createN3WriterOptionsWithPrefixes({ prefixes }).value.prefixes);
     }
 
     const quads = store.getQuads(null, null, null, null);

@@ -102,6 +102,11 @@
 
     <!-- App Local CSS -->
     <link rel="stylesheet" href="./styles/linked-data-transformer.css" />
+    <link rel="modulepreload" href="./app/shared/namespace-registry/namespace-registry.js" />
+    <link rel="modulepreload" href="./app/shared/namespace-registry/prefix-map.js" />
+    <link rel="modulepreload" href="./app/shared/namespace-registry/curie.js" />
+    <link rel="modulepreload" href="./app/shared/namespace-registry/rdf-prefixes.js" />
+    <link rel="modulepreload" href="./app/shared/namespace-registry/rdf-serialization-prefixes.js" />
 </head>
 
 <body data-page-id="linked-data-transformer" >
@@ -215,8 +220,8 @@
   <script src="./app/shared/format-registry/browser-global.js"></script>
 
   <!-- App logic -->
-  <script src="./app/n3-sugar-serial.js"></script>
-  <script src="./app/rdflib-sugar-serial.js"></script>
+  <script type="module" src="./app/n3-sugar-serial.js"></script>
+  <script type="module" src="./app/rdflib-sugar-serial.js"></script>
   <script type="module" src="./app/linked-data-transformer-main.js"></script>
 </body>
 </html>

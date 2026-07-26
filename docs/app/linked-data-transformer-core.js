@@ -1,6 +1,12 @@
 // docs/app/linked-data-transformer-core.js
 
 import { normalizeMimeType } from './linked-data-transformer-registry.js';
+import { normalizePrefixMap } from './shared/namespace-registry/prefix-map.js';
+import { extractXmlNamespacePrefixes } from './shared/namespace-registry/rdf-prefixes.js';
+import {
+  createN3WriterOptionsWithPrefixes,
+  applyPrefixesToRdflibStore
+} from './shared/namespace-registry/rdf-serialization-prefixes.js';
 
 const mimeToN3Format = Object.freeze({
   'application/n-triples': 'N-Triples',
@@ -38,24 +44,7 @@ function describeError(err) {
 }
 
 function extractRdfXmlPrefixes(text) {
-  const prefixes = {};
-  const source = String(text || '');
-  const rootMatch = source.match(/<rdf:RDF\b[^>]*>/i) || source.match(/<[^!?][^>]*>/);
-  const root = rootMatch ? rootMatch[0] : '';
-  const attrPattern = /\sxmlns(?::([A-Za-z_][\w.-]*))?=(["'])(.*?)\2/g;
-  let match;
-
-  while ((match = attrPattern.exec(root)) !== null) {
-    const prefix = match[1] || '';
-    const iri = match[3];
-
-    if (!iri || iri.includes(':') && !/^[A-Za-z][A-Za-z0-9+.-]*:\/\//.test(iri) && !iri.startsWith('urn:')) {
-      continue;
-    }
-    prefixes[prefix] = iri;
-  }
-
-  return prefixes;
+  return normalizePrefixMap(extractXmlNamespacePrefixes(text)).prefixes;
 }
 
 function normalizeNamespaceIri(iri) {
@@ -215,7 +204,7 @@ export function createTransformer({ N3, jsonld, $rdf }) {
 
       const quads = parser.parse(text);
       quads.forEach((quad) => store.addQuad(quad));
-      Object.assign(prefixes, parser._prefixes || {});
+      Object.assign(prefixes, normalizePrefixMap(parser._prefixes || {}).prefixes);
 
       if (store.size === 0 && text.trim().length > 0) {
         log.warn('N3 parse produced 0 quads.');
@@ -335,7 +324,7 @@ export function createTransformer({ N3, jsonld, $rdf }) {
       if ((outputMime === 'text/turtle' || outputMime === 'application/trig') &&
           prefixes &&
           Object.keys(prefixes).length) {
-        writer.addPrefixes(prefixes);
+        writer.addPrefixes(createN3WriterOptionsWithPrefixes({ prefixes }).value.prefixes);
       }
 
       writer.addQuads(store.getQuads(null, null, null, null));
@@ -383,11 +372,7 @@ export function createTransformer({ N3, jsonld, $rdf }) {
       if (!$rdf) throw new Error('rdflib ($rdf) not available');
 
       const graph = $rdf.graph();
-      if (prefixes && typeof graph.setPrefixForURI === 'function') {
-        Object.entries(prefixes).forEach(([prefix, iri]) => {
-          if (prefix && iri) graph.setPrefixForURI(prefix, iri);
-        });
-      }
+      applyPrefixesToRdflibStore(graph, prefixes || {});
 
       store.getQuads(null, null, null, null).forEach((q) => {
         graph.add(
