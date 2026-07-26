@@ -1,7 +1,12 @@
 // ./docs/app/linked-data-transformer-registry.js
+import {
+  getPreferredExtensionForMimeType,
+  getSupportedMimeTypeForFilename,
+  normalizeSupportedMimeType
+} from './shared/format-registry/mime-registry.js';
 
 export function normalizeMimeType(mimeType) {
-  const normalized = globalThis.FormatRegistry?.normalizeSupportedMimeType?.(mimeType);
+  const normalized = normalizeSupportedMimeType(mimeType);
   if (normalized?.ok) return normalized.value.mimeType;
 
   const lower = (mimeType || '').toString().trim().toLowerCase();
@@ -47,7 +52,7 @@ export const extensionToMime = Object.freeze({
 });
 
 export function guessInputMimeFromFilename(filename) {
-  const detected = globalThis.FormatRegistry?.getSupportedMimeTypeForFilename?.(filename);
+  const detected = getSupportedMimeTypeForFilename(filename);
   if (detected?.ok && detected.value.category === 'rdf') return detected.value.mimeType;
 
   const lower = (filename || '').toLowerCase();
@@ -56,7 +61,7 @@ export function guessInputMimeFromFilename(filename) {
 }
 
 export function getDownloadExtension(mimeType) {
-  const preferred = globalThis.FormatRegistry?.getPreferredExtensionForMimeType?.(mimeType);
+  const preferred = getPreferredExtensionForMimeType(mimeType);
   if (preferred?.ok) return preferred.value;
 
   const normalized = normalizeMimeType(mimeType);

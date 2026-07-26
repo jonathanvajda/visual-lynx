@@ -1,4 +1,5 @@
 // docs/app/linked-data-transformer-browser.js
+import { downloadTextFile } from './shared/format-registry/browser-file-actions.js';
 
 export function readFileAsText(file) {
   return new Promise((resolve, reject) => {
@@ -10,16 +11,5 @@ export function readFileAsText(file) {
 }
 
 export function downloadContent({ content, filename, mimeType = 'text/plain' }) {
-  if (globalThis.FormatRegistry?.downloadTextFile) {
-    globalThis.FormatRegistry.downloadTextFile(filename, content, { mimeType });
-    return;
-  }
-
-  const blob = new Blob([content], { type: mimeType });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = filename;
-  a.click();
-  URL.revokeObjectURL(url);
+  downloadTextFile(filename, content, { mimeType });
 }
