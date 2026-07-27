@@ -1,13 +1,11 @@
 // docs/app/linked-data-transformer-browser.js
-import { downloadTextFile } from './shared/format-registry/browser-file-actions.js';
+import {
+  downloadTextFile,
+  readFileAsText as readBrowserFileAsText
+} from './shared/browser-file-io/index.js';
 
 export function readFileAsText(file) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onerror = () => reject(new Error('File read error'));
-    reader.onload = () => resolve(String(reader.result || ''));
-    reader.readAsText(file);
-  });
+  return readBrowserFileAsText(file);
 }
 
 export function downloadContent({ content, filename, mimeType = 'text/plain' }) {

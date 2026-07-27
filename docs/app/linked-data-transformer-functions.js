@@ -4,6 +4,10 @@ import {
   createN3WriterOptionsWithPrefixes
 } from './shared/namespace-registry/rdf-serialization-prefixes.js';
 import { extractXmlNamespacePrefixes } from './shared/namespace-registry/rdf-prefixes.js';
+import {
+  downloadTextFile,
+  readFileAsText
+} from './shared/browser-file-io/index.js';
 
 /* linked-data-transformer-functions.hybrid.js
  * Hybrid RDF transformer (client-side):
@@ -446,15 +450,6 @@ const storeToMermaid = ({ store }) => {
 };
 
 /* ------------------------- UI utilities ------------------------- */
-/** Read a File object as text (impure). */
-const readFileAsText = (file) =>
-  new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onerror = () => reject(new Error('File read error'));
-    reader.onload = () => resolve(String(reader.result || ''));
-    reader.readAsText(file);
-  });
-
 /** Get selected radio value for a group (impure). */
 const getSelectedRadioValue = (groupName) => {
   const selected = document.querySelector(`input[name="${groupName}"]:checked`);
@@ -515,13 +510,7 @@ const updateOutputOptions = ({ inputMime, logger }) => {
 
 /** Create a downloadable file (impure). */
 const downloadContent = ({ content, filename, mimeType }) => {
-  const blob = new Blob([content], { type: mimeType || 'text/plain' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = filename;
-  a.click();
-  URL.revokeObjectURL(url);
+  downloadTextFile(filename, content, { mimeType: mimeType || 'text/plain' });
 };
 
 /* ------------------------- Capability matrix ------------------------- */
@@ -587,6 +576,7 @@ const transformRDF = async ({ file, inputMime, outputMime, baseIRI, logger }) =>
     if (!outputMime) throw new Error('No output format selected');
 
     logger.info('Reading file:', file.name);
+    // Browser file I/O stops here; parse/convert/serialize contracts should be promoted separately.
     const text = await readFileAsText(file);
 
     logger.info('Parsing as:', inputMime);
