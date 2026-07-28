@@ -1,0 +1,28 @@
+{
+  "name": "visual-lynx",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "test:coverage": "npm test -- --coverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jonathanvajda/visual-lynx.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/jonathanvajda/visual-lynx/issues"
+  },
+  "homepage": "https://github.com/jonathanvajda/visual-lynx#readme",
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+}
