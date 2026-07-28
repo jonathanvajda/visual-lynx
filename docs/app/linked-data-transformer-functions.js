@@ -1,5 +1,6 @@
 
 import { normalizePrefixMap } from './shared/namespace-registry/prefix-map.js';
+import { COMMON_NAMESPACE_IRIS } from './shared/namespace-registry/namespace-registry.js';
 import {
   createN3WriterOptionsWithPrefixes
 } from './shared/namespace-registry/rdf-serialization-prefixes.js';
@@ -22,6 +23,8 @@ import {
  */
 
 /* ------------------------- Logging helpers ------------------------- */
+const NS = COMMON_NAMESPACE_IRIS;
+
 /** Create a structured logger (info/warn/error). */
 const makeLogger = (scope = 'ldt') => ({
   info: (...args) => console.info(`[${scope}]`, ...args),
@@ -89,10 +92,9 @@ const rdflibTermToRdfjs = (term, storeForCollections) => {
     if (!storeForCollections || !N3 || !N3.Store) {
       throw new Error('Internal error: store required to expand rdflib Collection');
     }
-    const RDF_NS = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#';
-    const rdfFirst = DF.namedNode(`${RDF_NS}first`);
-    const rdfRest = DF.namedNode(`${RDF_NS}rest`);
-    const rdfNil = DF.namedNode(`${RDF_NS}nil`);
+    const rdfFirst = DF.namedNode(NS.rdf.first);
+    const rdfRest = DF.namedNode(NS.rdf.rest);
+    const rdfNil = DF.namedNode(NS.rdf.nil);
 
     const elements = Array.isArray(col.elements) ? col.elements : [];
     if (!elements.length) return rdfNil;
@@ -120,7 +122,7 @@ const rdflibTermToRdfjs = (term, storeForCollections) => {
     case 'BlankNode':
       return DF.blankNode(term.value);
     case 'Literal': {
-      const dt = term.datatype && term.datatype.value ? term.datatype.value : 'http://www.w3.org/2001/XMLSchema#string';
+      const dt = term.datatype && term.datatype.value ? term.datatype.value : NS.xsd.string;
       const lang = term.language || '';
       return lang ? DF.literal(term.value, lang) : DF.literal(term.value, DF.namedNode(dt));
     }
@@ -170,7 +172,7 @@ const rdfjsTermToRdflib = (term) => {
       return $rdf.blankNode(term.value);
     case 'Literal': {
       const lang = term.language || '';
-      const dt = term.datatype && term.datatype.value ? term.datatype.value : 'http://www.w3.org/2001/XMLSchema#string';
+      const dt = term.datatype && term.datatype.value ? term.datatype.value : NS.xsd.string;
       return lang ? $rdf.literal(term.value, lang) : $rdf.literal(term.value, $rdf.sym(dt));
     }
     default:

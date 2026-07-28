@@ -1,6 +1,7 @@
 // docs/app/linked-data-transformer-core.js
 
 import { normalizeMimeType } from './linked-data-transformer-registry.js';
+import { COMMON_NAMESPACE_IRIS } from './shared/namespace-registry/namespace-registry.js';
 import { normalizePrefixMap } from './shared/namespace-registry/prefix-map.js';
 import { extractXmlNamespacePrefixes } from './shared/namespace-registry/rdf-prefixes.js';
 import {
@@ -17,6 +18,7 @@ const mimeToN3Format = Object.freeze({
   'application/trig': 'application/trig',
   'application/n-quads': 'N-Quads',
 });
+const NS = COMMON_NAMESPACE_IRIS;
 
 function defaultLogger() {
   return {
@@ -130,10 +132,9 @@ export function createTransformer({ N3, jsonld, $rdf }) {
         throw new Error('storeForCollections is required for rdflib Collection');
       }
 
-      const RDF_NS = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#';
-      const rdfFirst = DF.namedNode(`${RDF_NS}first`);
-      const rdfRest = DF.namedNode(`${RDF_NS}rest`);
-      const rdfNil = DF.namedNode(`${RDF_NS}nil`);
+      const rdfFirst = DF.namedNode(NS.rdf.first);
+      const rdfRest = DF.namedNode(NS.rdf.rest);
+      const rdfNil = DF.namedNode(NS.rdf.nil);
 
       const elements = Array.isArray(col.elements) ? col.elements : [];
       if (!elements.length) return rdfNil;
@@ -162,7 +163,7 @@ export function createTransformer({ N3, jsonld, $rdf }) {
       case 'BlankNode':
         return DF.blankNode(term.value);
       case 'Literal': {
-        const dt = term.datatype?.value || 'http://www.w3.org/2001/XMLSchema#string';
+        const dt = term.datatype?.value || NS.xsd.string;
         const lang = term.language || '';
         return lang ? DF.literal(term.value, lang) : DF.literal(term.value, DF.namedNode(dt));
       }
@@ -184,7 +185,7 @@ export function createTransformer({ N3, jsonld, $rdf }) {
         return $rdf.blankNode(term.value);
       case 'Literal': {
         const lang = term.language || '';
-        const dt = term.datatype?.value || 'http://www.w3.org/2001/XMLSchema#string';
+        const dt = term.datatype?.value || NS.xsd.string;
         return lang ? $rdf.literal(term.value, lang) : $rdf.literal(term.value, $rdf.sym(dt));
       }
       default:

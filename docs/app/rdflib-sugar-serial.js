@@ -8,7 +8,10 @@
  * - prettify({ text, mimeType, sourceText, sourceMimeType, baseIRI, logger })
  * - extractPrefixes({ text, mimeType })
  */
-import { namespacePrefixMapFromRegistry } from './shared/namespace-registry/namespace-registry.js';
+import {
+  COMMON_NAMESPACE_IRIS,
+  namespacePrefixMapFromRegistry
+} from './shared/namespace-registry/namespace-registry.js';
 import {
   extractTurtlePrefixDeclarations,
   extractXmlNamespacePrefixes
@@ -18,24 +21,19 @@ import { normalizePrefixMap } from './shared/namespace-registry/prefix-map.js';
 (function (global) {
   'use strict';
 
-  const RDF = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#';
-  const RDFS = 'http://www.w3.org/2000/01/rdf-schema#';
-  const OWL = 'http://www.w3.org/2002/07/owl#';
-  const XSD = 'http://www.w3.org/2001/XMLSchema#';
-  const XHTML = 'http://www.w3.org/1999/xhtml';
-  const DC = 'http://purl.org/dc/elements/1.1/';
-  const DCTERMS = 'http://purl.org/dc/terms/';
-  const SKOS = 'http://www.w3.org/2004/02/skos/core#';
+  const NS = COMMON_NAMESPACE_IRIS;
+  const STANDARD_PREFIXES = namespacePrefixMapFromRegistry();
+  const XHTML = STANDARD_PREFIXES.xhtml;
 
   const SECTION_TYPES = Object.freeze([
-    { key: 'annotationProperties', label: 'Annotation properties', iri: `${OWL}AnnotationProperty` },
-    { key: 'dataProperties', label: 'Datatype properties', iri: `${OWL}DatatypeProperty` },
-    { key: 'objectProperties', label: 'Object Properties', iri: `${OWL}ObjectProperty` },
-    { key: 'classes', label: 'Classes', iri: `${OWL}Class` },
-    { key: 'individuals', label: 'Individuals', iri: `${OWL}NamedIndividual` },
+    { key: 'annotationProperties', label: 'Annotation properties', iri: NS.owl.AnnotationProperty },
+    { key: 'dataProperties', label: 'Datatype properties', iri: NS.owl.DatatypeProperty },
+    { key: 'objectProperties', label: 'Object Properties', iri: NS.owl.ObjectProperty },
+    { key: 'classes', label: 'Classes', iri: NS.owl.Class },
+    { key: 'individuals', label: 'Individuals', iri: NS.owl.NamedIndividual },
   ]);
 
-  const DEFAULT_PREFIXES = namespacePrefixMapFromRegistry();
+  const DEFAULT_PREFIXES = STANDARD_PREFIXES;
 
   const HTML_LITERAL_ELEMENTS = new Set([
     'a',
@@ -119,8 +117,8 @@ import { normalizePrefixMap } from './shared/namespace-registry/prefix-map.js';
   ].join('\n');
 
   const elementKey = (node) => {
-    const about = node.getAttribute('rdf:about') || node.getAttributeNS(RDF, 'about') || '';
-    const resource = node.getAttribute('rdf:resource') || node.getAttributeNS(RDF, 'resource') || '';
+    const about = node.getAttribute('rdf:about') || node.getAttributeNS(STANDARD_PREFIXES.rdf, 'about') || '';
+    const resource = node.getAttribute('rdf:resource') || node.getAttributeNS(STANDARD_PREFIXES.rdf, 'resource') || '';
     return (about || resource || node.localName || node.nodeName).toLowerCase();
   };
 
@@ -216,13 +214,13 @@ import { normalizePrefixMap } from './shared/namespace-registry/prefix-map.js';
 
   const getRdfAttribute = (node, localName) => {
     if (!node || node.nodeType !== Node.ELEMENT_NODE) return '';
-    return node.getAttribute(`rdf:${localName}`) || node.getAttributeNS(RDF, localName) || '';
+    return node.getAttribute(`rdf:${localName}`) || node.getAttributeNS(STANDARD_PREFIXES.rdf, localName) || '';
   };
 
   const removeRdfAttribute = (node, localName) => {
     if (!node || node.nodeType !== Node.ELEMENT_NODE) return;
     node.removeAttribute(`rdf:${localName}`);
-    node.removeAttributeNS(RDF, localName);
+    node.removeAttributeNS(STANDARD_PREFIXES.rdf, localName);
   };
 
   const meaningfulChildren = (node) => Array.from(node.childNodes || []).filter((child) => {
@@ -232,8 +230,8 @@ import { normalizePrefixMap } from './shared/namespace-registry/prefix-map.js';
 
   const isTypedBlankNodeElement = (node) => {
     if (!node || node.nodeType !== Node.ELEMENT_NODE) return false;
-    if (node.namespaceURI === RDF && node.localName === 'Description') return true;
-    return node.namespaceURI === OWL && [
+    if (node.namespaceURI === STANDARD_PREFIXES.rdf && node.localName === 'Description') return true;
+    return node.namespaceURI === STANDARD_PREFIXES.owl && [
       'Class',
       'Restriction',
       'Ontology',
@@ -281,7 +279,7 @@ import { normalizePrefixMap } from './shared/namespace-registry/prefix-map.js';
   const hasParseTypeLiteralAncestor = (node) => {
     let current = node && node.parentNode;
     while (current && current.nodeType === Node.ELEMENT_NODE) {
-      const parseType = current.getAttribute('rdf:parseType') || current.getAttributeNS(RDF, 'parseType') || '';
+      const parseType = current.getAttribute('rdf:parseType') || current.getAttributeNS(STANDARD_PREFIXES.rdf, 'parseType') || '';
       if (parseType === 'Literal') return true;
       current = current.parentNode;
     }

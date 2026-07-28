@@ -7,7 +7,10 @@
  * - prettify({ text, mimeType, baseIRI, logger })
  * - extractPrefixes({ text, mimeType })
  */
-import { namespacePrefixMapFromRegistry } from './shared/namespace-registry/namespace-registry.js';
+import {
+  COMMON_NAMESPACE_IRIS,
+  namespacePrefixMapFromRegistry
+} from './shared/namespace-registry/namespace-registry.js';
 import { normalizePrefixMap } from './shared/namespace-registry/prefix-map.js';
 import { compactIriToCurie, findLongestPrefixMatch } from './shared/namespace-registry/curie.js';
 import { extractTurtlePrefixDeclarations } from './shared/namespace-registry/rdf-prefixes.js';
@@ -15,28 +18,23 @@ import { extractTurtlePrefixDeclarations } from './shared/namespace-registry/rdf
 (function (global) {
   'use strict';
 
-  const RDF = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#';
-  const RDFS = 'http://www.w3.org/2000/01/rdf-schema#';
-  const OWL = 'http://www.w3.org/2002/07/owl#';
-  const XSD = 'http://www.w3.org/2001/XMLSchema#';
-  const DC = 'http://purl.org/dc/elements/1.1/';
-  const DCTERMS = 'http://purl.org/dc/terms/';
-  const SKOS = 'http://www.w3.org/2004/02/skos/core#';
+  const NS = COMMON_NAMESPACE_IRIS;
+  const STANDARD_PREFIXES = namespacePrefixMapFromRegistry();
 
-  const RDF_TYPE = `${RDF}type`;
-  const RDF_FIRST = `${RDF}first`;
-  const RDF_REST = `${RDF}rest`;
-  const RDF_NIL = `${RDF}nil`;
+  const RDF_TYPE = NS.rdf.type;
+  const RDF_FIRST = NS.rdf.first;
+  const RDF_REST = NS.rdf.rest;
+  const RDF_NIL = NS.rdf.nil;
 
   const SECTION_TYPES = Object.freeze([
-    { key: 'annotationProperties', label: 'Annotation properties', iri: `${OWL}AnnotationProperty` },
-    { key: 'dataProperties', label: 'Datatype properties', iri: `${OWL}DatatypeProperty` },
-    { key: 'objectProperties', label: 'Object Properties', iri: `${OWL}ObjectProperty` },
-    { key: 'classes', label: 'Classes', iri: `${OWL}Class` },
-    { key: 'individuals', label: 'Individuals', iri: `${OWL}NamedIndividual` },
+    { key: 'annotationProperties', label: 'Annotation properties', iri: NS.owl.AnnotationProperty },
+    { key: 'dataProperties', label: 'Datatype properties', iri: NS.owl.DatatypeProperty },
+    { key: 'objectProperties', label: 'Object Properties', iri: NS.owl.ObjectProperty },
+    { key: 'classes', label: 'Classes', iri: NS.owl.Class },
+    { key: 'individuals', label: 'Individuals', iri: NS.owl.NamedIndividual },
   ]);
 
-  const DEFAULT_PREFIXES = namespacePrefixMapFromRegistry();
+  const DEFAULT_PREFIXES = STANDARD_PREFIXES;
 
   const normalizeMimeType = (mimeType) => {
     const lower = String(mimeType || '').trim().toLowerCase();
@@ -130,7 +128,7 @@ import { extractTurtlePrefixDeclarations } from './shared/namespace-registry/rdf
       const lexical = `"${escapeLiteral(normalizeLiteralValue(term.value))}"`;
       if (term.language) return `${lexical}@${term.language}`;
       const datatype = term.datatype && term.datatype.value;
-      if (!datatype || datatype === `${XSD}string`) return lexical;
+      if (!datatype || datatype === NS.xsd.string) return lexical;
       return `${lexical}^^${namedNodeToText(datatype, prefixes)}`;
     }
     return String(term.value || '');
@@ -182,7 +180,7 @@ import { extractTurtlePrefixDeclarations } from './shared/namespace-registry/rdf
 
   const classifySubject = (store, subject) => {
     const typeIris = getSubjectTypeIris(store, subject);
-    if (typeIris.includes(`${OWL}Ontology`)) return 'ontology';
+    if (typeIris.includes(NS.owl.Ontology)) return 'ontology';
 
     const entityType = SECTION_TYPES.find((section) => typeIris.includes(section.iri));
     if (entityType) return entityType.key;
@@ -202,18 +200,18 @@ import { extractTurtlePrefixDeclarations } from './shared/namespace-registry/rdf
 
   const ontologyPredicateRank = (predicateIri) => {
     if (predicateIri === RDF_TYPE) return 0;
-    if (predicateIri === `${OWL}versionIRI`) return 10;
-    if (predicateIri === `${OWL}imports`) return 20;
-    if (predicateIri === `${DC}title` || predicateIri === `${DCTERMS}title`) return 30;
-    if (predicateIri === `${DC}creator` || predicateIri === `${DCTERMS}creator`) return 40;
-    if (predicateIri === `${DC}contributor` || predicateIri === `${DCTERMS}contributor`) return 50;
-    if (predicateIri === `${DC}description` || predicateIri === `${DCTERMS}description`) return 60;
-    if (predicateIri === `${DCTERMS}license`) return 70;
-    if (predicateIri === `${DC}rights` || predicateIri === `${DCTERMS}rights`) return 80;
-    if (predicateIri === `${RDFS}comment`) return 90;
-    if (predicateIri === `${RDFS}label`) return 100;
-    if (predicateIri === `${OWL}versionInfo`) return 110;
-    if (predicateIri === `${SKOS}scopeNote`) return 120;
+    if (predicateIri === NS.owl.versionIRI) return 10;
+    if (predicateIri === NS.owl.imports) return 20;
+    if (predicateIri === NS.dc.title || predicateIri === NS.dcterms.title) return 30;
+    if (predicateIri === NS.dc.creator || predicateIri === NS.dcterms.creator) return 40;
+    if (predicateIri === NS.dc.contributor || predicateIri === NS.dcterms.contributor) return 50;
+    if (predicateIri === NS.dc.description || predicateIri === NS.dcterms.description) return 60;
+    if (predicateIri === NS.dcterms.license) return 70;
+    if (predicateIri === NS.dc.rights || predicateIri === NS.dcterms.rights) return 80;
+    if (predicateIri === NS.rdfs.comment) return 90;
+    if (predicateIri === NS.rdfs.label) return 100;
+    if (predicateIri === NS.owl.versionInfo) return 110;
+    if (predicateIri === NS.skos.scopeNote) return 120;
     return 500;
   };
 
@@ -222,29 +220,29 @@ import { extractTurtlePrefixDeclarations } from './shared/namespace-registry/rdf
     if (predicateIri === RDF_TYPE) return 0;
 
     const owlRank = [
-      `${OWL}equivalentClass`,
-      `${OWL}disjointWith`,
-      `${OWL}complementOf`,
-      `${OWL}intersectionOf`,
-      `${OWL}unionOf`,
-      `${OWL}oneOf`,
-      `${OWL}inverseOf`,
-      `${OWL}propertyChainAxiom`,
-      `${OWL}TransitiveProperty`,
-      `${OWL}SymmetricProperty`,
-      `${OWL}AsymmetricProperty`,
-      `${OWL}ReflexiveProperty`,
-      `${OWL}IrreflexiveProperty`,
-      `${OWL}FunctionalProperty`,
-      `${OWL}InverseFunctionalProperty`,
+      NS.owl.equivalentClass,
+      NS.owl.disjointWith,
+      NS.owl.complementOf,
+      NS.owl.intersectionOf,
+      NS.owl.unionOf,
+      NS.owl.oneOf,
+      NS.owl.inverseOf,
+      NS.owl.propertyChainAxiom,
+      NS.owl.TransitiveProperty,
+      NS.owl.SymmetricProperty,
+      NS.owl.AsymmetricProperty,
+      NS.owl.ReflexiveProperty,
+      NS.owl.IrreflexiveProperty,
+      NS.owl.FunctionalProperty,
+      NS.owl.InverseFunctionalProperty,
     ].indexOf(predicateIri);
     if (owlRank >= 0) return 10 + owlRank;
 
-    if (predicateIri === `${RDFS}subClassOf`) return 100;
-    if (predicateIri === `${RDFS}subPropertyOf`) return 101;
-    if (predicateIri === `${RDFS}domain`) return 120;
-    if (predicateIri === `${RDFS}range`) return 121;
-    if (predicateIri === `${RDFS}label`) return 200;
+    if (predicateIri === NS.rdfs.subClassOf) return 100;
+    if (predicateIri === NS.rdfs.subPropertyOf) return 101;
+    if (predicateIri === NS.rdfs.domain) return 120;
+    if (predicateIri === NS.rdfs.range) return 121;
+    if (predicateIri === NS.rdfs.label) return 200;
     return 500;
   };
 
@@ -336,7 +334,7 @@ import { extractTurtlePrefixDeclarations } from './shared/namespace-registry/rdf
   const isIgnorableWhitespaceValueQuad = (quad) => {
     return quad &&
       quad.predicate &&
-      quad.predicate.value === `${RDF}value` &&
+      quad.predicate.value === NS.rdf.value &&
       quad.object &&
       quad.object.termType === 'Literal' &&
       !normalizeLiteralValue(quad.object.value);
