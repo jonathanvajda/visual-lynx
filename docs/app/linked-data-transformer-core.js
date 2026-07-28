@@ -7,6 +7,10 @@ import {
   createN3WriterOptionsWithPrefixes,
   applyPrefixesToRdflibStore
 } from './shared/namespace-registry/rdf-serialization-prefixes.js';
+import {
+  parseRdfTextWithAdapters,
+  serializeRdfDatasetWithAdapters
+} from './shared/rdf-io/index.js';
 
 const mimeToN3Format = Object.freeze({
   'application/n-triples': 'N-Triples',
@@ -289,6 +293,24 @@ export function createTransformer({ N3, jsonld, $rdf }) {
 
   async function parseToStore({ text, inputMime, baseIRI, logger }) {
     const mime = normalizeMimeType(inputMime);
+    const log = ensureLogger(logger);
+
+    try {
+      const parsed = await parseRdfTextWithAdapters(text, {
+        format: mime,
+        baseIri: baseIRI,
+        runtime: { N3, jsonld, $rdf }
+      });
+      log.info(`Parsed with shared RDF adapter (${mime}). Quads:`, parsed.quads.length);
+      return {
+        store: parsed.dataset,
+        prefixes: parsed.prefixes || {},
+        sourceFormat: mime
+      };
+    } catch (error) {
+      if (mime !== 'application/rdf+xml') throw error;
+      log.warn('Shared RDF/XML adapter failed; trying Visual Lynx repair-aware RDF/XML parser.', describeError(error));
+    }
 
     if (mime === 'application/ld+json') {
       return parseWithJsonLd({ text, baseIRI, logger });
@@ -459,6 +481,21 @@ export function createTransformer({ N3, jsonld, $rdf }) {
 
   async function serializeFromStore({ store, outputMime, prefixes, baseIRI, logger }) {
     const mime = normalizeMimeType(outputMime);
+
+    if (mime === 'application/ld+json' || mime === 'application/rdf+xml' || mime === 'text/turtle' || mimeToN3Format[mime]) {
+      try {
+        const serialized = await serializeRdfDatasetWithAdapters(store, {
+          format: mime,
+          prefixes,
+          baseIri: baseIRI,
+          runtime: { N3, jsonld, $rdf }
+        });
+        return serialized.text;
+      } catch (error) {
+        if (mime !== 'application/rdf+xml') throw error;
+        ensureLogger(logger).warn('Shared RDF/XML serializer failed; trying Visual Lynx local serializer.', describeError(error));
+      }
+    }
 
     if (mime === 'application/ld+json') {
       return serializeToJsonLd({ store, logger });
