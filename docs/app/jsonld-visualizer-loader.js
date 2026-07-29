@@ -1,12 +1,11 @@
 // docs/app/jsonld-visualizer-loader.js
 
-import {
-  normalizeMimeType,
-  guessInputMimeFromFilename,
-} from './linked-data-transformer-registry.js';
-
 import { createTransformer } from './linked-data-transformer-core.js';
-import { readFileAsText } from './linked-data-transformer-browser.js';
+import { readFileAsText } from './shared/browser-file-io/index.js';
+import {
+  getSupportedMimeTypeForFilename,
+  normalizeSupportedMimeType,
+} from './shared/format-registry/index.js';
 
 const makeLogger = (scope = 'jsonld-loader') => ({
   info: (...args) => console.info(`[${scope}]`, ...args),
@@ -34,19 +33,6 @@ async function loadStockJsonLd(jsonInput, logger) {
     logger.error('Error fetching BFO JSON-LD:', error);
     jsonInput.value = `Error loading file from server: ${error && error.message ? error.message : String(error)}`;
   }
-}
-
-/**
- * Resolve selected or guessed input MIME.
- * @param {string} selectedValue
- * @param {File} file
- * @returns {string|null}
- */
-function resolveInputMime(selectedValue, file) {
-  if (selectedValue && selectedValue !== 'auto') {
-    return normalizeMimeType(selectedValue);
-  }
-  return guessInputMimeFromFilename(file ? file.name : '');
 }
 
 function setupJsonLdVisualizerLoader() {
@@ -82,7 +68,12 @@ function setupJsonLdVisualizerLoader() {
     if (!file) return;
 
     try {
-      const inputMime = resolveInputMime(formatSelect.value, file);
+      const selectedFormat = formatSelect.value && formatSelect.value !== 'auto'
+        ? normalizeSupportedMimeType(formatSelect.value)
+        : getSupportedMimeTypeForFilename(file.name);
+      const inputMime = selectedFormat.ok && selectedFormat.value.category === 'rdf'
+        ? selectedFormat.value.mimeType
+        : null;
       if (!inputMime) {
         throw new Error(`Could not determine input format for file: ${file.name}`);
       }

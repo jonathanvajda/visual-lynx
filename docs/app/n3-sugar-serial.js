@@ -14,6 +14,11 @@ import {
 import { normalizePrefixMap } from './shared/namespace-registry/prefix-map.js';
 import { compactIriToCurie, findLongestPrefixMatch } from './shared/namespace-registry/curie.js';
 import { extractTurtlePrefixDeclarations } from './shared/namespace-registry/rdf-prefixes.js';
+import {
+  parseRdfTextWithN3,
+  serializeRdfDatasetToNQuads,
+  serializeRdfDatasetToNTriples
+} from './shared/rdf-io/index.js';
 
 (function (global) {
   'use strict';
@@ -51,12 +56,6 @@ import { extractTurtlePrefixDeclarations } from './shared/namespace-registry/rdf
     'application/n-triples',
     'application/n-quads',
   ].includes(normalizeMimeType(mimeType));
-
-  const n3FormatForMime = (mimeType) => ({
-    'application/n-triples': 'N-Triples',
-    'application/n-quads': 'N-Quads',
-    'application/trig': 'application/trig',
-  })[normalizeMimeType(mimeType)];
 
   const asPrefixIri = (value) => {
     if (!value) return '';
@@ -145,21 +144,16 @@ import { extractTurtlePrefixDeclarations } from './shared/namespace-registry/rdf
 
   const parseWithN3 = (text, mimeType, baseIRI) => {
     const N3 = global.N3;
-    if (!N3 || !N3.Parser || !N3.Store) {
+    if (!N3 || !N3.Parser) {
       throw new Error('N3 library not available for RDF prettification');
     }
 
-    const store = new N3.Store();
-    const prefixes = {};
-    const parser = new N3.Parser({
-      baseIRI,
-      ...(n3FormatForMime(mimeType) ? { format: n3FormatForMime(mimeType) } : {}),
+    const parsed = parseRdfTextWithN3(text, {
+      format: mimeType,
+      baseIri: baseIRI,
+      runtime: { N3 }
     });
-
-    const quads = parser.parse(text);
-    quads.forEach((quad) => store.addQuad(quad));
-    Object.assign(prefixes, parser._prefixes || {});
-    return { store, prefixes: getPrefixes(prefixes) };
+    return { store: parsed.dataset, prefixes: getPrefixes(parsed.prefixes || {}) };
   };
 
   const sectionComment = (label) => [
@@ -379,10 +373,6 @@ import { extractTurtlePrefixDeclarations } from './shared/namespace-registry/rdf
   };
 
   const formatNTriplesLike = (store, subjects, prefixes, mimeType) => {
-    const N3 = global.N3;
-    const format = n3FormatForMime(mimeType);
-    if (!N3 || !N3.Writer || !format) return '';
-
     const blocks = [];
     subjects.forEach((subject) => {
       const quads = store.getQuads(subject, null, null, null).slice().sort((a, b) => {
@@ -390,13 +380,10 @@ import { extractTurtlePrefixDeclarations } from './shared/namespace-registry/rdf
         if (predicateCompare) return predicateCompare;
         return termSortKey(a.object, prefixes).localeCompare(termSortKey(b.object, prefixes));
       });
-      quads.forEach((quad) => {
-        const writer = new N3.Writer({ format });
-        writer.addQuad(quad);
-        writer.end((err, result) => {
-          if (!err) blocks.push(result.trim());
-        });
-      });
+      const serialized = mimeType === 'application/n-quads'
+        ? serializeRdfDatasetToNQuads(quads)
+        : serializeRdfDatasetToNTriples(quads);
+      if (serialized.trim()) blocks.push(serialized.trim());
     });
     return blocks.join('\n');
   };

@@ -8,7 +8,7 @@ import {
 } from './linked-data-transformer-registry.js';
 
 import { createTransformer } from './linked-data-transformer-core.js';
-import { readFileAsText, downloadContent } from './linked-data-transformer-browser.js';
+import { downloadTextFile, readFileAsText } from './shared/browser-file-io/index.js';
 
 /* ------------------------- Logging helpers ------------------------- */
 const makeLogger = (scope = 'ldt') => ({
@@ -191,11 +191,7 @@ function setupEventHandlers() {
 
       const ext = getDownloadExtension(lastOutputMime);
 
-      downloadContent({
-        content: lastOutput,
-        filename: `transformed.${ext}`,
-        mimeType: lastOutputMime,
-      });
+      downloadTextFile(`transformed.${ext}`, lastOutput, { mimeType: lastOutputMime });
     } catch (e) {
       logger.error('Download error:', e);
       alert(`Download failed: ${e?.message || String(e)}`);

@@ -285,6 +285,13 @@ export function normalizeSupportedMimeType(input) {
  * Preferred extension without dot, or an unknown-filetype result.
  */
 export function getPreferredExtensionForMimeType(mimeType) {
+  const normalized = normalizeToken(mimeType);
+  if (normalized === normalizeToken(MERMAID_OUTPUT_DESCRIPTOR.mimeType) || normalized === normalizeToken(MERMAID_OUTPUT_DESCRIPTOR.id)) {
+    return Object.freeze({ ok: true, value: MERMAID_OUTPUT_DESCRIPTOR.extensions[0] });
+  }
+  if (normalized === normalizeToken(D3_JSON_OUTPUT_DESCRIPTOR.mimeType) || normalized === normalizeToken(D3_JSON_OUTPUT_DESCRIPTOR.id)) {
+    return Object.freeze({ ok: true, value: D3_JSON_OUTPUT_DESCRIPTOR.extensions[0] });
+  }
   const result = normalizeSupportedMimeType(mimeType);
   return result.ok
     ? Object.freeze({ ok: true, value: result.value.extensions[0] })
