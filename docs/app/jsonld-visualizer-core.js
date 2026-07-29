@@ -1,6 +1,13 @@
 // ./docs/app/jsonld-visualizer-ui.js
+import {
+  COMMON_NAMESPACE_IRIS,
+  namespacePrefixMapFromRegistry
+} from './shared/namespace-registry/index.js';
 
 window.MyFunctions = window.MyFunctions || {};
+const MyFunctions = window.MyFunctions;
+const NS = COMMON_NAMESPACE_IRIS;
+const PREFIXES = namespacePrefixMapFromRegistry();
 
 MyFunctions.inferJsonLdSchema = (jsonld, language = "en") => {
   /**
@@ -78,10 +85,10 @@ MyFunctions.inferPropertiesFromIndividuals2 = (jsonLd) => {
 
   // Populate maps
   jsonLd.forEach((item) => {
-    if (item["@type"]?.includes("http://www.w3.org/2002/07/owl#Class")) {
+    if (item["@type"]?.includes(NS.owl.Class)) {
       console.log("Adding class to classMap:", item["@id"]);
       classMap.set(item["@id"], { ...item });
-    } else if (item["@type"]?.includes("http://www.w3.org/2002/07/owl#NamedIndividual")) {
+    } else if (item["@type"]?.includes(NS.owl.NamedIndividual)) {
       console.log("Adding individual to individualMap:", item["@id"]);
       individualMap.set(item["@id"], item);
     }
@@ -111,7 +118,7 @@ MyFunctions.inferPropertiesFromIndividuals2 = (jsonLd) => {
               if (propertyDefinition) {
                 console.log("Found instance relation:", predicateValue["@id"]);
                 propertyDefinition["@type"]
-                  .filter((type) => type !== "http://www.w3.org/2002/07/owl#NamedIndividual") // Exclude NamedIndividual type
+                  .filter((type) => type !== NS.owl.NamedIndividual) // Exclude NamedIndividual type
                   .forEach((resolvedType) => {
                     if (
                       !classDefinition[predicateKey]?.some(
@@ -163,10 +170,10 @@ MyFunctions.inferPropertiesFromIndividuals3 = (jsonLd) => {
 
   // Populate maps
   jsonLd.forEach((item) => {
-    if (item["@type"]?.includes("http://www.w3.org/2002/07/owl#Class")) {
+    if (item["@type"]?.includes(NS.owl.Class)) {
       console.log("Adding class to classMap:", item["@id"]);
       classMap.set(item["@id"], { ...item });
-    } else if (item["@type"]?.includes("http://www.w3.org/2002/07/owl#NamedIndividual")) {
+    } else if (item["@type"]?.includes(NS.owl.NamedIndividual)) {
       console.log("Adding individual to individualMap:", item["@id"]);
       individualMap.set(item["@id"], item);
     }
@@ -199,7 +206,7 @@ MyFunctions.inferPropertiesFromIndividuals3 = (jsonLd) => {
               if (propertyDefinition) {
                 console.log("Found instance relation:", predicateValue["@id"]);
                 propertyDefinition["@type"]
-                  .filter((type) => type !== "http://www.w3.org/2002/07/owl#NamedIndividual") // Exclude NamedIndividual type
+                  .filter((type) => type !== NS.owl.NamedIndividual) // Exclude NamedIndividual type
                   .forEach((resolvedType) => {
                     if (
                       !classDefinition[predicateKey]?.some(
@@ -252,10 +259,10 @@ MyFunctions.inferPropertiesFromIndividuals4 = (jsonLd) => {
 
   // Populate maps
   jsonLd.forEach((item) => {
-    if (item["@type"]?.includes("http://www.w3.org/2002/07/owl#Class")) {
+    if (item["@type"]?.includes(NS.owl.Class)) {
       console.log("Adding class to classMap:", item["@id"]);
       classMap.set(item["@id"], { ...item });
-    } else if (item["@type"]?.includes("http://www.w3.org/2002/07/owl#NamedIndividual")) {
+    } else if (item["@type"]?.includes(NS.owl.NamedIndividual)) {
       console.log("Adding individual to individualMap:", item["@id"]);
       individualMap.set(item["@id"], item);
     }
@@ -290,7 +297,7 @@ individualMap.forEach((individual) => {
               
               // Add object individual's class to updatedClasses
               objectIndividual["@type"]
-                .filter((type) => type !== "http://www.w3.org/2002/07/owl#NamedIndividual") // Exclude NamedIndividual type
+                .filter((type) => type !== NS.owl.NamedIndividual) // Exclude NamedIndividual type
                 .forEach((objectClassType) => {
                   if (!updatedClasses.has(objectClassType)) {
                     console.log("Adding object class to updatedClasses:", objectClassType);
@@ -299,7 +306,7 @@ individualMap.forEach((individual) => {
                 });
 
               objectIndividual["@type"]
-                .filter((type) => type !== "http://www.w3.org/2002/07/owl#NamedIndividual") // Exclude NamedIndividual type
+                .filter((type) => type !== NS.owl.NamedIndividual) // Exclude NamedIndividual type
                 .forEach((resolvedType) => {
                   if (
                     !classDefinition[predicateKey]?.some(
@@ -353,10 +360,10 @@ MyFunctions.CreateSchema = (jsonLd) => {
 
   // Populate maps
   jsonLd.forEach((item) => {
-    if (item["@type"]?.includes("http://www.w3.org/2002/07/owl#Class")) {
+    if (item["@type"]?.includes(NS.owl.Class)) {
       console.log("Adding class to classMap:", item["@id"]);
       classMap.set(item["@id"], { ...item });
-    } else if (item["@type"]?.includes("http://www.w3.org/2002/07/owl#NamedIndividual")) {
+    } else if (item["@type"]?.includes(NS.owl.NamedIndividual)) {
       console.log("Adding individual to individualMap:", item["@id"]);
       individualMap.set(item["@id"], item);
     }
@@ -402,7 +409,7 @@ MyFunctions.CreateSchema = (jsonLd) => {
 
           // Add the types of the referenced individual to the class
           referencedIndividual["@type"]
-            .filter((type) => type !== "http://www.w3.org/2002/07/owl#NamedIndividual") // Exclude NamedIndividual type
+            .filter((type) => type !== NS.owl.NamedIndividual) // Exclude NamedIndividual type
             .forEach((resolvedType) => {
               if (
                 !classDefinition[predicateKey]?.some(
@@ -419,7 +426,7 @@ MyFunctions.CreateSchema = (jsonLd) => {
 
           // Ensure the object class is included in the final output
           referencedIndividual["@type"]
-            .filter((type) => type !== "http://www.w3.org/2002/07/owl#NamedIndividual") // Exclude NamedIndividual type
+            .filter((type) => type !== NS.owl.NamedIndividual) // Exclude NamedIndividual type
             .forEach((objectClassId) => {
               if (classMap.has(objectClassId)) {
                 const objectClass = classMap.get(objectClassId);
@@ -470,16 +477,16 @@ MyFunctions.CreateSchema = (jsonLd) => {
 };
 
 MyFunctions.inferPropsFromIndividuals = (jsonld, classMap) => {
-  const NAMED_INDIVIDUAL = 'http://www.w3.org/2002/07/owl#NamedIndividual';
-  const DATATYPE_PROPERTY = 'http://www.w3.org/2002/07/owl#DatatypeProperty';
+  const NAMED_INDIVIDUAL = NS.owl.NamedIndividual;
+  const DATATYPE_PROPERTY = NS.owl.DatatypeProperty;
 
   const predicateToDatatype = {
-    "http://www.ontologyrepository.com/CommonCoreOntologies/has_text_value": "rdf:langString",
-    "http://www.ontologyrepository.com/CommonCoreOntologies/has_integer_value": "xsd:integer",
-    "http://www.ontologyrepository.com/CommonCoreOntologies/has_decimal_value": "xsd:decimal",
-    "http://www.ontologyrepository.com/CommonCoreOntologies/has_date_value": "xsd:date",
-    "http://www.ontologyrepository.com/CommonCoreOntologies/has_datetime_value": "xsd:dateTime",
-    "http://www.ontologyrepository.com/CommonCoreOntologies/has_boolean_value": "xsd:boolean"
+    [NS.cceo.hasTextValue]: "rdf:langString",
+    [NS.cceo.hasIntegerValue]: "xsd:integer",
+    [NS.cceo.hasDecimalValue]: "xsd:decimal",
+    [NS.cceo.hasDateValue]: "xsd:date",
+    [NS.cceo.hasDatetimeValue]: "xsd:dateTime",
+    [NS.cceo.hasBooleanValue]: "xsd:boolean"
   };
 
   const normalizeDatatype = dt => {
@@ -487,13 +494,13 @@ MyFunctions.inferPropsFromIndividuals = (jsonld, classMap) => {
     if (/^[A-Za-z][\w.-]*:/.test(dt)) return dt;
 
     const mappings = [
-      ['http://www.w3.org/2001/XMLSchema#', 'xsd:'],
+      [PREFIXES.xsd, 'xsd:'],
       ['https://www.w3.org/2001/XMLSchema#', 'xsd:'],
-      ['http://www.w3.org/1999/02/22-rdf-syntax-ns#', 'rdf:'],
+      [PREFIXES.rdf, 'rdf:'],
       ['https://www.w3.org/1999/02/22-rdf-syntax-ns#', 'rdf:']
     ];
     for (const [base, prefix] of mappings) if (dt.startsWith(base)) return prefix + dt.substring(base.length);
-    if (dt === 'http://www.w3.org/1999/02/22-rdf-syntax-ns#langString') return 'rdf:langString';
+    if (dt === NS.rdf.langString) return 'rdf:langString';
     return dt;
   };
 
@@ -954,7 +961,7 @@ MyFunctions.getClassMap = (triples) => {
 
   // Step 1: Register all explicitly declared owl:Class instances
   triples.forEach(({ subject, predicate, object }) => {
-    if (predicate === "@type" && object === "http://www.w3.org/2002/07/owl#Class") {
+    if (predicate === "@type" && object === NS.owl.Class) {
       if (!classMap.has(subject)) {
         classMap.set(subject, { "@id": subject, "@type": "owl:Class" });
       }
@@ -963,7 +970,7 @@ MyFunctions.getClassMap = (triples) => {
 
   // Step 2: Process subclass relationships
   triples.forEach(({ subject, predicate, object }) => {
-    if (predicate === "http://www.w3.org/2000/01/rdf-schema#subClassOf") {
+    if (predicate === NS.rdfs.subClassOf) {
       // If subclass already exists, just add subClassOf
       if (classMap.has(subject)) {
         classMap.get(subject)["rdfs:subClassOf"] = { "@id": object };
@@ -1005,10 +1012,10 @@ MyFunctions.getProperties = (triples) => {
     throw new TypeError("Expected 'triples' to be an array of {subject, predicate, object}.");
   }
 
-  const OWL_OBJECT_PROPERTY = "http://www.w3.org/2002/07/owl#ObjectProperty";
-  const OWL_DATATYPE_PROPERTY = "http://www.w3.org/2002/07/owl#DatatypeProperty";
-  const RDFS_DOMAIN = "http://www.w3.org/2000/01/rdf-schema#domain";
-  const RDFS_RANGE = "http://www.w3.org/2000/01/rdf-schema#range";
+  const OWL_OBJECT_PROPERTY = NS.owl.ObjectProperty;
+  const OWL_DATATYPE_PROPERTY = NS.owl.DatatypeProperty;
+  const RDFS_DOMAIN = NS.rdfs.domain;
+  const RDFS_RANGE = NS.rdfs.range;
 
   const propMap = new Map();
 
@@ -1101,7 +1108,7 @@ MyFunctions.getFormalLabel = (jsonld, id, language) => {
 
   // Predefined keys to search for labels
   const labelKeys = [
-    "http://www.w3.org/2000/01/rdf-schema#label", // Full IRI
+    NS.rdfs.label, // Full IRI
     "rdfs:label",                                // Prefixed IRI
     "label"                                      // Generic key
   ];
@@ -1200,12 +1207,12 @@ MyFunctions.getLabelFromNamedIndividual = (jsonld, id, language) => {
   const types = Array.isArray(entity["@type"]) ? entity["@type"] : [entity["@type"]];
 
   // Check if the entity is a NamedIndividual
-  if (!types.includes("http://www.w3.org/2002/07/owl#NamedIndividual")) return null;
+  if (!types.includes(NS.owl.NamedIndividual)) return null;
 
   // Iterate over the types to find a label for the type
   for (const typeIRI of types) {
     // Skip the NamedIndividual type itself
-    if (typeIRI === "http://www.w3.org/2002/07/owl#NamedIndividual") continue;
+    if (typeIRI === NS.owl.NamedIndividual) continue;
 
     // Attempt to get the label for the type
     const typeLabel =
@@ -1411,7 +1418,7 @@ window.MyFunctions.getPreferredLabelForEntity = (jsonld, id, language) => {
   }
 
   const labelKeys = [
-    "http://www.w3.org/2000/01/rdf-schema#label",
+    NS.rdfs.label,
     "rdfs:label",
     "label"
   ];
