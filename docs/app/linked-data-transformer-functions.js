@@ -155,6 +155,12 @@ const getSugarSerial = (mimeType) => {
   ].find((module) => module && module.supports && module.supports(mime)) || null;
 };
 
+function describeError(error) {
+  return error && typeof error === 'object' && 'message' in error
+    ? error.message
+    : String(error);
+}
+
 /** Update the optional Sugar Serial checkbox based on output format. */
 const updatePrettifierOption = ({ outputMime }) => {
   const checkbox = document.getElementById('prettifyRdfOutput');
@@ -345,10 +351,11 @@ const setupEventHandlers = () => {
       const sugarSerial = getSugarSerial(outputMime);
       const shouldPrettify = !!(prettifyCheckbox && prettifyCheckbox.checked && !prettifyCheckbox.disabled);
       if (shouldPrettify && sugarSerial) {
+        const sourceText = await readFileAsText(file);
         const result = sugarSerial.prettify({
           text: out,
           mimeType: outputMime,
-          sourceText: text,
+          sourceText,
           sourceMimeType: inputMime,
           baseIRI,
           logger,
