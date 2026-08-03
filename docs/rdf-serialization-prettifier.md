@@ -97,6 +97,8 @@ For Turtle and default-graph-only TriG, the helper:
 
 Prefixes from the source document are preferred over the helper's built-in fallback prefixes. If a source file uses `dct:` for `http://purl.org/dc/terms/`, the helper should not also emit its fallback `dcterms:` prefix for the same namespace.
 
+Near-term prefix cleanup requirement: Sugar Serial should emit only prefixes that are actually used by rendered RDF terms. Managed registry prefixes and fallback prefixes should be candidate prefixes, not automatic output declarations. This should reuse the shared namespace-registry prefix-selection behavior, currently represented by `selectPrefixesUsedByRdfTerms(prefixes, dataset)`, after Sugar Serial has either the parsed quads or an equivalent term scan available. Plain string literals should not cause an unnecessary `xsd:` declaration.
+
 For TriG with named graphs, the helper currently returns the original serialization and a warning so it does not erase graph names.
 
 For N-Triples and N-Quads, the helper can add comment headers and sort/group lines, but it keeps the line-based serialization style. These formats do not support prefixes or compact multi-predicate subject blocks.
