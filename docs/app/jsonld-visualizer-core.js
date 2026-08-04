@@ -6,7 +6,6 @@ import {
 
 window.MyFunctions = window.MyFunctions || {};
 const MyFunctions = window.MyFunctions;
-const NS = COMMON_NAMESPACE_IRIS;
 const PREFIXES = namespacePrefixMapFromRegistry();
 
 MyFunctions.inferJsonLdSchema = (jsonld, language = "en") => {
@@ -85,10 +84,10 @@ MyFunctions.inferPropertiesFromIndividuals2 = (jsonLd) => {
 
   // Populate maps
   jsonLd.forEach((item) => {
-    if (item["@type"]?.includes(NS.owl.Class)) {
+    if (item["@type"]?.includes(COMMON_NAMESPACE_IRIS.owl.Class)) {
       console.log("Adding class to classMap:", item["@id"]);
       classMap.set(item["@id"], { ...item });
-    } else if (item["@type"]?.includes(NS.owl.NamedIndividual)) {
+    } else if (item["@type"]?.includes(COMMON_NAMESPACE_IRIS.owl.NamedIndividual)) {
       console.log("Adding individual to individualMap:", item["@id"]);
       individualMap.set(item["@id"], item);
     }
@@ -118,7 +117,7 @@ MyFunctions.inferPropertiesFromIndividuals2 = (jsonLd) => {
               if (propertyDefinition) {
                 console.log("Found instance relation:", predicateValue["@id"]);
                 propertyDefinition["@type"]
-                  .filter((type) => type !== NS.owl.NamedIndividual) // Exclude NamedIndividual type
+                  .filter((type) => type !== COMMON_NAMESPACE_IRIS.owl.NamedIndividual) // Exclude NamedIndividual type
                   .forEach((resolvedType) => {
                     if (
                       !classDefinition[predicateKey]?.some(
@@ -170,10 +169,10 @@ MyFunctions.inferPropertiesFromIndividuals3 = (jsonLd) => {
 
   // Populate maps
   jsonLd.forEach((item) => {
-    if (item["@type"]?.includes(NS.owl.Class)) {
+    if (item["@type"]?.includes(COMMON_NAMESPACE_IRIS.owl.Class)) {
       console.log("Adding class to classMap:", item["@id"]);
       classMap.set(item["@id"], { ...item });
-    } else if (item["@type"]?.includes(NS.owl.NamedIndividual)) {
+    } else if (item["@type"]?.includes(COMMON_NAMESPACE_IRIS.owl.NamedIndividual)) {
       console.log("Adding individual to individualMap:", item["@id"]);
       individualMap.set(item["@id"], item);
     }
@@ -206,7 +205,7 @@ MyFunctions.inferPropertiesFromIndividuals3 = (jsonLd) => {
               if (propertyDefinition) {
                 console.log("Found instance relation:", predicateValue["@id"]);
                 propertyDefinition["@type"]
-                  .filter((type) => type !== NS.owl.NamedIndividual) // Exclude NamedIndividual type
+                  .filter((type) => type !== COMMON_NAMESPACE_IRIS.owl.NamedIndividual) // Exclude NamedIndividual type
                   .forEach((resolvedType) => {
                     if (
                       !classDefinition[predicateKey]?.some(
@@ -259,10 +258,10 @@ MyFunctions.inferPropertiesFromIndividuals4 = (jsonLd) => {
 
   // Populate maps
   jsonLd.forEach((item) => {
-    if (item["@type"]?.includes(NS.owl.Class)) {
+    if (item["@type"]?.includes(COMMON_NAMESPACE_IRIS.owl.Class)) {
       console.log("Adding class to classMap:", item["@id"]);
       classMap.set(item["@id"], { ...item });
-    } else if (item["@type"]?.includes(NS.owl.NamedIndividual)) {
+    } else if (item["@type"]?.includes(COMMON_NAMESPACE_IRIS.owl.NamedIndividual)) {
       console.log("Adding individual to individualMap:", item["@id"]);
       individualMap.set(item["@id"], item);
     }
@@ -297,7 +296,7 @@ individualMap.forEach((individual) => {
               
               // Add object individual's class to updatedClasses
               objectIndividual["@type"]
-                .filter((type) => type !== NS.owl.NamedIndividual) // Exclude NamedIndividual type
+                .filter((type) => type !== COMMON_NAMESPACE_IRIS.owl.NamedIndividual) // Exclude NamedIndividual type
                 .forEach((objectClassType) => {
                   if (!updatedClasses.has(objectClassType)) {
                     console.log("Adding object class to updatedClasses:", objectClassType);
@@ -306,7 +305,7 @@ individualMap.forEach((individual) => {
                 });
 
               objectIndividual["@type"]
-                .filter((type) => type !== NS.owl.NamedIndividual) // Exclude NamedIndividual type
+                .filter((type) => type !== COMMON_NAMESPACE_IRIS.owl.NamedIndividual) // Exclude NamedIndividual type
                 .forEach((resolvedType) => {
                   if (
                     !classDefinition[predicateKey]?.some(
@@ -360,10 +359,10 @@ MyFunctions.CreateSchema = (jsonLd) => {
 
   // Populate maps
   jsonLd.forEach((item) => {
-    if (item["@type"]?.includes(NS.owl.Class)) {
+    if (item["@type"]?.includes(COMMON_NAMESPACE_IRIS.owl.Class)) {
       console.log("Adding class to classMap:", item["@id"]);
       classMap.set(item["@id"], { ...item });
-    } else if (item["@type"]?.includes(NS.owl.NamedIndividual)) {
+    } else if (item["@type"]?.includes(COMMON_NAMESPACE_IRIS.owl.NamedIndividual)) {
       console.log("Adding individual to individualMap:", item["@id"]);
       individualMap.set(item["@id"], item);
     }
@@ -409,7 +408,7 @@ MyFunctions.CreateSchema = (jsonLd) => {
 
           // Add the types of the referenced individual to the class
           referencedIndividual["@type"]
-            .filter((type) => type !== NS.owl.NamedIndividual) // Exclude NamedIndividual type
+            .filter((type) => type !== COMMON_NAMESPACE_IRIS.owl.NamedIndividual) // Exclude NamedIndividual type
             .forEach((resolvedType) => {
               if (
                 !classDefinition[predicateKey]?.some(
@@ -426,7 +425,7 @@ MyFunctions.CreateSchema = (jsonLd) => {
 
           // Ensure the object class is included in the final output
           referencedIndividual["@type"]
-            .filter((type) => type !== NS.owl.NamedIndividual) // Exclude NamedIndividual type
+            .filter((type) => type !== COMMON_NAMESPACE_IRIS.owl.NamedIndividual) // Exclude NamedIndividual type
             .forEach((objectClassId) => {
               if (classMap.has(objectClassId)) {
                 const objectClass = classMap.get(objectClassId);
@@ -477,16 +476,14 @@ MyFunctions.CreateSchema = (jsonLd) => {
 };
 
 MyFunctions.inferPropsFromIndividuals = (jsonld, classMap) => {
-  const NAMED_INDIVIDUAL = NS.owl.NamedIndividual;
-  const DATATYPE_PROPERTY = NS.owl.DatatypeProperty;
 
   const predicateToDatatype = {
-    [NS.cceo.hasTextValue]: "rdf:langString",
-    [NS.cceo.hasIntegerValue]: "xsd:integer",
-    [NS.cceo.hasDecimalValue]: "xsd:decimal",
-    [NS.cceo.hasDateValue]: "xsd:date",
-    [NS.cceo.hasDatetimeValue]: "xsd:dateTime",
-    [NS.cceo.hasBooleanValue]: "xsd:boolean"
+    [COMMON_NAMESPACE_IRIS.cceo.hasTextValue]: "rdf:langString",
+    [COMMON_NAMESPACE_IRIS.cceo.hasIntegerValue]: "xsd:integer",
+    [COMMON_NAMESPACE_IRIS.cceo.hasDecimalValue]: "xsd:decimal",
+    [COMMON_NAMESPACE_IRIS.cceo.hasDateValue]: "xsd:date",
+    [COMMON_NAMESPACE_IRIS.cceo.hasDatetimeValue]: "xsd:dateTime",
+    [COMMON_NAMESPACE_IRIS.cceo.hasBooleanValue]: "xsd:boolean"
   };
 
   const normalizeDatatype = dt => {
@@ -500,19 +497,19 @@ MyFunctions.inferPropsFromIndividuals = (jsonld, classMap) => {
       ['https://www.w3.org/1999/02/22-rdf-syntax-ns#', 'rdf:']
     ];
     for (const [base, prefix] of mappings) if (dt.startsWith(base)) return prefix + dt.substring(base.length);
-    if (dt === NS.rdf.langString) return 'rdf:langString';
+    if (dt === COMMON_NAMESPACE_IRIS.rdf.langString) return 'rdf:langString';
     return dt;
   };
 
   const asArray = val => (Array.isArray(val) ? val : [val]).filter(Boolean);
-  const withoutNamedIndividual = types => asArray(types).filter(t => t !== NAMED_INDIVIDUAL);
+  const withoutNamedIndividual = types => asArray(types).filter(t => t !== COMMON_NAMESPACE_IRIS.owl.NamedIndividual);
 
   // --- Step 1: Build individual -> class map & class -> instances map ---
   const individualToClasses = new Map();
   const classToInstances = new Map();
   jsonld.forEach(node => {
     const types = withoutNamedIndividual(node['@type'] || []);
-    if (asArray(node['@type']).includes(NAMED_INDIVIDUAL)) {
+    if (asArray(node['@type']).includes(COMMON_NAMESPACE_IRIS.owl.NamedIndividual)) {
       individualToClasses.set(node['@id'], new Set(types));
       types.forEach(cls => {
         if (!classToInstances.has(cls)) classToInstances.set(cls, new Set());
@@ -525,7 +522,7 @@ MyFunctions.inferPropsFromIndividuals = (jsonld, classMap) => {
   const classPredicates = new Map();
   jsonld.forEach(node => {
     const types = asArray(node['@type']);
-    if (!types.includes(NAMED_INDIVIDUAL)) {
+    if (!types.includes(COMMON_NAMESPACE_IRIS.owl.NamedIndividual)) {
       const classId = node['@id'];
       const props = Object.entries(node).filter(([k]) => k !== '@id' && k !== '@type');
       if (props.length > 0) classPredicates.set(classId, props);
@@ -535,7 +532,7 @@ MyFunctions.inferPropsFromIndividuals = (jsonld, classMap) => {
   // --- Step 3: Infer properties from NamedIndividuals ---
   const inferredProps = new Map();
   jsonld.forEach(node => {
-    if (!asArray(node['@type']).includes(NAMED_INDIVIDUAL)) return;
+    if (!asArray(node['@type']).includes(COMMON_NAMESPACE_IRIS.owl.NamedIndividual)) return;
     const classTypes = withoutNamedIndividual(node['@type']);
     if (!classTypes.length) return;
 
@@ -552,20 +549,20 @@ MyFunctions.inferPropsFromIndividuals = (jsonld, classMap) => {
           let val = (value && typeof value === 'object') ? (value['@id'] ?? value['@value'] ?? value) : value;
 
           if (predicateToDatatype[predicate]) {
-            propMap.get(predicate).add({ '@id': predicateToDatatype[predicate], '@type': DATATYPE_PROPERTY });
+            propMap.get(predicate).add({ '@id': predicateToDatatype[predicate], '@type': COMMON_NAMESPACE_IRIS.owl.DatatypeProperty });
           } else if (value && typeof value === 'object' && (value['@type'] || value['@language'])) {
             const vTypes = asArray(value['@type']).map(normalizeDatatype).filter(Boolean);
             if (vTypes.length) {
               vTypes.forEach(dt => {
-                if (dt.startsWith('xsd:') || dt.startsWith('rdf:')) propMap.get(predicate).add({ '@id': dt, '@type': DATATYPE_PROPERTY });
+                if (dt.startsWith('xsd:') || dt.startsWith('rdf:')) propMap.get(predicate).add({ '@id': dt, '@type': COMMON_NAMESPACE_IRIS.owl.DatatypeProperty });
               });
             } else if (value['@language']) {
-              propMap.get(predicate).add({ '@id': 'rdf:langString', '@type': DATATYPE_PROPERTY });
+              propMap.get(predicate).add({ '@id': 'rdf:langString', '@type': COMMON_NAMESPACE_IRIS.owl.DatatypeProperty });
             }
           } else if (typeof val === 'string' && individualToClasses.has(val)) {
             individualToClasses.get(val).forEach(classIri => propMap.get(predicate).add({ '@id': classIri }));
           } else if (typeof val === 'string' && !individualToClasses.has(val)) {
-            propMap.get(predicate).add({ '@id': val, '@type': NAMED_INDIVIDUAL });
+            propMap.get(predicate).add({ '@id': val, '@type': COMMON_NAMESPACE_IRIS.owl.NamedIndividual });
           } else {
             propMap.get(predicate).add(val);
           }
@@ -585,7 +582,7 @@ MyFunctions.inferPropsFromIndividuals = (jsonld, classMap) => {
 
         asArray(value).forEach(v => {
           if (typeof v === 'string' && classToInstances.has(v)) {
-            classToInstances.get(v).forEach(instV => propMap.get(predicate).add({ '@id': instV, '@type': NAMED_INDIVIDUAL }));
+            classToInstances.get(v).forEach(instV => propMap.get(predicate).add({ '@id': instV, '@type': COMMON_NAMESPACE_IRIS.owl.NamedIndividual }));
           } else {
             propMap.get(predicate).add(v);
           }
@@ -961,7 +958,7 @@ MyFunctions.getClassMap = (triples) => {
 
   // Step 1: Register all explicitly declared owl:Class instances
   triples.forEach(({ subject, predicate, object }) => {
-    if (predicate === "@type" && object === NS.owl.Class) {
+    if (predicate === "@type" && object === COMMON_NAMESPACE_IRIS.owl.Class) {
       if (!classMap.has(subject)) {
         classMap.set(subject, { "@id": subject, "@type": "owl:Class" });
       }
@@ -970,7 +967,7 @@ MyFunctions.getClassMap = (triples) => {
 
   // Step 2: Process subclass relationships
   triples.forEach(({ subject, predicate, object }) => {
-    if (predicate === NS.rdfs.subClassOf) {
+    if (predicate === COMMON_NAMESPACE_IRIS.rdfs.subClassOf) {
       // If subclass already exists, just add subClassOf
       if (classMap.has(subject)) {
         classMap.get(subject)["rdfs:subClassOf"] = { "@id": object };
@@ -1012,18 +1009,13 @@ MyFunctions.getProperties = (triples) => {
     throw new TypeError("Expected 'triples' to be an array of {subject, predicate, object}.");
   }
 
-  const OWL_OBJECT_PROPERTY = NS.owl.ObjectProperty;
-  const OWL_DATATYPE_PROPERTY = NS.owl.DatatypeProperty;
-  const RDFS_DOMAIN = NS.rdfs.domain;
-  const RDFS_RANGE = NS.rdfs.range;
-
   const propMap = new Map();
 
   // Step 1: Identify properties and initialize entries
   triples.forEach(({ subject, predicate, object }) => {
     if (
       predicate === "@type" &&
-      (object === OWL_OBJECT_PROPERTY || object === OWL_DATATYPE_PROPERTY)
+      (object === COMMON_NAMESPACE_IRIS.owl.ObjectProperty || object === COMMON_NAMESPACE_IRIS.owl.DatatypeProperty)
     ) {
       if (!propMap.has(subject)) {
         propMap.set(subject, { "@id": subject, types: [object], domain: null, range: null });
@@ -1037,9 +1029,9 @@ MyFunctions.getProperties = (triples) => {
   triples.forEach(({ subject, predicate, object }) => {
     if (!propMap.has(subject)) return;
 
-    if (predicate === RDFS_DOMAIN) {
+    if (predicate === COMMON_NAMESPACE_IRIS.rdfs.domain) {
       propMap.get(subject).domain = object;
-    } else if (predicate === RDFS_RANGE) {
+    } else if (predicate === COMMON_NAMESPACE_IRIS.rdfs.range) {
       propMap.get(subject).range = object;
     }
   });
@@ -1108,7 +1100,7 @@ MyFunctions.getFormalLabel = (jsonld, id, language) => {
 
   // Predefined keys to search for labels
   const labelKeys = [
-    NS.rdfs.label, // Full IRI
+    COMMON_NAMESPACE_IRIS.rdfs.label, // Full IRI
     "rdfs:label",                                // Prefixed IRI
     "label"                                      // Generic key
   ];
@@ -1207,12 +1199,12 @@ MyFunctions.getLabelFromNamedIndividual = (jsonld, id, language) => {
   const types = Array.isArray(entity["@type"]) ? entity["@type"] : [entity["@type"]];
 
   // Check if the entity is a NamedIndividual
-  if (!types.includes(NS.owl.NamedIndividual)) return null;
+  if (!types.includes(COMMON_NAMESPACE_IRIS.owl.NamedIndividual)) return null;
 
   // Iterate over the types to find a label for the type
   for (const typeIRI of types) {
     // Skip the NamedIndividual type itself
-    if (typeIRI === NS.owl.NamedIndividual) continue;
+    if (typeIRI === COMMON_NAMESPACE_IRIS.owl.NamedIndividual) continue;
 
     // Attempt to get the label for the type
     const typeLabel =
@@ -1418,7 +1410,7 @@ window.MyFunctions.getPreferredLabelForEntity = (jsonld, id, language) => {
   }
 
   const labelKeys = [
-    NS.rdfs.label,
+    COMMON_NAMESPACE_IRIS.rdfs.label,
     "rdfs:label",
     "label"
   ];
@@ -1733,6 +1725,17 @@ window.MyFunctions.deriveRepresentationalAttributes = (jsonld, iri) => {
 };
 
 
+window.MyFunctions.normalizeJsonLdGraphInput = (jsonld) => {
+  if (Array.isArray(jsonld)) return jsonld;
+
+  if (jsonld && typeof jsonld === "object") {
+    if (Array.isArray(jsonld["@graph"])) return jsonld["@graph"];
+    if (jsonld["@id"] || jsonld["@type"]) return [jsonld];
+  }
+
+  throw new TypeError("JSON-LD input must be an array, an object with @graph, or a single node object.");
+};
+
 window.MyFunctions.generateEntityGraphFromRDFRepresentation = (jsonld, targetId = null, maxDepth = Infinity) => {
   /**
    * Converts a JSON-LD dataset into a graph format, starting from a target node,
@@ -1751,10 +1754,7 @@ window.MyFunctions.generateEntityGraphFromRDFRepresentation = (jsonld, targetId 
     typeOfMaxDepth: typeof maxDepth
   });
 
-  // Validate jsonld
-  if (!Array.isArray(jsonld)) {
-    throw new TypeError("generateEntityGraphFromRDFRepresentation expects jsonld to be an array.");
-  }
+  const graphItems = window.MyFunctions.normalizeJsonLdGraphInput(jsonld);
 
   // Normalize and validate maxDepth
   if (typeof maxDepth === "string") {
@@ -1785,31 +1785,31 @@ window.MyFunctions.generateEntityGraphFromRDFRepresentation = (jsonld, targetId 
 
   try {
     if (targetId) {
-      const targetExists = jsonld.some(e => e["@id"] === targetId);
+      const targetExists = graphItems.some(e => e["@id"] === targetId);
       if (!targetExists) {
         console.warn(`Target node '${targetId}' not found.`);
         return { nodes: [], links: [] };
       }
 
-      finalState = window.MyFunctions.recursivelyTraceEntityRelations(jsonld, targetId, finalState, maxDepth, 0);
+      finalState = window.MyFunctions.recursivelyTraceEntityRelations(graphItems, targetId, finalState, maxDepth, 0);
     } else {
       // Full graph traversal
-const allIds = jsonld
+const allIds = graphItems
   .filter(e => typeof e["@id"] === "string" && e["@id"].trim().length > 0)
   .map(e => e["@id"]);
 
 
       for (const id of allIds) {
-        finalState = window.MyFunctions.recursivelyTraceEntityRelations(jsonld, id, finalState, maxDepth, 0);
+        finalState = window.MyFunctions.recursivelyTraceEntityRelations(graphItems, id, finalState, maxDepth, 0);
       }
 
       // Include isolated nodes that may not have links
-      for (const entity of jsonld) {
+      for (const entity of graphItems) {
         const id = entity["@id"];
         if (!finalState.nodes[id]) {
           try {
-            const properties = window.MyFunctions.deriveRepresentationalAttributes(jsonld, id);
-            finalState.nodes[id] = window.MyFunctions.constructGraphNodeRepresentation(id, properties, jsonld);
+            const properties = window.MyFunctions.deriveRepresentationalAttributes(graphItems, id);
+            finalState.nodes[id] = window.MyFunctions.constructGraphNodeRepresentation(id, properties, graphItems);
           } catch (err) {
             console.warn(`Skipped isolated node ${id}: ${err.message}`);
           }

@@ -476,40 +476,42 @@ function renderJsonLDGraph(jsonld, targetId = null, hopDepth = 3) {
   renderGraph(graphData);
 }
 
-function renderGraphFromTextarea() {{
-    let jsonld;
-    try {
-      jsonld = JSON.parse(document.getElementById("jsonInput").value);
-    } catch {
-      alert("Invalid JSON");
-      return;
-    }
+function renderGraphFromTextarea() {
+  let jsonld;
+  try {
+    jsonld = JSON.parse(document.getElementById("jsonInput").value);
+  } catch {
+    alert("Invalid JSON");
+    return;
+  }
 
-    const inputElement = document.getElementById("focusNodeInputBox");
-    const input = inputElement.value;
-    
-    // Use the input value, defaulting to null (or empty string) if blank
-    const targetId = input && input.trim() !== "" ? input.trim() : null;
+  const inputElement = document.getElementById("focusNodeInputBox");
+  const input = inputElement.value;
 
-    renderJsonLDGraph(jsonld, targetId);
-  };
+  // Use the input value, defaulting to null if blank.
+  const targetId = input && input.trim() !== "" ? input.trim() : null;
+
+  renderJsonLDGraph(jsonld, targetId);
 }
 
+window.renderGraphFromTextarea = renderGraphFromTextarea;
 
 document.addEventListener("click", (event) => {
   const box = document.getElementById("propertyBox");
   if (!box.contains(event.target) && !event.target.closest(".node")) {
     box.style.display = "none";
   }
+});
 
-document.getElementById("hideBNodes").addEventListener("change", drawGraph);
-document.getElementById("hideAxioms").addEventListener("change", drawGraph);
-document.getElementById("typeFilter").addEventListener("change", drawGraph);
-document.getElementById("predicateFilter").addEventListener("change", drawGraph);
+document.getElementById("hideBNodes")?.addEventListener("change", drawGraph);
+document.getElementById("hideAxioms")?.addEventListener("change", drawGraph);
+document.getElementById("typeFilter")?.addEventListener("change", drawGraph);
+document.getElementById("predicateFilter")?.addEventListener("change", drawGraph);
 
 // Function to add event listeners to a select element
 function addHighlightOnBlur(selectId) {
   const selectElement = document.getElementById(selectId);
+  if (!selectElement) return;
 
   selectElement.addEventListener('blur', function() {
     this.classList.add('not-focused');
@@ -523,5 +525,3 @@ function addHighlightOnBlur(selectId) {
 // Add event listeners to both select elements
 addHighlightOnBlur('typeFilter');
 addHighlightOnBlur('predicateFilter');
-
-});

@@ -29,7 +29,6 @@ import {
  */
 
 /* ------------------------- Logging helpers ------------------------- */
-const NS = COMMON_NAMESPACE_IRIS;
 
 /** Create a structured logger (info/warn/error). */
 const makeLogger = (scope = 'ldt') => ({

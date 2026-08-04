@@ -20,20 +20,16 @@ import { normalizePrefixMap } from './shared/namespace-registry/prefix-map.js';
 
 (function (global) {
   'use strict';
-
-  const NS = COMMON_NAMESPACE_IRIS;
   const STANDARD_PREFIXES = namespacePrefixMapFromRegistry();
   const XHTML = STANDARD_PREFIXES.xhtml;
 
   const SECTION_TYPES = Object.freeze([
-    { key: 'annotationProperties', label: 'Annotation properties', iri: NS.owl.AnnotationProperty },
-    { key: 'dataProperties', label: 'Datatype properties', iri: NS.owl.DatatypeProperty },
-    { key: 'objectProperties', label: 'Object Properties', iri: NS.owl.ObjectProperty },
-    { key: 'classes', label: 'Classes', iri: NS.owl.Class },
-    { key: 'individuals', label: 'Individuals', iri: NS.owl.NamedIndividual },
+    { key: 'annotationProperties', label: 'Annotation properties', iri: COMMON_NAMESPACE_IRIS.owl.AnnotationProperty },
+    { key: 'dataProperties', label: 'Datatype properties', iri: COMMON_NAMESPACE_IRIS.owl.DatatypeProperty },
+    { key: 'objectProperties', label: 'Object Properties', iri: COMMON_NAMESPACE_IRIS.owl.ObjectProperty },
+    { key: 'classes', label: 'Classes', iri: COMMON_NAMESPACE_IRIS.owl.Class },
+    { key: 'individuals', label: 'Individuals', iri: COMMON_NAMESPACE_IRIS.owl.NamedIndividual },
   ]);
-
-  const DEFAULT_PREFIXES = STANDARD_PREFIXES;
 
   const HTML_LITERAL_ELEMENTS = new Set([
     'a',
@@ -155,7 +151,7 @@ import { normalizePrefixMap } from './shared/namespace-registry/prefix-map.js';
 
   const preferredPrefixMap = (serializedNamespaces, sourcePrefixes) => {
     const byIri = new Map();
-    Object.entries(DEFAULT_PREFIXES).forEach(([prefix, iri]) => byIri.set(iri, prefix));
+    Object.entries(STANDARD_PREFIXES).forEach(([prefix, iri]) => byIri.set(iri, prefix));
     Object.entries(sourcePrefixes || {}).forEach(([prefix, iri]) => {
       if (prefix && iri) byIri.set(iri, prefix);
     });
@@ -173,7 +169,7 @@ import { normalizePrefixMap } from './shared/namespace-registry/prefix-map.js';
       if (prefix && iri) preferredNamespaces.set(prefix, iri);
     });
 
-    Object.entries(DEFAULT_PREFIXES).forEach(([prefix, iri]) => {
+    Object.entries(STANDARD_PREFIXES).forEach(([prefix, iri]) => {
       const alreadyNamed = Array.from(preferredNamespaces.values()).some((existingIri) => existingIri === iri);
       if (!alreadyNamed && !preferredNamespaces.has(prefix)) preferredNamespaces.set(prefix, iri);
     });

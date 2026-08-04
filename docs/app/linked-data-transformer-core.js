@@ -9,7 +9,6 @@ import {
   serializeRdfDatasetWithAdapters
 } from './shared/rdf-io/index.js';
 
-const NS = COMMON_NAMESPACE_IRIS;
 
 function defaultLogger() {
   return {

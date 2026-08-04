@@ -22,24 +22,15 @@ import {
 
 (function (global) {
   'use strict';
-
-  const NS = COMMON_NAMESPACE_IRIS;
   const STANDARD_PREFIXES = namespacePrefixMapFromRegistry();
 
-  const RDF_TYPE = NS.rdf.type;
-  const RDF_FIRST = NS.rdf.first;
-  const RDF_REST = NS.rdf.rest;
-  const RDF_NIL = NS.rdf.nil;
-
   const SECTION_TYPES = Object.freeze([
-    { key: 'annotationProperties', label: 'Annotation properties', iri: NS.owl.AnnotationProperty },
-    { key: 'dataProperties', label: 'Datatype properties', iri: NS.owl.DatatypeProperty },
-    { key: 'objectProperties', label: 'Object Properties', iri: NS.owl.ObjectProperty },
-    { key: 'classes', label: 'Classes', iri: NS.owl.Class },
-    { key: 'individuals', label: 'Individuals', iri: NS.owl.NamedIndividual },
+    { key: 'annotationProperties', label: 'Annotation properties', iri: COMMON_NAMESPACE_IRIS.owl.AnnotationProperty },
+    { key: 'dataProperties', label: 'Datatype properties', iri: COMMON_NAMESPACE_IRIS.owl.DatatypeProperty },
+    { key: 'objectProperties', label: 'Object Properties', iri: COMMON_NAMESPACE_IRIS.owl.ObjectProperty },
+    { key: 'classes', label: 'Classes', iri: COMMON_NAMESPACE_IRIS.owl.Class },
+    { key: 'individuals', label: 'Individuals', iri: COMMON_NAMESPACE_IRIS.owl.NamedIndividual },
   ]);
-
-  const DEFAULT_PREFIXES = STANDARD_PREFIXES;
 
   const normalizeMimeType = (mimeType) => {
     const lower = String(mimeType || '').trim().toLowerCase();
@@ -95,7 +86,7 @@ import {
     Object.keys(parsedPrefixes || {}).forEach((key) => {
       prefixes[key] = asPrefixIri(parsedPrefixes[key]);
     });
-    Object.entries(DEFAULT_PREFIXES).forEach(([key, iri]) => {
+    Object.entries(STANDARD_PREFIXES).forEach(([key, iri]) => {
       const alreadyNamed = Object.values(prefixes).some((existingIri) => existingIri === iri);
       if (!alreadyNamed && !prefixes[key]) prefixes[key] = iri;
     });
@@ -127,7 +118,7 @@ import {
       const lexical = `"${escapeLiteral(normalizeLiteralValue(term.value))}"`;
       if (term.language) return `${lexical}@${term.language}`;
       const datatype = term.datatype && term.datatype.value;
-      if (!datatype || datatype === NS.xsd.string) return lexical;
+      if (!datatype || datatype === COMMON_NAMESPACE_IRIS.xsd.string) return lexical;
       return `${lexical}^^${namedNodeToText(datatype, prefixes)}`;
     }
     return String(term.value || '');
@@ -169,12 +160,12 @@ import {
 
   const getSubjectTypeIris = (store, subject) => store
     .getQuads(subject, null, null, null)
-    .filter((quad) => quad.predicate.value === RDF_TYPE && quad.object.termType === 'NamedNode')
+    .filter((quad) => quad.predicate.value === COMMON_NAMESPACE_IRIS.rdf.type && quad.object.termType === 'NamedNode')
     .map((quad) => quad.object.value);
 
   const classifySubject = (store, subject) => {
     const typeIris = getSubjectTypeIris(store, subject);
-    if (typeIris.includes(NS.owl.Ontology)) return 'ontology';
+    if (typeIris.includes(COMMON_NAMESPACE_IRIS.owl.Ontology)) return 'ontology';
 
     const entityType = SECTION_TYPES.find((section) => typeIris.includes(section.iri));
     if (entityType) return entityType.key;
@@ -193,50 +184,50 @@ import {
   };
 
   const ontologyPredicateRank = (predicateIri) => {
-    if (predicateIri === RDF_TYPE) return 0;
-    if (predicateIri === NS.owl.versionIRI) return 10;
-    if (predicateIri === NS.owl.imports) return 20;
-    if (predicateIri === NS.dc.title || predicateIri === NS.dcterms.title) return 30;
-    if (predicateIri === NS.dc.creator || predicateIri === NS.dcterms.creator) return 40;
-    if (predicateIri === NS.dc.contributor || predicateIri === NS.dcterms.contributor) return 50;
-    if (predicateIri === NS.dc.description || predicateIri === NS.dcterms.description) return 60;
-    if (predicateIri === NS.dcterms.license) return 70;
-    if (predicateIri === NS.dc.rights || predicateIri === NS.dcterms.rights) return 80;
-    if (predicateIri === NS.rdfs.comment) return 90;
-    if (predicateIri === NS.rdfs.label) return 100;
-    if (predicateIri === NS.owl.versionInfo) return 110;
-    if (predicateIri === NS.skos.scopeNote) return 120;
+    if (predicateIri === COMMON_NAMESPACE_IRIS.rdf.type) return 0;
+    if (predicateIri === COMMON_NAMESPACE_IRIS.owl.versionIRI) return 10;
+    if (predicateIri === COMMON_NAMESPACE_IRIS.owl.imports) return 20;
+    if (predicateIri === COMMON_NAMESPACE_IRIS.dc.title || predicateIri === COMMON_NAMESPACE_IRIS.dcterms.title) return 30;
+    if (predicateIri === COMMON_NAMESPACE_IRIS.dc.creator || predicateIri === COMMON_NAMESPACE_IRIS.dcterms.creator) return 40;
+    if (predicateIri === COMMON_NAMESPACE_IRIS.dc.contributor || predicateIri === COMMON_NAMESPACE_IRIS.dcterms.contributor) return 50;
+    if (predicateIri === COMMON_NAMESPACE_IRIS.dc.description || predicateIri === COMMON_NAMESPACE_IRIS.dcterms.description) return 60;
+    if (predicateIri === COMMON_NAMESPACE_IRIS.dcterms.license) return 70;
+    if (predicateIri === COMMON_NAMESPACE_IRIS.dc.rights || predicateIri === COMMON_NAMESPACE_IRIS.dcterms.rights) return 80;
+    if (predicateIri === COMMON_NAMESPACE_IRIS.rdfs.comment) return 90;
+    if (predicateIri === COMMON_NAMESPACE_IRIS.rdfs.label) return 100;
+    if (predicateIri === COMMON_NAMESPACE_IRIS.owl.versionInfo) return 110;
+    if (predicateIri === COMMON_NAMESPACE_IRIS.skos.scopeNote) return 120;
     return 500;
   };
 
   const predicateRank = (predicateIri, subjectKind) => {
     if (subjectKind === 'ontology') return ontologyPredicateRank(predicateIri);
-    if (predicateIri === RDF_TYPE) return 0;
+    if (predicateIri === COMMON_NAMESPACE_IRIS.rdf.type) return 0;
 
     const owlRank = [
-      NS.owl.equivalentClass,
-      NS.owl.disjointWith,
-      NS.owl.complementOf,
-      NS.owl.intersectionOf,
-      NS.owl.unionOf,
-      NS.owl.oneOf,
-      NS.owl.inverseOf,
-      NS.owl.propertyChainAxiom,
-      NS.owl.TransitiveProperty,
-      NS.owl.SymmetricProperty,
-      NS.owl.AsymmetricProperty,
-      NS.owl.ReflexiveProperty,
-      NS.owl.IrreflexiveProperty,
-      NS.owl.FunctionalProperty,
-      NS.owl.InverseFunctionalProperty,
+      COMMON_NAMESPACE_IRIS.owl.equivalentClass,
+      COMMON_NAMESPACE_IRIS.owl.disjointWith,
+      COMMON_NAMESPACE_IRIS.owl.complementOf,
+      COMMON_NAMESPACE_IRIS.owl.intersectionOf,
+      COMMON_NAMESPACE_IRIS.owl.unionOf,
+      COMMON_NAMESPACE_IRIS.owl.oneOf,
+      COMMON_NAMESPACE_IRIS.owl.inverseOf,
+      COMMON_NAMESPACE_IRIS.owl.propertyChainAxiom,
+      COMMON_NAMESPACE_IRIS.owl.TransitiveProperty,
+      COMMON_NAMESPACE_IRIS.owl.SymmetricProperty,
+      COMMON_NAMESPACE_IRIS.owl.AsymmetricProperty,
+      COMMON_NAMESPACE_IRIS.owl.ReflexiveProperty,
+      COMMON_NAMESPACE_IRIS.owl.IrreflexiveProperty,
+      COMMON_NAMESPACE_IRIS.owl.FunctionalProperty,
+      COMMON_NAMESPACE_IRIS.owl.InverseFunctionalProperty,
     ].indexOf(predicateIri);
     if (owlRank >= 0) return 10 + owlRank;
 
-    if (predicateIri === NS.rdfs.subClassOf) return 100;
-    if (predicateIri === NS.rdfs.subPropertyOf) return 101;
-    if (predicateIri === NS.rdfs.domain) return 120;
-    if (predicateIri === NS.rdfs.range) return 121;
-    if (predicateIri === NS.rdfs.label) return 200;
+    if (predicateIri === COMMON_NAMESPACE_IRIS.rdfs.subClassOf) return 100;
+    if (predicateIri === COMMON_NAMESPACE_IRIS.rdfs.subPropertyOf) return 101;
+    if (predicateIri === COMMON_NAMESPACE_IRIS.rdfs.domain) return 120;
+    if (predicateIri === COMMON_NAMESPACE_IRIS.rdfs.range) return 121;
+    if (predicateIri === COMMON_NAMESPACE_IRIS.rdfs.label) return 200;
     return 500;
   };
 
@@ -256,12 +247,12 @@ import {
       if (seen.has(currentKey)) return null;
       seen.add(currentKey);
 
-      const first = getOnlyObject(store, current, RDF_FIRST);
-      const rest = getOnlyObject(store, current, RDF_REST);
+      const first = getOnlyObject(store, current, COMMON_NAMESPACE_IRIS.rdf.first);
+      const rest = getOnlyObject(store, current, COMMON_NAMESPACE_IRIS.rdf.rest);
       if (!first || !rest) return null;
 
       items.push(first);
-      if (rest.termType === 'NamedNode' && rest.value === RDF_NIL) return items;
+      if (rest.termType === 'NamedNode' && rest.value === COMMON_NAMESPACE_IRIS.rdf.nil) return items;
       current = rest;
     }
 
@@ -300,7 +291,7 @@ import {
     }
 
     const quads = store.getQuads(term, null, null, null)
-      .filter((quad) => quad.predicate.value !== RDF_FIRST && quad.predicate.value !== RDF_REST);
+      .filter((quad) => quad.predicate.value !== COMMON_NAMESPACE_IRIS.rdf.first && quad.predicate.value !== COMMON_NAMESPACE_IRIS.rdf.rest);
     if (!quads.length) return termToText(term, prefixes);
 
     const predicateGroups = sortedPredicates(quads, prefixes);
@@ -328,7 +319,7 @@ import {
   const isIgnorableWhitespaceValueQuad = (quad) => {
     return quad &&
       quad.predicate &&
-      quad.predicate.value === NS.rdf.value &&
+      quad.predicate.value === COMMON_NAMESPACE_IRIS.rdf.value &&
       quad.object &&
       quad.object.termType === 'Literal' &&
       !normalizeLiteralValue(quad.object.value);
