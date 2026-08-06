@@ -15,6 +15,7 @@ import {
   parseRdfTextWithAdapters,
   serializeRdfDatasetWithAdapters
 } from './shared/rdf-io/index.js';
+import { isBlankNodeTerm } from './shared/ontology-utils/index.js';
 
 /* linked-data-transformer-functions.hybrid.js
  * Hybrid RDF transformer (client-side):
@@ -115,7 +116,7 @@ const storeToMermaid = ({ store }) => {
   const esc = (s) => s.replace(/"/g, '\\"');
   const termLabel = (t) => {
     if (t.termType === 'NamedNode') return esc(t.value);
-    if (t.termType === 'BlankNode') return `_:${esc(t.value)}`;
+    if (isBlankNodeTerm(t)) return `_:${esc(t.value)}`;
     return `"${esc(t.value)}"`;
   };
 

@@ -8,6 +8,7 @@ import {
   parseRdfTextWithAdapters,
   serializeRdfDatasetWithAdapters
 } from './shared/rdf-io/index.js';
+import { isBlankNodeTerm } from './shared/ontology-utils/index.js';
 
 
 function defaultLogger() {
@@ -174,7 +175,7 @@ export function createTransformer({ N3, jsonld, $rdf }) {
 
     const termLabel = (term) => {
       if (term.termType === 'NamedNode') return escapeLabel(term.value);
-      if (term.termType === 'BlankNode') return `_:${escapeLabel(term.value)}`;
+      if (isBlankNodeTerm(term)) return `_:${escapeLabel(term.value)}`;
       return `"${escapeLabel(term.value)}"`;
     };
 

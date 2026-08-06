@@ -19,6 +19,7 @@ import {
   serializeRdfDatasetToNQuads,
   serializeRdfDatasetToNTriples
 } from './shared/rdf-io/index.js';
+import { isBlankNodeTerm } from './shared/ontology-utils/index.js';
 
 (function (global) {
   'use strict';
@@ -112,7 +113,7 @@ import {
   const termToText = (term, prefixes) => {
     if (!term) return '';
     if (term.termType === 'NamedNode') return namedNodeToText(term.value, prefixes);
-    if (term.termType === 'BlankNode') return `_:${term.value}`;
+    if (isBlankNodeTerm(term)) return `_:${term.value}`;
     if (term.termType === 'DefaultGraph') return '';
     if (term.termType === 'Literal') {
       const lexical = `"${escapeLiteral(normalizeLiteralValue(term.value))}"`;
@@ -170,7 +171,7 @@ import {
     const entityType = SECTION_TYPES.find((section) => typeIris.includes(section.iri));
     if (entityType) return entityType.key;
 
-    if (subject.termType === 'BlankNode' || typeIris.length) return 'extraAxioms';
+    if (isBlankNodeTerm(subject) || typeIris.length) return 'extraAxioms';
     return 'extraAnnotations';
   };
 
@@ -238,11 +239,11 @@ import {
   };
 
   const parseRdfList = (store, head, seen = new Set()) => {
-    if (!head || head.termType !== 'BlankNode') return null;
+    if (!isBlankNodeTerm(head)) return null;
     const items = [];
     let current = head;
 
-    while (current && current.termType === 'BlankNode') {
+    while (isBlankNodeTerm(current)) {
       const currentKey = current.value;
       if (seen.has(currentKey)) return null;
       seen.add(currentKey);
@@ -278,7 +279,7 @@ import {
   };
 
   const formatObject = (store, term, prefixes, seen = new Set()) => {
-    if (!term || term.termType !== 'BlankNode') return termToText(term, prefixes);
+    if (!isBlankNodeTerm(term)) return termToText(term, prefixes);
 
     const key = term.value;
     if (seen.has(key)) return termToText(term, prefixes);
@@ -311,7 +312,7 @@ import {
   const referencedBlankNodeIds = (store) => {
     const ids = new Set();
     store.getQuads(null, null, null, null).forEach((quad) => {
-      if (quad.object.termType === 'BlankNode') ids.add(quad.object.value);
+      if (isBlankNodeTerm(quad.object)) ids.add(quad.object.value);
     });
     return ids;
   };
@@ -393,7 +394,7 @@ import {
 
     const inlinedBlankNodes = referencedBlankNodeIds(store);
     sortedSubjects(store, prefixes).forEach((subject) => {
-      if (subject.termType === 'BlankNode' && inlinedBlankNodes.has(subject.value)) return;
+      if (isBlankNodeTerm(subject) && inlinedBlankNodes.has(subject.value)) return;
       sections[classifySubject(store, subject)].push(subject);
     });
     return sections;
