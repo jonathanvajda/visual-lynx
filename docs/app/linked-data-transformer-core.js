@@ -8,7 +8,7 @@ import {
   parseRdfTextWithAdapters,
   serializeRdfDatasetWithAdapters
 } from './shared/rdf-io/index.js';
-import { isBlankNodeTerm } from './shared/ontology-utils/index.js';
+import { isBlankNodeTerm, normalizeNamespaceIri } from './shared/ontology-utils/index.js';
 
 
 function defaultLogger() {
@@ -42,12 +42,6 @@ function describeError(err) {
 
 function extractRdfXmlPrefixes(text) {
   return normalizePrefixMap(extractXmlNamespacePrefixes(text)).prefixes;
-}
-
-function normalizeNamespaceIri(iri) {
-  const text = String(iri || '').trim();
-  if (!text) return '';
-  return /[#/]$/.test(text) ? text : `${text}#`;
 }
 
 function repairRdfXmlUnqualifiedElements({ text, baseIRI }) {

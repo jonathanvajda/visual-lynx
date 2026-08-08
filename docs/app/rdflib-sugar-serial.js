@@ -17,6 +17,7 @@ import {
   extractXmlNamespacePrefixes
 } from './shared/namespace-registry/rdf-prefixes.js';
 import { normalizePrefixMap } from './shared/namespace-registry/prefix-map.js';
+import { normalizeNamespaceIri } from './shared/ontology-utils/index.js';
 
 (function (global) {
   'use strict';
@@ -258,12 +259,6 @@ import { normalizePrefixMap } from './shared/namespace-registry/prefix-map.js';
       if (prefix) root.setAttribute(`xmlns:${prefix}`, iri);
       else root.setAttribute('xmlns', iri);
     });
-  };
-
-  const normalizeNamespaceIri = (iri) => {
-    const text = String(iri || '').trim();
-    if (!text) return '';
-    return /[#/]$/.test(text) ? text : `${text}#`;
   };
 
   const looksLikeHtmlDocument = (text, root) => {
