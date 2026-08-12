@@ -1,0 +1,148 @@
+.cy-page {
+  min-height: 100vh;
+}
+
+.cy-panel {
+  padding: 1rem 1.5rem 0.75rem;
+}
+
+.cy-toolbar {
+  display: grid;
+  grid-template-columns: minmax(24rem, 2.2fr) minmax(18rem, 1.4fr) minmax(11rem, 0.8fr) auto;
+  gap: 0.9rem 1rem;
+  align-items: end;
+  margin-bottom: 1rem;
+}
+
+.cy-field {
+  min-width: 0;
+}
+
+.cy-field label,
+.cy-textarea-wrap label {
+  display: block;
+  margin-bottom: 0.35rem;
+  font-weight: 600;
+}
+
+.cy-field input,
+.cy-field select,
+.cy-textarea-wrap textarea {
+  width: 100%;
+  margin-bottom: 0;
+}
+
+.cy-actions {
+  display: flex;
+  gap: 0.75rem;
+  align-items: end;
+  flex-wrap: wrap;
+}
+
+.cy-actions button {
+  margin-bottom: 0;
+}
+
+.cy-textarea-wrap {
+  width: 100%;
+}
+
+#rdfInput {
+  width: 100%;
+  min-height: 16em;
+  resize: vertical;
+  font-family: var(--ont-font-mono, ui-monospace, SFMono-Regular, Consolas, monospace);
+  white-space: pre;
+}
+
+.cy-status {
+  min-height: 1.5rem;
+  color: var(--ont-muted, #4b5563);
+}
+
+.cy-status--error {
+  color: var(--ont-danger, #dc2626);
+}
+
+.cy-status--success {
+  color: var(--ont-success, #15803d);
+}
+
+.cy-status--busy {
+  color: var(--ont-accent, #2563eb);
+}
+
+.cy-graph-container {
+  position: relative;
+  width: calc(100% - 2rem);
+  height: 68vh;
+  margin: 0 1rem 1rem;
+  border: 1px solid var(--ont-border, #d1d5db);
+  background: var(--ont-panel-bg, #ffffff);
+}
+
+#cyGraph {
+  width: 100%;
+  height: 100%;
+}
+
+.cy-filter-box,
+.cy-property-box {
+  position: absolute;
+  top: 1rem;
+  z-index: 2;
+  width: 16rem;
+  max-height: calc(100% - 2rem);
+  overflow: auto;
+  border: 1px solid var(--ont-border, #d1d5db);
+  border-radius: 8px;
+  padding: 0.75rem;
+  background: color-mix(in srgb, var(--ont-panel-bg, #ffffff) 94%, transparent);
+  box-shadow: var(--ont-shadow-lg, 0 10px 30px rgba(0, 0, 0, 0.12));
+}
+
+.cy-filter-box {
+  left: 1rem;
+}
+
+.cy-property-box {
+  right: 1rem;
+  display: none;
+}
+
+.cy-property-box h3 {
+  margin-top: 0;
+}
+
+.cy-property-box p {
+  margin: 0.35rem 0;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 1100px) {
+  .cy-toolbar {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .cy-actions {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 700px) {
+  .cy-toolbar {
+    grid-template-columns: 1fr;
+  }
+
+  .cy-actions {
+    grid-column: auto;
+  }
+
+  .cy-filter-box,
+  .cy-property-box {
+    position: static;
+    width: auto;
+    max-height: 12rem;
+    margin: 0.5rem;
+  }
+}

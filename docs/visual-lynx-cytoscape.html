@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Visual Lynx Cytoscape</title>
+  <link rel="stylesheet" href="./styles/skeleton.css" />
+  <script>
+    (function () {
+      const APPBASE_CSS_SOURCES = [
+        "https://jonathanvajda.github.io/OntoEagle/styles/app-base.css",
+        "https://jonathanvajda.github.io/table-nova/styles/app-base.css"
+      ];
+      const HEADER_CSS_SOURCES = [
+        "https://jonathanvajda.github.io/OntoEagle/styles/site-header.css",
+        "https://jonathanvajda.github.io/table-nova/styles/site-header.css"
+      ];
+      function loadCss(href) {
+        return new Promise((resolve, reject) => {
+          const link = document.createElement("link");
+          link.rel = "stylesheet";
+          link.href = href;
+          link.onload = () => resolve(href);
+          link.onerror = () => reject(new Error("CSS failed: " + href));
+          document.head.appendChild(link);
+        });
+      }
+      async function loadFirstAvailable(sources, label) {
+        for (const href of sources) {
+          try { await loadCss(href); return; } catch (_) {}
+        }
+        console.error(`Failed to load ${label} CSS from all sources.`);
+      }
+      loadFirstAvailable(APPBASE_CSS_SOURCES, "app base");
+      loadFirstAvailable(HEADER_CSS_SOURCES, "header");
+    })();
+  </script>
+  <link rel="stylesheet" href="./styles/cytoscape-visualizer.css" />
+  <link rel="modulepreload" href="./app/shared/cytoscape-visualization/index.js" />
+  <link rel="modulepreload" href="./app/shared/rdf-io/index.js" />
+  <link rel="modulepreload" href="./app/shared/format-registry/index.js" />
+  <link rel="modulepreload" href="./app/shared/browser-file-io/index.js" />
+</head>
+
+<body class="cy-page" data-page-id="visual-lynx">
+  <header id="siteHeader" class="sitehdr-root" role="banner" aria-label="Site header"></header>
+
+  <main>
+    <section class="cy-panel" aria-label="Cytoscape RDF graph controls">
+      <div class="cy-toolbar">
+        <div class="cy-field">
+          <label for="focusNodeInputBox">Focus node</label>
+          <input id="focusNodeInputBox" type="text" placeholder="Full IRI; leave blank to show full graph" />
+        </div>
+
+        <div class="cy-field">
+          <label for="graphFileInput">Graph file</label>
+          <input
+            id="graphFileInput"
+            type="file"
+            accept=".ttl,.turtle,.n3,.nt,.ntriples,.nq,.nquads,.trig,.jsonld,.json-ld,.json,.rdf,.owl,.xml,application/ld+json,text/turtle,application/n-triples,application/n-quads,application/trig,application/rdf+xml"
+          />
+        </div>
+
+        <div class="cy-field">
+          <label for="graphInputFormat">Input format</label>
+          <select id="graphInputFormat">
+            <option value="auto" selected>Auto-detect</option>
+            <option value="text/turtle">Turtle</option>
+            <option value="application/n-triples">N-Triples</option>
+            <option value="application/n-quads">N-Quads</option>
+            <option value="application/trig">TriG</option>
+            <option value="application/ld+json">JSON-LD</option>
+            <option value="application/rdf+xml">RDF/XML</option>
+          </select>
+        </div>
+
+        <div class="cy-actions" aria-label="Graph actions">
+          <button id="loadBfoGraphDataBtn" type="button">Get BFO Graph</button>
+          <button id="renderBtn" type="button">Render</button>
+        </div>
+      </div>
+
+      <div id="cyStatus" class="cy-status" role="status" aria-live="polite"></div>
+
+      <div class="cy-textarea-wrap">
+        <details>
+          <summary>RDF data</summary>
+          <textarea id="rdfInput" spellcheck="false"></textarea>
+        </details>
+      </div>
+    </section>
+
+    <section class="cy-graph-container" aria-label="Cytoscape graph canvas">
+      <div id="cyGraph"></div>
+
+      <aside id="filterBox" class="cy-filter-box" aria-label="Graph filters">
+        <label><input type="checkbox" id="hideBNodes" checked /> Hide blank nodes</label>
+        <label><input type="checkbox" id="hideAxiomSupportNodes" checked /> Hide axiom support nodes</label>
+      </aside>
+
+      <aside id="propertyBox" class="cy-property-box" aria-label="Node and edge properties">
+        <h3>Properties</h3>
+        <div id="propertyContent"></div>
+      </aside>
+    </section>
+  </main>
+
+  <script>
+    (function () {
+      const JS_SOURCES = [
+        "https://jonathanvajda.github.io/OntoEagle/app/site-header.js",
+        "https://jonathanvajda.github.io/table-nova/app/site-header.js"
+      ];
+      function loadScript(src) {
+        return new Promise((resolve, reject) => {
+          const script = document.createElement("script");
+          script.src = src;
+          script.defer = true;
+          script.onload = () => resolve(src);
+          script.onerror = () => reject(new Error("JS failed: " + src));
+          document.head.appendChild(script);
+        });
+      }
+      (async () => {
+        for (const src of JS_SOURCES) {
+          try { await loadScript(src); return; } catch (_) {}
+        }
+        console.error("Failed to load header JavaScript from all sources.");
+      })();
+    })();
+  </script>
+  <script src="./app/shared/vendor/cytoscape.min.js"></script>
+  <script src="./app/shared/vendor/n3.min.js"></script>
+  <script src="./app/shared/vendor/jsonld.min.js"></script>
+  <script src="./app/shared/vendor/rdflib.min.js"></script>
+  <script type="module" src="./app/visual-lynx-cytoscape.js"></script>
+</body>
+
+</html>
