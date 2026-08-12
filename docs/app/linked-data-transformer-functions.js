@@ -16,6 +16,7 @@ import {
   serializeRdfDatasetWithAdapters
 } from './shared/rdf-io/index.js';
 import { isBlankNodeTerm } from './shared/ontology-utils/index.js';
+import { createScopedConsoleLogger } from './shared/ui-feedback/index.js';
 
 /* linked-data-transformer-functions.hybrid.js
  * Hybrid RDF transformer (client-side):
@@ -32,11 +33,14 @@ import { isBlankNodeTerm } from './shared/ontology-utils/index.js';
 /* ------------------------- Logging helpers ------------------------- */
 
 /** Create a structured logger (info/warn/error). */
-const makeLogger = (scope = 'ldt') => ({
-  info: (...args) => console.info(`[${scope}]`, ...args),
-  warn: (...args) => console.warn(`[${scope}]`, ...args),
-  error: (...args) => console.error(`[${scope}]`, ...args),
-});
+const makeLogger = (scope = 'ldt') => {
+  const logger = createScopedConsoleLogger({ scope });
+  return {
+    info: (...args) => logger.info(String(args.shift() ?? 'event'), args),
+    warn: (...args) => logger.warn(String(args.shift() ?? 'event'), args),
+    error: (...args) => logger.error(String(args.shift() ?? 'event'), args),
+  };
+};
 
 /* ------------------------- Format registry ------------------------- */
 const registryMimeType = (mimeType) => {

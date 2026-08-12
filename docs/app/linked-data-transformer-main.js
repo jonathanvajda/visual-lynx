@@ -9,13 +9,17 @@ import {
 
 import { createTransformer } from './linked-data-transformer-core.js';
 import { downloadTextFile, readFileAsText } from './shared/browser-file-io/index.js';
+import { createScopedConsoleLogger } from './shared/ui-feedback/index.js';
 
 /* ------------------------- Logging helpers ------------------------- */
-const makeLogger = (scope = 'ldt') => ({
-  info: (...args) => console.info(`[${scope}]`, ...args),
-  warn: (...args) => console.warn(`[${scope}]`, ...args),
-  error: (...args) => console.error(`[${scope}]`, ...args),
-});
+const makeLogger = (scope = 'ldt') => {
+  const logger = createScopedConsoleLogger({ scope });
+  return {
+    info: (...args) => logger.info(String(args.shift() ?? 'event'), args),
+    warn: (...args) => logger.warn(String(args.shift() ?? 'event'), args),
+    error: (...args) => logger.error(String(args.shift() ?? 'event'), args),
+  };
+};
 
 /* ------------------------- UI utilities ------------------------- */
 function getSelectedRadioValue(groupName) {

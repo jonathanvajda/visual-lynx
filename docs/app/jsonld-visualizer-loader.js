@@ -7,11 +7,16 @@ import {
   normalizeSupportedMimeType,
 } from './shared/format-registry/index.js';
 
-const makeLogger = (scope = 'jsonld-loader') => ({
-  info: (...args) => console.info(`[${scope}]`, ...args),
-  warn: (...args) => console.warn(`[${scope}]`, ...args),
-  error: (...args) => console.error(`[${scope}]`, ...args),
-});
+import { createScopedConsoleLogger } from './shared/ui-feedback/index.js';
+
+const makeLogger = (scope = 'jsonld-loader') => {
+  const logger = createScopedConsoleLogger({ scope });
+  return {
+    info: (...args) => logger.info(String(args.shift() ?? 'event'), args),
+    warn: (...args) => logger.warn(String(args.shift() ?? 'event'), args),
+    error: (...args) => logger.error(String(args.shift() ?? 'event'), args),
+  };
+};
 
 /**
  * Load the stock BFO JSON-LD example into the textarea.
