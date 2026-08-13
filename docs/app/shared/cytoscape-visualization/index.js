@@ -32,5 +32,6 @@ export {
 } from './cytoscape-elements.js';
 
 export {
+  CYTOSCAPE_VISUAL_STYLE,
   createDefaultCytoscapeStylesheet
 } from './cytoscape-styles.js';

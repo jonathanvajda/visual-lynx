@@ -149,6 +149,12 @@ function renderCytoscape(elements) {
   cy.on('tap', (event) => {
     if (event.target === cy) clearInspector();
   });
+  cy.on('mouseover', 'node, edge', (event) => {
+    event.target.addClass('is-hovered');
+  });
+  cy.on('mouseout', 'node, edge', (event) => {
+    event.target.removeClass('is-hovered');
+  });
 }
 
 function renderInspector(data) {
