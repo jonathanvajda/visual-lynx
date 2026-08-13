@@ -119,6 +119,8 @@
         <label for="objectFilter">Objects</label>
         <select id="objectFilter" multiple size="5"></select>
         <div class="cy-filter-actions">
+          <button id="hideSelectedBtn" type="button">Hide Selected</button>
+          <button id="restoreHiddenBtn" type="button">Restore Hidden</button>
           <button id="resetFiltersBtn" type="button">Reset</button>
           <button id="showAllBtn" type="button">Show All</button>
         </div>
@@ -126,6 +128,11 @@
 
       <aside id="propertyBox" class="cy-property-box" aria-label="Node and edge properties">
         <h3>Properties</h3>
+        <div class="cy-copy-actions">
+          <button id="copyIriBtn" type="button">Copy IRI</button>
+          <button id="copyCurieBtn" type="button">Copy CURIE</button>
+          <button id="copyTripleIdBtn" type="button">Copy Triple ID</button>
+        </div>
         <div id="propertyContent"></div>
       </aside>
     </section>

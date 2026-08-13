@@ -56,3 +56,13 @@ export {
   selectGraphElementIds,
   updateGraphVisibilityFilters
 } from './filter-visibility.js';
+
+export {
+  clearGraphElementSelection,
+  createGraphElementCopyPayload,
+  hideSelectedGraphElements,
+  pinGraphNodePosition,
+  restoreHiddenGraphElements,
+  setGraphInspectorTarget,
+  updateGraphElementSelection
+} from './interaction-state.js';

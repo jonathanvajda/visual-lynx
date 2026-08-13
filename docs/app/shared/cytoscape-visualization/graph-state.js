@@ -8,6 +8,7 @@ export function createDefaultGraphUiState(overrides = {}) {
   return Object.freeze({
     selectedNodeIds: Object.freeze(Array.from(overrides.selectedNodeIds || [])),
     selectedEdgeIds: Object.freeze(Array.from(overrides.selectedEdgeIds || [])),
+    selectionAnchorId: overrides.selectionAnchorId || '',
     hiddenNodeIds: Object.freeze(Array.from(overrides.hiddenNodeIds || [])),
     hiddenEdgeIds: Object.freeze(Array.from(overrides.hiddenEdgeIds || [])),
     activeFilters: Object.freeze({

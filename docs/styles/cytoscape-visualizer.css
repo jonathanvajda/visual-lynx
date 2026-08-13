@@ -121,15 +121,22 @@
   font-size: 1.25rem;
 }
 
-.cy-filter-actions {
+.cy-filter-actions,
+.cy-copy-actions {
   display: flex;
   gap: 0.5rem;
   margin-top: 0.55rem;
+  flex-wrap: wrap;
 }
 
-.cy-filter-actions button {
+.cy-filter-actions button,
+.cy-copy-actions button {
   flex: 1 1 auto;
   padding: 0.45rem 0.55rem;
+}
+
+.cy-copy-actions {
+  margin: 0 0 0.7rem;
 }
 
 .cy-property-box {

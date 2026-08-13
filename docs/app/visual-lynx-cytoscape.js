@@ -9,11 +9,18 @@ import {
   buildInspectorViewModel,
   buildGraphFilterPanelViewModel,
   calculateNeighborNudgePositions,
+  clearGraphElementSelection,
   createCytoscapeLayoutOptions,
   createDefaultCytoscapeStylesheet,
+  createGraphElementCopyPayload,
   getFirstDegreeNeighborNodeIds,
+  hideSelectedGraphElements,
+  pinGraphNodePosition,
   projectGraphStateToCytoscapeElements,
   projectRdfToGraphState,
+  restoreHiddenGraphElements,
+  setGraphInspectorTarget,
+  updateGraphElementSelection,
   updateGraphVisibilityFilters
 } from './shared/cytoscape-visualization/index.js';
 
@@ -40,12 +47,19 @@ const ui = {
   subjectFilter: document.getElementById('subjectFilter'),
   objectFilter: document.getElementById('objectFilter'),
   resetFilters: document.getElementById('resetFiltersBtn'),
-  showAll: document.getElementById('showAllBtn')
+  showAll: document.getElementById('showAllBtn'),
+  hideSelected: document.getElementById('hideSelectedBtn'),
+  restoreHidden: document.getElementById('restoreHiddenBtn'),
+  copyIri: document.getElementById('copyIriBtn'),
+  copyCurie: document.getElementById('copyCurieBtn'),
+  copyTripleId: document.getElementById('copyTripleIdBtn')
 };
 
 let cy = null;
 let latestGraphState = null;
 let activeDragNudge = null;
+let activeDraggedNodeId = '';
+let latestInspectorData = null;
 
 function setStatus(message, severity = 'info') {
   renderStatusMessage(ui.status, { message, severity }, { classPrefix: 'cy-status' });
@@ -153,14 +167,14 @@ function renderCytoscape(elements) {
     wheelSensitivity: 0.18
   });
 
-  cy.on('tap', 'node', (event) => {
-    renderInspector(event.target.data());
-  });
-  cy.on('tap', 'edge', (event) => {
-    renderInspector(event.target.data());
-  });
+  cy.on('tap', 'node', handleGraphElementTap);
+  cy.on('tap', 'edge', handleGraphElementTap);
   cy.on('tap', (event) => {
-    if (event.target === cy) clearInspector();
+    if (event.target === cy) {
+      latestGraphState = clearGraphElementSelection(latestGraphState);
+      syncSelectedGraphElements();
+      clearInspector();
+    }
   });
   cy.on('mouseover', 'node, edge', (event) => {
     event.target.addClass('is-hovered');
@@ -174,6 +188,7 @@ function renderCytoscape(elements) {
 }
 
 function startNeighborNudge(event) {
+  activeDraggedNodeId = event.target.id();
   if (!ui.dragMovesNeighbors?.checked || !latestGraphState) {
     activeDragNudge = null;
     return;
@@ -210,12 +225,49 @@ function updateNeighborNudge(event) {
 }
 
 function stopNeighborNudge() {
+  if (latestGraphState && activeDraggedNodeId && cy) {
+    latestGraphState = pinGraphNodePosition(
+      latestGraphState,
+      activeDraggedNodeId,
+      cy.getElementById(activeDraggedNodeId).position()
+    );
+  }
   activeDragNudge = null;
+  activeDraggedNodeId = '';
+}
+
+function handleGraphElementTap(event) {
+  if (!latestGraphState) return;
+  const elementType = event.target.isNode() ? 'node' : 'edge';
+  latestGraphState = updateGraphElementSelection(latestGraphState, {
+    elementType,
+    elementId: event.target.id(),
+    ctrlKey: event.originalEvent?.ctrlKey,
+    metaKey: event.originalEvent?.metaKey,
+    shiftKey: event.originalEvent?.shiftKey
+  });
+  syncSelectedGraphElements();
+  renderInspector(event.target.data());
+}
+
+function syncSelectedGraphElements() {
+  if (!cy || !latestGraphState) return;
+  cy.$(':selected').unselect();
+  for (const nodeId of latestGraphState.ui.selectedNodeIds || []) {
+    cy.getElementById(nodeId).select();
+  }
+  for (const edgeId of latestGraphState.ui.selectedEdgeIds || []) {
+    cy.getElementById(edgeId).select();
+  }
 }
 
 function renderInspector(data) {
   if (!ui.propertyBox || !ui.propertyContent) return;
+  latestInspectorData = data;
   const viewModel = buildInspectorViewModel(data, latestGraphState?.indexes?.propertyIndex);
+  latestGraphState = latestGraphState
+    ? setGraphInspectorTarget(latestGraphState, { elementType: data.source && data.target ? 'edge' : 'node', elementId: data.id })
+    : latestGraphState;
 
   ui.propertyContent.replaceChildren(...viewModel.headingRows.map(([label, value]) => propertyRow(label, value)));
   for (const group of viewModel.groups) {
@@ -253,6 +305,7 @@ function propertyRow(label, value) {
 
 function clearInspector() {
   if (!ui.propertyBox || !ui.propertyContent) return;
+  latestInspectorData = null;
   ui.propertyContent.replaceChildren();
   ui.propertyBox.style.display = 'none';
 }
@@ -275,10 +328,42 @@ function bindEvents() {
   ui.objectFilter?.addEventListener('change', applyFilterControlState);
   ui.resetFilters?.addEventListener('click', resetFilters);
   ui.showAll?.addEventListener('click', showAllFilters);
+  ui.hideSelected?.addEventListener('click', hideSelectedElements);
+  ui.restoreHidden?.addEventListener('click', restoreHiddenElements);
+  ui.copyIri?.addEventListener('click', () => copyInspectorValue('iri'));
+  ui.copyCurie?.addEventListener('click', () => copyInspectorValue('curie'));
+  ui.copyTripleId?.addEventListener('click', () => copyInspectorValue('tripleId'));
   ui.relayout?.addEventListener('click', runSelectedLayout);
   ui.fitGraph?.addEventListener('click', () => {
     if (cy) cy.fit(undefined, 48);
   });
+}
+
+function hideSelectedElements() {
+  if (!latestGraphState) return;
+  latestGraphState = hideSelectedGraphElements(latestGraphState);
+  clearInspector();
+  renderCurrentGraphState();
+}
+
+function restoreHiddenElements() {
+  if (!latestGraphState) return;
+  latestGraphState = restoreHiddenGraphElements(latestGraphState);
+  renderCurrentGraphState();
+}
+
+async function copyInspectorValue(key) {
+  if (!latestInspectorData) return;
+  const payload = createGraphElementCopyPayload(latestInspectorData);
+  const value = payload[key] || '';
+  if (!value) return;
+  try {
+    await navigator.clipboard?.writeText(value);
+    setStatus(`Copied ${key}.`, 'success');
+  } catch (error) {
+    console.warn('[visual-lynx-cytoscape] clipboard write failed', error);
+    setStatus(`Copy failed: ${value}`, 'warning');
+  }
 }
 
 function applyFilterControlState() {

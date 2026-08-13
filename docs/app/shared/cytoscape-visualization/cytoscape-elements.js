@@ -11,25 +11,32 @@ export function projectGraphStateToCytoscapeElements(graphState, options = {}) {
   const hideBlankNodes = options.hideBlankNodes ?? graphState.ui?.activeFilters?.hideBlankNodes ?? true;
   const hideAxiomSupportNodes = options.hideAxiomSupportNodes ?? graphState.ui?.activeFilters?.hideAxiomSupportNodes ?? true;
   const visible = calculateVisibleGraphElementIds(graphState, { hideBlankNodes, hideAxiomSupportNodes });
+  const selectedNodeIds = new Set(graphState.ui?.selectedNodeIds || []);
+  const selectedEdgeIds = new Set(graphState.ui?.selectedEdgeIds || []);
 
   const nodes = graphState.nodes
     .filter((node) => visible.nodeIds.has(node.id))
-    .map((node) => ({
-      group: 'nodes',
-      data: {
-        id: node.id,
-        label: node.label,
-        ...estimateNodeVisualDimensions(node.label),
-        kind: node.kind,
-        term: node.term,
-        termType: node.termType,
-        iri: node.iri,
-        value: node.value,
-        typeIris: node.typeIris,
-        annotations: node.annotations,
-        propertyRecord: graphState.indexes?.propertyIndex?.get(node.id) || null
-      }
-    }));
+    .map((node) => {
+      const pinnedPosition = graphState.ui?.pinnedNodePositions?.[node.id] || null;
+      return {
+        group: 'nodes',
+        selected: selectedNodeIds.has(node.id),
+        ...(pinnedPosition ? { position: pinnedPosition } : {}),
+        data: {
+          id: node.id,
+          label: node.label,
+          ...estimateNodeVisualDimensions(node.label),
+          kind: node.kind,
+          term: node.term,
+          termType: node.termType,
+          iri: node.iri,
+          value: node.value,
+          typeIris: node.typeIris,
+          annotations: node.annotations,
+          propertyRecord: graphState.indexes?.propertyIndex?.get(node.id) || null
+        }
+      };
+    });
 
   const visibleEdges = graphState.edges
     .filter((edge) => visible.edgeIds.has(edge.id));
@@ -37,6 +44,7 @@ export function projectGraphStateToCytoscapeElements(graphState, options = {}) {
   const edges = visibleEdges
     .map((edge) => ({
       group: 'edges',
+      selected: selectedEdgeIds.has(edge.id),
       data: {
         id: edge.id,
         source: edge.subjectId,
