@@ -6,6 +6,7 @@ import {
 import { parseRdfTextWithAdapters } from './shared/rdf-io/index.js';
 import { renderStatusMessage } from './shared/ui-feedback/index.js';
 import {
+  buildInspectorViewModel,
   createDefaultCytoscapeStylesheet,
   projectGraphStateToCytoscapeElements,
   projectRdfToGraphState
@@ -152,20 +153,30 @@ function renderCytoscape(elements) {
 
 function renderInspector(data) {
   if (!ui.propertyBox || !ui.propertyContent) return;
-  const rows = [
-    ['Kind', data.kind],
-    ['Label', data.label],
-    ['IRI', data.iri],
-    ['Predicate', data.predicateIri],
-    ['Graph', data.graphId]
-  ].filter(([, value]) => value != null && value !== '');
+  const viewModel = buildInspectorViewModel(data, latestGraphState?.indexes?.propertyIndex);
 
-  const annotations = Array.isArray(data.annotations) ? data.annotations : [];
-  ui.propertyContent.replaceChildren(...rows.map(([label, value]) => propertyRow(label, value)));
-  for (const annotation of annotations.slice(0, 40)) {
-    ui.propertyContent.append(propertyRow(annotation.predicateLabel || annotation.predicateIri, annotation.value));
+  ui.propertyContent.replaceChildren(...viewModel.headingRows.map(([label, value]) => propertyRow(label, value)));
+  for (const group of viewModel.groups) {
+    ui.propertyContent.append(propertyGroupHeading(group.label));
+    for (const row of group.rows.slice(0, 60)) {
+      ui.propertyContent.append(propertyRow(row.predicateLabel || row.predicateIri || group.label, formatPropertyValue(row)));
+    }
   }
   ui.propertyBox.style.display = 'block';
+}
+
+function propertyGroupHeading(label) {
+  const heading = document.createElement('h4');
+  heading.textContent = label;
+  return heading;
+}
+
+function formatPropertyValue(row) {
+  const suffixes = [
+    row.language ? `@${row.language}` : '',
+    row.datatypeIri ? `^^${row.datatypeIri}` : ''
+  ].filter(Boolean);
+  return suffixes.length ? `${row.value} ${suffixes.join(' ')}` : row.value;
 }
 
 function propertyRow(label, value) {

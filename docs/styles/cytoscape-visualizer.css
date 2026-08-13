@@ -114,6 +114,11 @@
   margin-top: 0;
 }
 
+.cy-property-box h4 {
+  margin: 0.85rem 0 0.35rem;
+  font-size: 1.3rem;
+}
+
 .cy-property-box p {
   margin: 0.35rem 0;
   overflow-wrap: anywhere;

@@ -25,7 +25,8 @@ export function projectGraphStateToCytoscapeElements(graphState, options = {}) {
         iri: node.iri,
         value: node.value,
         typeIris: node.typeIris,
-        annotations: node.annotations
+        annotations: node.annotations,
+        propertyRecord: graphState.indexes?.propertyIndex?.get(node.id) || null
       }
     }));
 

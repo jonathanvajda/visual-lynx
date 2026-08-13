@@ -21,6 +21,12 @@ export {
 } from './rdf-to-graph.js';
 
 export {
+  buildInspectorViewModel,
+  buildLabelIndex,
+  buildNodePropertyIndex
+} from './label-property-index.js';
+
+export {
   projectGraphStateToCytoscapeElements
 } from './cytoscape-elements.js';
 

@@ -10,6 +10,7 @@ import {
   classifyOntologyNode,
   isRenderedPredicate
 } from './ontology-classification.js';
+import { buildLabelIndex, buildNodePropertyIndex } from './label-property-index.js';
 
 /**
  * Projects RDF/JS quads into renderer-independent graph state.
@@ -68,11 +69,21 @@ export function projectRdfToGraphState(quads, options = {}) {
     }));
   }
 
+  const classificationIndex = {
+    prefixes: Object.freeze({ ...prefixes }),
+    typeIrisByNodeId,
+    outgoingPredicateIrisByNodeId,
+    incomingPredicateIrisByNodeId
+  };
+  const labelIndex = buildLabelIndex(quads, prefixes);
+  const propertyIndex = buildNodePropertyIndex(quads, classificationIndex);
+
   const nodes = Array.from(nodeMap.values())
     .map((node) => {
       const typeIris = Array.from(new Set(typeIrisByNodeId.get(node.id) || []));
       const enrichedNode = {
         ...node,
+        label: labelIndex.get(node.id)?.label || node.label,
         typeIris: Object.freeze(typeIris),
         annotations: Object.freeze(annotationsByNodeId.get(node.id) || [])
       };
@@ -90,10 +101,9 @@ export function projectRdfToGraphState(quads, options = {}) {
     quads,
     ui: createDefaultGraphUiState(options.ui),
     indexes: {
-      prefixes: Object.freeze({ ...prefixes }),
-      typeIrisByNodeId,
-      outgoingPredicateIrisByNodeId,
-      incomingPredicateIrisByNodeId
+      ...classificationIndex,
+      labelIndex,
+      propertyIndex
     }
   });
 }
