@@ -33,9 +33,11 @@ export function projectGraphStateToCytoscapeElements(graphState, options = {}) {
     }));
 
   const visibleNodeIds = new Set(nodes.map((node) => node.data.id));
-  const edges = graphState.edges
+  const visibleEdges = graphState.edges
     .filter((edge) => !hiddenEdgeIds.has(edge.id))
-    .filter((edge) => visibleNodeIds.has(edge.subjectId) && visibleNodeIds.has(edge.objectId))
+    .filter((edge) => visibleNodeIds.has(edge.subjectId) && visibleNodeIds.has(edge.objectId));
+  const edgeRoutingById = buildEdgeRoutingIndex(visibleEdges);
+  const edges = visibleEdges
     .map((edge) => ({
       group: 'edges',
       data: {
@@ -50,7 +52,8 @@ export function projectGraphStateToCytoscapeElements(graphState, options = {}) {
         graphTerm: edge.quad?.graph || null,
         predicateIri: edge.predicateIri,
         graphId: edge.graphId,
-        quad: edge.quad
+        quad: edge.quad,
+        ...edgeRoutingById.get(edge.id)
       }
     }));
 
@@ -60,6 +63,44 @@ export function projectGraphStateToCytoscapeElements(graphState, options = {}) {
 function createEdgeLabel(edge, graphState) {
   const predicateLabel = graphState.indexes?.labelIndex?.get(edge.predicateId)?.label;
   return predicateLabel || edge.label;
+}
+
+/**
+ * Builds deterministic routing metadata for visible Cytoscape edges.
+ *
+ * Parallel directed edges get symmetric control-point offsets. Self-loops get
+ * stable loop directions and sweeps so multiple self-loops fan out.
+ *
+ * @param {object[]} edges
+ * @returns {Map<string, {parallelEdgeIndex: number, parallelEdgeCount: number, controlPointDistance: number, loopDirection: string, loopSweep: string}>}
+ */
+export function buildEdgeRoutingIndex(edges) {
+  const groups = new Map();
+  for (const edge of edges || []) {
+    const key = edge.subjectId === edge.objectId
+      ? `loop:${edge.subjectId}`
+      : `pair:${edge.subjectId}->${edge.objectId}`;
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key).push(edge);
+  }
+
+  const routingById = new Map();
+  for (const group of groups.values()) {
+    group.sort((left, right) => left.id.localeCompare(right.id));
+    const count = group.length;
+    for (let index = 0; index < group.length; index += 1) {
+      const edge = group[index];
+      const offset = index - (count - 1) / 2;
+      routingById.set(edge.id, Object.freeze({
+        parallelEdgeIndex: index,
+        parallelEdgeCount: count,
+        controlPointDistance: edge.subjectId === edge.objectId ? 48 + index * 14 : Math.round(offset * 38),
+        loopDirection: `${-45 + index * 28}deg`,
+        loopSweep: `${60 + Math.min(index, 4) * 12}deg`
+      }));
+    }
+  }
+  return routingById;
 }
 
 /**

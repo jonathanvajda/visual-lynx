@@ -27,6 +27,7 @@ export {
 } from './label-property-index.js';
 
 export {
+  buildEdgeRoutingIndex,
   estimateNodeVisualDimensions,
   projectGraphStateToCytoscapeElements
 } from './cytoscape-elements.js';
@@ -35,3 +36,10 @@ export {
   CYTOSCAPE_VISUAL_STYLE,
   createDefaultCytoscapeStylesheet
 } from './cytoscape-styles.js';
+
+export {
+  CYTOSCAPE_LAYOUT_PRESETS,
+  createCytoscapeLayoutOptions,
+  getCytoscapeLayoutPreset,
+  listCytoscapeLayoutOptions
+} from './layout-presets.js';

@@ -77,6 +77,14 @@
         </div>
 
         <div class="cy-actions" aria-label="Graph actions">
+          <select id="layoutPreset">
+            <option value="overview" selected>Overview</option>
+            <option value="readable">Readable</option>
+            <option value="compact">Compact</option>
+            <option value="grid">Grid</option>
+          </select>
+          <button id="relayoutBtn" type="button">Relayout</button>
+          <button id="fitGraphBtn" type="button">Fit</button>
           <button id="loadBfoGraphDataBtn" type="button">Get BFO Graph</button>
           <button id="renderBtn" type="button">Render</button>
         </div>

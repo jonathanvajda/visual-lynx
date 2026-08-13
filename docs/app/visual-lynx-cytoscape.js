@@ -7,6 +7,7 @@ import { parseRdfTextWithAdapters } from './shared/rdf-io/index.js';
 import { renderStatusMessage } from './shared/ui-feedback/index.js';
 import {
   buildInspectorViewModel,
+  createCytoscapeLayoutOptions,
   createDefaultCytoscapeStylesheet,
   projectGraphStateToCytoscapeElements,
   projectRdfToGraphState
@@ -16,6 +17,9 @@ const ui = {
   focusNode: document.getElementById('focusNodeInputBox'),
   fileInput: document.getElementById('graphFileInput'),
   inputFormat: document.getElementById('graphInputFormat'),
+  layoutPreset: document.getElementById('layoutPreset'),
+  relayout: document.getElementById('relayoutBtn'),
+  fitGraph: document.getElementById('fitGraphBtn'),
   loadExample: document.getElementById('loadBfoGraphDataBtn'),
   render: document.getElementById('renderBtn'),
   textInput: document.getElementById('rdfInput'),
@@ -130,13 +134,7 @@ function renderCytoscape(elements) {
     container: ui.canvas,
     elements,
     style: createDefaultCytoscapeStylesheet(),
-    layout: {
-      name: 'cose',
-      animate: false,
-      fit: true,
-      padding: 48,
-      nodeDimensionsIncludeLabels: true
-    },
+    layout: createCytoscapeLayoutOptions(ui.layoutPreset?.value || 'overview'),
     wheelSensitivity: 0.18
   });
 
@@ -213,6 +211,15 @@ function bindEvents() {
   });
   ui.hideBlankNodes?.addEventListener('change', renderCurrentGraphState);
   ui.hideAxiomSupportNodes?.addEventListener('change', renderCurrentGraphState);
+  ui.relayout?.addEventListener('click', runSelectedLayout);
+  ui.fitGraph?.addEventListener('click', () => {
+    if (cy) cy.fit(undefined, 48);
+  });
+}
+
+function runSelectedLayout() {
+  if (!cy) return;
+  cy.layout(createCytoscapeLayoutOptions(ui.layoutPreset?.value || 'overview')).run();
 }
 
 bindEvents();
