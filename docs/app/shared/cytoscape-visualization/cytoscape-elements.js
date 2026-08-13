@@ -1,3 +1,5 @@
+import { calculateVisibleGraphElementIds } from './filter-visibility.js';
+
 /**
  * Projects graph state into Cytoscape element JSON.
  *
@@ -8,13 +10,10 @@
 export function projectGraphStateToCytoscapeElements(graphState, options = {}) {
   const hideBlankNodes = options.hideBlankNodes ?? graphState.ui?.activeFilters?.hideBlankNodes ?? true;
   const hideAxiomSupportNodes = options.hideAxiomSupportNodes ?? graphState.ui?.activeFilters?.hideAxiomSupportNodes ?? true;
-  const hiddenNodeIds = new Set(graphState.ui?.hiddenNodeIds || []);
-  const hiddenEdgeIds = new Set(graphState.ui?.hiddenEdgeIds || []);
+  const visible = calculateVisibleGraphElementIds(graphState, { hideBlankNodes, hideAxiomSupportNodes });
 
   const nodes = graphState.nodes
-    .filter((node) => !hiddenNodeIds.has(node.id))
-    .filter((node) => !(hideBlankNodes && node.kind === 'blank-node'))
-    .filter((node) => !(hideAxiomSupportNodes && node.kind === 'axiom-support'))
+    .filter((node) => visible.nodeIds.has(node.id))
     .map((node) => ({
       group: 'nodes',
       data: {
@@ -32,10 +31,8 @@ export function projectGraphStateToCytoscapeElements(graphState, options = {}) {
       }
     }));
 
-  const visibleNodeIds = new Set(nodes.map((node) => node.data.id));
   const visibleEdges = graphState.edges
-    .filter((edge) => !hiddenEdgeIds.has(edge.id))
-    .filter((edge) => visibleNodeIds.has(edge.subjectId) && visibleNodeIds.has(edge.objectId));
+    .filter((edge) => visible.edgeIds.has(edge.id));
   const edgeRoutingById = buildEdgeRoutingIndex(visibleEdges);
   const edges = visibleEdges
     .map((edge) => ({

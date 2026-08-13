@@ -7,12 +7,14 @@ import { parseRdfTextWithAdapters } from './shared/rdf-io/index.js';
 import { renderStatusMessage } from './shared/ui-feedback/index.js';
 import {
   buildInspectorViewModel,
+  buildGraphFilterPanelViewModel,
   calculateNeighborNudgePositions,
   createCytoscapeLayoutOptions,
   createDefaultCytoscapeStylesheet,
   getFirstDegreeNeighborNodeIds,
   projectGraphStateToCytoscapeElements,
-  projectRdfToGraphState
+  projectRdfToGraphState,
+  updateGraphVisibilityFilters
 } from './shared/cytoscape-visualization/index.js';
 
 const ui = {
@@ -29,9 +31,16 @@ const ui = {
   status: document.getElementById('cyStatus'),
   propertyBox: document.getElementById('propertyBox'),
   propertyContent: document.getElementById('propertyContent'),
+  filterCounts: document.getElementById('filterCounts'),
   hideBlankNodes: document.getElementById('hideBNodes'),
   hideAxiomSupportNodes: document.getElementById('hideAxiomSupportNodes'),
-  dragMovesNeighbors: document.getElementById('dragMovesNeighbors')
+  dragMovesNeighbors: document.getElementById('dragMovesNeighbors'),
+  nodeKindFilter: document.getElementById('nodeKindFilter'),
+  predicateFilter: document.getElementById('predicateFilter'),
+  subjectFilter: document.getElementById('subjectFilter'),
+  objectFilter: document.getElementById('objectFilter'),
+  resetFilters: document.getElementById('resetFiltersBtn'),
+  showAll: document.getElementById('showAllBtn')
 };
 
 let cy = null;
@@ -117,6 +126,7 @@ async function renderGraphFromCurrentInput() {
   });
 
   renderCurrentGraphState();
+  renderFilterPanel();
   setStatus(`Rendered ${latestGraphState.nodes.length} node(s), ${latestGraphState.edges.length} edge(s).`, 'success');
 }
 
@@ -130,6 +140,7 @@ function readGraphFilterOptions() {
 function renderCurrentGraphState() {
   if (!latestGraphState) return;
   renderCytoscape(projectGraphStateToCytoscapeElements(latestGraphState, readGraphFilterOptions()));
+  renderFilterPanel();
 }
 
 function renderCytoscape(elements) {
@@ -256,12 +267,90 @@ function bindEvents() {
       setStatus(error.message || String(error), 'error');
     });
   });
-  ui.hideBlankNodes?.addEventListener('change', renderCurrentGraphState);
-  ui.hideAxiomSupportNodes?.addEventListener('change', renderCurrentGraphState);
+  ui.hideBlankNodes?.addEventListener('change', applyFilterControlState);
+  ui.hideAxiomSupportNodes?.addEventListener('change', applyFilterControlState);
+  ui.nodeKindFilter?.addEventListener('change', applyFilterControlState);
+  ui.predicateFilter?.addEventListener('change', applyFilterControlState);
+  ui.subjectFilter?.addEventListener('change', applyFilterControlState);
+  ui.objectFilter?.addEventListener('change', applyFilterControlState);
+  ui.resetFilters?.addEventListener('click', resetFilters);
+  ui.showAll?.addEventListener('click', showAllFilters);
   ui.relayout?.addEventListener('click', runSelectedLayout);
   ui.fitGraph?.addEventListener('click', () => {
     if (cy) cy.fit(undefined, 48);
   });
+}
+
+function applyFilterControlState() {
+  if (!latestGraphState) return;
+  latestGraphState = updateGraphVisibilityFilters(latestGraphState, {
+    hideBlankNodes: ui.hideBlankNodes?.checked !== false,
+    hideAxiomSupportNodes: ui.hideAxiomSupportNodes?.checked !== false,
+    visibleKinds: readSelectedOptions(ui.nodeKindFilter),
+    visiblePredicates: readSelectedOptions(ui.predicateFilter),
+    visibleSubjectIds: readSelectedOptions(ui.subjectFilter),
+    visibleObjectIds: readSelectedOptions(ui.objectFilter)
+  });
+  renderCurrentGraphState();
+}
+
+function resetFilters() {
+  if (!latestGraphState) return;
+  if (ui.hideBlankNodes) ui.hideBlankNodes.checked = true;
+  if (ui.hideAxiomSupportNodes) ui.hideAxiomSupportNodes.checked = true;
+  clearSelect(ui.nodeKindFilter);
+  clearSelect(ui.predicateFilter);
+  clearSelect(ui.subjectFilter);
+  clearSelect(ui.objectFilter);
+  applyFilterControlState();
+}
+
+function showAllFilters() {
+  if (!latestGraphState) return;
+  if (ui.hideBlankNodes) ui.hideBlankNodes.checked = false;
+  if (ui.hideAxiomSupportNodes) ui.hideAxiomSupportNodes.checked = false;
+  clearSelect(ui.nodeKindFilter);
+  clearSelect(ui.predicateFilter);
+  clearSelect(ui.subjectFilter);
+  clearSelect(ui.objectFilter);
+  applyFilterControlState();
+}
+
+function renderFilterPanel() {
+  if (!latestGraphState) return;
+  const viewModel = buildGraphFilterPanelViewModel(latestGraphState);
+  writeFilterCounts(viewModel.counts);
+  writeSelectOptions(ui.nodeKindFilter, viewModel.options.kinds, viewModel.selected.visibleKinds);
+  writeSelectOptions(ui.predicateFilter, viewModel.options.predicates, viewModel.selected.visiblePredicates);
+  writeSelectOptions(ui.subjectFilter, viewModel.options.subjects, viewModel.selected.visibleSubjectIds);
+  writeSelectOptions(ui.objectFilter, viewModel.options.objects, viewModel.selected.visibleObjectIds);
+}
+
+function writeFilterCounts(counts) {
+  if (!ui.filterCounts) return;
+  ui.filterCounts.textContent = `${counts.visibleNodes}/${counts.visibleNodes + counts.hiddenNodes} node(s), ${counts.visibleEdges}/${counts.visibleEdges + counts.hiddenEdges} edge(s) visible`;
+}
+
+function writeSelectOptions(select, options, selectedValues = []) {
+  if (!select) return;
+  const selected = new Set(selectedValues || []);
+  select.replaceChildren(...options.map((option) => {
+    const element = document.createElement('option');
+    element.value = option.value;
+    element.textContent = `${option.label} (${option.count})`;
+    element.selected = selected.has(option.value);
+    return element;
+  }));
+}
+
+function readSelectedOptions(select) {
+  return Array.from(select?.selectedOptions || []).map((option) => option.value);
+}
+
+function clearSelect(select) {
+  for (const option of Array.from(select?.options || [])) {
+    option.selected = false;
+  }
 }
 
 function runSelectedLayout() {

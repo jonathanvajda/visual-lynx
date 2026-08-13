@@ -105,6 +105,33 @@
   left: 1rem;
 }
 
+.cy-filter-box label {
+  display: block;
+  margin: 0.45rem 0 0.25rem;
+}
+
+.cy-filter-box select {
+  width: 100%;
+  min-height: 5rem;
+  margin-bottom: 0.35rem;
+}
+
+.cy-filter-counts {
+  margin: 0 0 0.5rem;
+  font-size: 1.25rem;
+}
+
+.cy-filter-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.55rem;
+}
+
+.cy-filter-actions button {
+  flex: 1 1 auto;
+  padding: 0.45rem 0.55rem;
+}
+
 .cy-property-box {
   right: 1rem;
   display: none;

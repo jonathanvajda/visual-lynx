@@ -48,3 +48,11 @@ export {
   calculateNeighborNudgePositions,
   getFirstDegreeNeighborNodeIds
 } from './drag-interactions.js';
+
+export {
+  buildGraphFilterOptionIndex,
+  buildGraphFilterPanelViewModel,
+  calculateVisibleGraphElementIds,
+  selectGraphElementIds,
+  updateGraphVisibilityFilters
+} from './filter-visibility.js';

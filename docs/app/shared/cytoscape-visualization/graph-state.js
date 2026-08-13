@@ -14,7 +14,9 @@ export function createDefaultGraphUiState(overrides = {}) {
       hideBlankNodes: overrides.activeFilters?.hideBlankNodes !== false,
       hideAxiomSupportNodes: overrides.activeFilters?.hideAxiomSupportNodes !== false,
       visibleKinds: Object.freeze(Array.from(overrides.activeFilters?.visibleKinds || [])),
-      visiblePredicates: Object.freeze(Array.from(overrides.activeFilters?.visiblePredicates || []))
+      visiblePredicates: Object.freeze(Array.from(overrides.activeFilters?.visiblePredicates || [])),
+      visibleSubjectIds: Object.freeze(Array.from(overrides.activeFilters?.visibleSubjectIds || [])),
+      visibleObjectIds: Object.freeze(Array.from(overrides.activeFilters?.visibleObjectIds || []))
     }),
     layoutName: overrides.layoutName || 'cose',
     layoutOptions: Object.freeze({ ...(overrides.layoutOptions || {}) }),

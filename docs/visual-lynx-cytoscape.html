@@ -106,9 +106,22 @@
       <div id="cyGraph"></div>
 
       <aside id="filterBox" class="cy-filter-box" aria-label="Graph filters">
+        <p id="filterCounts" class="cy-filter-counts">No graph rendered.</p>
         <label><input type="checkbox" id="hideBNodes" checked /> Hide blank nodes</label>
         <label><input type="checkbox" id="hideAxiomSupportNodes" checked /> Hide axiom support nodes</label>
         <label><input type="checkbox" id="dragMovesNeighbors" checked /> Drag nudges neighbors</label>
+        <label for="nodeKindFilter">Node types</label>
+        <select id="nodeKindFilter" multiple size="5"></select>
+        <label for="predicateFilter">Predicates</label>
+        <select id="predicateFilter" multiple size="5"></select>
+        <label for="subjectFilter">Subjects</label>
+        <select id="subjectFilter" multiple size="5"></select>
+        <label for="objectFilter">Objects</label>
+        <select id="objectFilter" multiple size="5"></select>
+        <div class="cy-filter-actions">
+          <button id="resetFiltersBtn" type="button">Reset</button>
+          <button id="showAllBtn" type="button">Show All</button>
+        </div>
       </aside>
 
       <aside id="propertyBox" class="cy-property-box" aria-label="Node and edge properties">
