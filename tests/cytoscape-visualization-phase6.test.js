@@ -15,15 +15,19 @@ describe('Cytoscape visualization Phase 6 layout and edge deconfliction', () => 
   test('exposes layout presets for browser layout controls', () => {
     expect(listCytoscapeLayoutOptions()).toEqual([
       { value: 'overview', label: 'Overview' },
+      { value: 'wide', label: 'Wide' },
       { value: 'readable', label: 'Readable' },
       { value: 'compact', label: 'Compact' },
-      { value: 'grid', label: 'Grid' }
+      { value: 'grid', label: 'Grid' },
+      { value: 'breadthfirst', label: 'Hierarchy' }
     ]);
     expect(createCytoscapeLayoutOptions('readable')).toMatchObject({
       name: 'cose',
       fit: true,
-      idealEdgeLength: 180
+      idealEdgeLength: 220
     });
+    expect(createCytoscapeLayoutOptions('wide').nodeRepulsion).toBeGreaterThan(createCytoscapeLayoutOptions('overview').nodeRepulsion);
+    expect(createCytoscapeLayoutOptions('breadthfirst')).toMatchObject({ name: 'breadthfirst', directed: true });
   });
 
   test('adds deterministic routing metadata for parallel edges and self-loops', () => {

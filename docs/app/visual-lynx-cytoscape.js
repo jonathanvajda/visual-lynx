@@ -7,8 +7,10 @@ import { parseRdfTextWithAdapters } from './shared/rdf-io/index.js';
 import { renderStatusMessage } from './shared/ui-feedback/index.js';
 import {
   buildInspectorViewModel,
+  calculateNeighborNudgePositions,
   createCytoscapeLayoutOptions,
   createDefaultCytoscapeStylesheet,
+  getFirstDegreeNeighborNodeIds,
   projectGraphStateToCytoscapeElements,
   projectRdfToGraphState
 } from './shared/cytoscape-visualization/index.js';
@@ -28,11 +30,13 @@ const ui = {
   propertyBox: document.getElementById('propertyBox'),
   propertyContent: document.getElementById('propertyContent'),
   hideBlankNodes: document.getElementById('hideBNodes'),
-  hideAxiomSupportNodes: document.getElementById('hideAxiomSupportNodes')
+  hideAxiomSupportNodes: document.getElementById('hideAxiomSupportNodes'),
+  dragMovesNeighbors: document.getElementById('dragMovesNeighbors')
 };
 
 let cy = null;
 let latestGraphState = null;
+let activeDragNudge = null;
 
 function setStatus(message, severity = 'info') {
   renderStatusMessage(ui.status, { message, severity }, { classPrefix: 'cy-status' });
@@ -153,6 +157,49 @@ function renderCytoscape(elements) {
   cy.on('mouseout', 'node, edge', (event) => {
     event.target.removeClass('is-hovered');
   });
+  cy.on('grab', 'node', startNeighborNudge);
+  cy.on('drag', 'node', updateNeighborNudge);
+  cy.on('free', 'node', stopNeighborNudge);
+}
+
+function startNeighborNudge(event) {
+  if (!ui.dragMovesNeighbors?.checked || !latestGraphState) {
+    activeDragNudge = null;
+    return;
+  }
+
+  const draggedNode = event.target;
+  const neighborIds = getFirstDegreeNeighborNodeIds(latestGraphState, draggedNode.id())
+    .filter((nodeId) => cy.getElementById(nodeId).nonempty());
+  activeDragNudge = {
+    draggedNodeId: draggedNode.id(),
+    draggedStartPosition: { ...draggedNode.position() },
+    neighborStartPositionsById: new Map(neighborIds.map((nodeId) => {
+      const neighbor = cy.getElementById(nodeId);
+      return [nodeId, { ...neighbor.position() }];
+    }))
+  };
+}
+
+function updateNeighborNudge(event) {
+  if (!activeDragNudge || event.target.id() !== activeDragNudge.draggedNodeId) return;
+
+  const positionsById = calculateNeighborNudgePositions(
+    activeDragNudge.draggedStartPosition,
+    event.target.position(),
+    activeDragNudge.neighborStartPositionsById,
+    { strength: 0.35 }
+  );
+
+  cy.batch(() => {
+    for (const [nodeId, position] of positionsById) {
+      cy.getElementById(nodeId).position(position);
+    }
+  });
+}
+
+function stopNeighborNudge() {
+  activeDragNudge = null;
 }
 
 function renderInspector(data) {

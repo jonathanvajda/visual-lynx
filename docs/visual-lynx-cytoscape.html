@@ -79,9 +79,11 @@
         <div class="cy-actions" aria-label="Graph actions">
           <select id="layoutPreset">
             <option value="overview" selected>Overview</option>
+            <option value="wide">Wide</option>
             <option value="readable">Readable</option>
             <option value="compact">Compact</option>
             <option value="grid">Grid</option>
+            <option value="breadthfirst">Hierarchy</option>
           </select>
           <button id="relayoutBtn" type="button">Relayout</button>
           <button id="fitGraphBtn" type="button">Fit</button>
@@ -106,6 +108,7 @@
       <aside id="filterBox" class="cy-filter-box" aria-label="Graph filters">
         <label><input type="checkbox" id="hideBNodes" checked /> Hide blank nodes</label>
         <label><input type="checkbox" id="hideAxiomSupportNodes" checked /> Hide axiom support nodes</label>
+        <label><input type="checkbox" id="dragMovesNeighbors" checked /> Drag nudges neighbors</label>
       </aside>
 
       <aside id="propertyBox" class="cy-property-box" aria-label="Node and edge properties">

@@ -9,11 +9,32 @@ export const CYTOSCAPE_LAYOUT_PRESETS = Object.freeze({
       padding: 64,
       nodeDimensionsIncludeLabels: true,
       randomize: false,
-      idealEdgeLength: 120,
-      nodeRepulsion: 9000,
-      edgeElasticity: 90,
-      gravity: 0.18,
-      numIter: 800
+      idealEdgeLength: 170,
+      nodeRepulsion: 18000,
+      edgeElasticity: 60,
+      gravity: 0.07,
+      nodeOverlap: 80,
+      componentSpacing: 160,
+      numIter: 1000
+    })
+  }),
+  wide: Object.freeze({
+    key: 'wide',
+    label: 'Wide',
+    options: Object.freeze({
+      name: 'cose',
+      animate: false,
+      fit: true,
+      padding: 80,
+      nodeDimensionsIncludeLabels: true,
+      randomize: false,
+      idealEdgeLength: 240,
+      nodeRepulsion: 28000,
+      edgeElasticity: 40,
+      gravity: 0.04,
+      nodeOverlap: 110,
+      componentSpacing: 220,
+      numIter: 1400
     })
   }),
   readable: Object.freeze({
@@ -26,11 +47,13 @@ export const CYTOSCAPE_LAYOUT_PRESETS = Object.freeze({
       padding: 72,
       nodeDimensionsIncludeLabels: true,
       randomize: false,
-      idealEdgeLength: 180,
-      nodeRepulsion: 14000,
-      edgeElasticity: 70,
-      gravity: 0.12,
-      numIter: 1200
+      idealEdgeLength: 220,
+      nodeRepulsion: 24000,
+      edgeElasticity: 50,
+      gravity: 0.05,
+      nodeOverlap: 100,
+      componentSpacing: 200,
+      numIter: 1500
     })
   }),
   compact: Object.freeze({
@@ -60,6 +83,21 @@ export const CYTOSCAPE_LAYOUT_PRESETS = Object.freeze({
       padding: 48,
       avoidOverlap: true,
       avoidOverlapPadding: 20
+    })
+  }),
+  breadthfirst: Object.freeze({
+    key: 'breadthfirst',
+    label: 'Hierarchy',
+    options: Object.freeze({
+      name: 'breadthfirst',
+      animate: false,
+      fit: true,
+      padding: 64,
+      directed: true,
+      circle: false,
+      grid: false,
+      spacingFactor: 1.55,
+      avoidOverlap: true
     })
   })
 });

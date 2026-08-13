@@ -43,3 +43,8 @@ export {
   getCytoscapeLayoutPreset,
   listCytoscapeLayoutOptions
 } from './layout-presets.js';
+
+export {
+  calculateNeighborNudgePositions,
+  getFirstDegreeNeighborNodeIds
+} from './drag-interactions.js';
