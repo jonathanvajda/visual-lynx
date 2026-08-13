@@ -78,6 +78,7 @@ export function projectRdfToGraphState(quads, options = {}) {
   const labelIndex = buildLabelIndex(quads, prefixes);
   const propertyIndex = buildNodePropertyIndex(quads, classificationIndex);
 
+  const focusVisibleNodeIds = buildFocusVisibleNodeIds(edges, focusNodeId);
   const nodes = Array.from(nodeMap.values())
     .map((node) => {
       const typeIris = Array.from(new Set(typeIrisByNodeId.get(node.id) || []));
@@ -92,7 +93,7 @@ export function projectRdfToGraphState(quads, options = {}) {
         kind: classifyOntologyNode(enrichedNode, { outgoingPredicateIrisByNodeId, incomingPredicateIrisByNodeId })
       });
     })
-    .filter((node) => !focusNodeId || node.id === focusNodeId || edges.some((edge) => edge.subjectId === node.id && edge.objectId === focusNodeId || edge.subjectId === focusNodeId && edge.objectId === node.id));
+    .filter((node) => !focusNodeId || focusVisibleNodeIds.has(node.id));
 
   const visibleNodeIds = new Set(nodes.map((node) => node.id));
   return createGraphState({
@@ -160,6 +161,16 @@ export function classifyNodeKind(term, typeIris = []) {
 function appendMapValue(map, key, value) {
   if (!map.has(key)) map.set(key, []);
   map.get(key).push(value);
+}
+
+function buildFocusVisibleNodeIds(edges, focusNodeId) {
+  if (!focusNodeId) return new Set();
+  const visibleNodeIds = new Set([focusNodeId]);
+  for (const edge of edges) {
+    if (edge.subjectId === focusNodeId) visibleNodeIds.add(edge.objectId);
+    if (edge.objectId === focusNodeId) visibleNodeIds.add(edge.subjectId);
+  }
+  return visibleNodeIds;
 }
 
 export { NODE_KIND_PRECEDENCE };

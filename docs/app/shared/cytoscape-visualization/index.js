@@ -27,6 +27,7 @@ export {
 } from './label-property-index.js';
 
 export {
+  estimateNodeVisualDimensions,
   projectGraphStateToCytoscapeElements
 } from './cytoscape-elements.js';
 
