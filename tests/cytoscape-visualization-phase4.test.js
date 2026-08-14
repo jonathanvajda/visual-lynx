@@ -9,6 +9,7 @@ import {
 } from '../docs/app/shared/namespace-registry/index.js';
 
 const namedNode = (value) => ({ termType: 'NamedNode', value });
+const blankNode = (value) => ({ termType: 'BlankNode', value });
 const literal = (value, datatype = COMMON_NAMESPACE_IRIS.xsd.string, language = '') => ({
   termType: 'Literal',
   value,
@@ -87,5 +88,42 @@ describe('Cytoscape visualization Phase 4 RDF-to-Cytoscape projection', () => {
 
     expect(projectGraphStateToCytoscapeElements(projectRdfToGraphState(quads)).some((element) => element.group === 'edges')).toBe(false);
     expect(projectGraphStateToCytoscapeElements(projectRdfToGraphState(quads, { includeTypeEdges: true })).some((element) => element.group === 'edges' && element.data.predicateIri === COMMON_NAMESPACE_IRIS.rdf.type)).toBe(true);
+  });
+
+  test('excludes blank-node support structures from projection without losing RDF quads', () => {
+    const named = namedNode('http://example.org/Named');
+    const anonymousClass = blankNode('n3-143');
+    const ordinaryBlank = blankNode('ordinary');
+    const quads = [
+      quad(named, namedNode(COMMON_NAMESPACE_IRIS.rdfs.subClassOf), anonymousClass),
+      quad(anonymousClass, namedNode(COMMON_NAMESPACE_IRIS.rdf.type), namedNode(COMMON_NAMESPACE_IRIS.owl.Class)),
+      quad(ordinaryBlank, namedNode('http://example.org/p'), named)
+    ];
+    const state = projectRdfToGraphState(quads, {
+      blankNodeProjectionMode: 'exclude',
+      axiomSupportProjectionMode: 'exclude'
+    });
+
+    expect(state.quads).toHaveLength(quads.length);
+    expect(state.nodes.every((node) => node.term?.termType !== 'BlankNode')).toBe(true);
+    expect(state.edges).toHaveLength(0);
+    expect(state.indexes.propertyIndex.get(createGraphTermId(anonymousClass))).toBeTruthy();
+  });
+
+  test('can project axiom-support blank nodes while excluding ordinary blank nodes', () => {
+    const named = namedNode('http://example.org/Named');
+    const anonymousClass = blankNode('n3-143');
+    const ordinaryBlank = blankNode('ordinary');
+    const state = projectRdfToGraphState([
+      quad(named, namedNode(COMMON_NAMESPACE_IRIS.rdfs.subClassOf), anonymousClass),
+      quad(anonymousClass, namedNode(COMMON_NAMESPACE_IRIS.rdf.type), namedNode(COMMON_NAMESPACE_IRIS.owl.Class)),
+      quad(ordinaryBlank, namedNode('http://example.org/p'), named)
+    ], {
+      blankNodeProjectionMode: 'exclude',
+      axiomSupportProjectionMode: 'include'
+    });
+
+    expect(state.nodes.some((node) => node.value === 'n3-143' && node.kind === 'axiom-support')).toBe(true);
+    expect(state.nodes.some((node) => node.value === 'ordinary')).toBe(false);
   });
 });

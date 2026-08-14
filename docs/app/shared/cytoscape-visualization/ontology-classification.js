@@ -73,12 +73,12 @@ export function isRenderedPredicate(predicateIri, options = {}) {
 export function classifyOntologyNode(node, rdfIndex = {}) {
   const types = new Set(node?.typeIris || []);
   if (types.has(COMMON_NAMESPACE_IRIS.owl.Ontology)) return 'ontology';
+  if (isAxiomSupportNode(node, rdfIndex)) return 'axiom-support';
   if (types.has(COMMON_NAMESPACE_IRIS.owl.Class) || types.has(COMMON_NAMESPACE_IRIS.rdfs.Class)) return 'class';
   if (types.has(COMMON_NAMESPACE_IRIS.owl.ObjectProperty)) return 'object-property';
   if (types.has(COMMON_NAMESPACE_IRIS.owl.DatatypeProperty)) return 'datatype-property';
   if (types.has(COMMON_NAMESPACE_IRIS.owl.AnnotationProperty)) return 'annotation-property';
   if (types.has(COMMON_NAMESPACE_IRIS.owl.NamedIndividual)) return 'named-individual';
-  if (isAxiomSupportNode(node, rdfIndex)) return 'axiom-support';
   if (node?.term?.termType === 'BlankNode') return 'blank-node';
   if (node?.term?.termType === 'Literal') return 'literal';
   return 'resource';
@@ -99,6 +99,7 @@ export function isAxiomSupportNode(node, rdfIndex = {}) {
 
   const types = new Set(node.typeIris || []);
   if ([...types].some((typeIri) => AXIOM_SUPPORT_TYPES.has(typeIri))) return true;
+  if (types.has(COMMON_NAMESPACE_IRIS.owl.Class) || types.has(COMMON_NAMESPACE_IRIS.rdfs.Class)) return true;
 
   const outgoing = rdfIndex.outgoingPredicateIrisByNodeId?.get(node.id) || [];
   if (outgoing.some((predicateIri) => OWL_RESTRICTION_PREDICATES.has(predicateIri) || OWL_AXIOM_PREDICATES.has(predicateIri))) return true;

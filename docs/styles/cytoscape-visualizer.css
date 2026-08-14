@@ -8,7 +8,7 @@
 
 .cy-toolbar {
   display: grid;
-  grid-template-columns: minmax(24rem, 2.2fr) minmax(18rem, 1.4fr) minmax(11rem, 0.8fr) auto;
+  grid-template-columns: minmax(22rem, 1.8fr) minmax(16rem, 1.1fr) minmax(10rem, 0.7fr) minmax(15rem, 0.9fr) auto;
   gap: 0.9rem 1rem;
   align-items: end;
   margin-bottom: 1rem;
@@ -41,6 +41,11 @@
 
 .cy-actions button {
   margin-bottom: 0;
+}
+
+.cy-projection-controls label {
+  font-weight: 400;
+  margin-bottom: 0.35rem;
 }
 
 .cy-textarea-wrap {
@@ -91,7 +96,7 @@
   position: absolute;
   top: 1rem;
   z-index: 2;
-  width: 16rem;
+  width: 24rem;
   max-height: calc(100% - 2rem);
   overflow: auto;
   border: 1px solid var(--ont-border, #d1d5db);

@@ -16,11 +16,13 @@ import { buildLabelIndex, buildNodePropertyIndex } from './label-property-index.
  * Projects RDF/JS quads into renderer-independent graph state.
  *
  * @param {object[]} quads RDF/JS quads.
- * @param {{prefixes?: Record<string,string>, focusNodeIri?: string, includeTypeEdges?: boolean, renderLiteralsAsNodes?: boolean, ui?: object}} [options]
+ * @param {{prefixes?: Record<string,string>, focusNodeIri?: string, includeTypeEdges?: boolean, renderLiteralsAsNodes?: boolean, blankNodeProjectionMode?: 'include'|'exclude', axiomSupportProjectionMode?: 'include'|'exclude', ui?: object}} [options]
  * @returns {object}
  */
 export function projectRdfToGraphState(quads, options = {}) {
+  const sourceQuads = Array.from(quads || []);
   const prefixes = options.prefixes || namespacePrefixMapFromRegistry();
+  const projectionPolicy = createRdfGraphProjectionPolicy(options);
   const nodeMap = new Map();
   const typeIrisByNodeId = new Map();
   const annotationsByNodeId = new Map();
@@ -29,18 +31,31 @@ export function projectRdfToGraphState(quads, options = {}) {
   const edges = [];
   const focusNodeId = options.focusNodeIri ? createGraphTermId({ termType: 'NamedNode', value: options.focusNodeIri }) : '';
 
-  for (const quad of quads || []) {
-    const subject = ensureNode(nodeMap, quad.subject, prefixes);
+  for (const quad of sourceQuads) {
+    const subjectNodeId = createGraphTermId(quad.subject);
     const objectNodeId = createGraphTermId(quad.object);
     const predicateIri = quad.predicate?.value || '';
 
-    appendMapValue(outgoingPredicateIrisByNodeId, subject.id, predicateIri);
+    appendMapValue(outgoingPredicateIrisByNodeId, subjectNodeId, predicateIri);
     appendMapValue(incomingPredicateIrisByNodeId, objectNodeId, predicateIri);
 
     if (predicateIri === COMMON_NAMESPACE_IRIS.rdf.type) {
-      appendMapValue(typeIrisByNodeId, subject.id, quad.object?.value || '');
-      if (!isRenderedPredicate(predicateIri, options)) continue;
+      appendMapValue(typeIrisByNodeId, subjectNodeId, quad.object?.value || '');
     }
+  }
+
+  const classificationIndex = {
+    prefixes: Object.freeze({ ...prefixes }),
+    typeIrisByNodeId,
+    outgoingPredicateIrisByNodeId,
+    incomingPredicateIrisByNodeId
+  };
+
+  for (const quad of sourceQuads) {
+    const predicateIri = quad.predicate?.value || '';
+    const subject = projectRdfTermToGraphNode(nodeMap, quad.subject, prefixes, classificationIndex, projectionPolicy);
+    if (!subject) continue;
+
     if (!isRenderedPredicate(predicateIri, options)) continue;
 
     if (quad.object?.termType === 'Literal' && !options.renderLiteralsAsNodes) {
@@ -54,7 +69,9 @@ export function projectRdfToGraphState(quads, options = {}) {
       continue;
     }
 
-    const object = ensureNode(nodeMap, quad.object, prefixes);
+    const object = projectRdfTermToGraphNode(nodeMap, quad.object, prefixes, classificationIndex, projectionPolicy);
+    if (!object) continue;
+
     edges.push(Object.freeze({
       id: createGraphEdgeId(quad),
       subjectId: subject.id,
@@ -69,14 +86,8 @@ export function projectRdfToGraphState(quads, options = {}) {
     }));
   }
 
-  const classificationIndex = {
-    prefixes: Object.freeze({ ...prefixes }),
-    typeIrisByNodeId,
-    outgoingPredicateIrisByNodeId,
-    incomingPredicateIrisByNodeId
-  };
-  const labelIndex = buildLabelIndex(quads, prefixes);
-  const propertyIndex = buildNodePropertyIndex(quads, classificationIndex);
+  const labelIndex = buildLabelIndex(sourceQuads, prefixes);
+  const propertyIndex = buildNodePropertyIndex(sourceQuads, classificationIndex);
 
   const focusVisibleNodeIds = buildFocusVisibleNodeIds(edges, focusNodeId);
   const nodes = Array.from(nodeMap.values())
@@ -99,14 +110,70 @@ export function projectRdfToGraphState(quads, options = {}) {
   return createGraphState({
     nodes,
     edges: edges.filter((edge) => visibleNodeIds.has(edge.subjectId) && visibleNodeIds.has(edge.objectId)),
-    quads,
+    quads: sourceQuads,
     ui: createDefaultGraphUiState(options.ui),
     indexes: {
       ...classificationIndex,
       labelIndex,
-      propertyIndex
+      propertyIndex,
+      projectionPolicy
     }
   });
+}
+
+/**
+ * Creates a small policy object that decides which RDF terms become visual graph
+ * terms. It never filters `GraphState.quads`; it only governs the renderable
+ * node/edge projection used by Cytoscape.
+ *
+ * @param {{blankNodeProjectionMode?: 'include'|'exclude', axiomSupportProjectionMode?: 'include'|'exclude'}} [options]
+ * @returns {{blankNodeProjectionMode: 'include'|'exclude', axiomSupportProjectionMode: 'include'|'exclude'}}
+ */
+export function createRdfGraphProjectionPolicy(options = {}) {
+  return Object.freeze({
+    blankNodeProjectionMode: normalizeProjectionMode(options.blankNodeProjectionMode, 'include'),
+    axiomSupportProjectionMode: normalizeProjectionMode(options.axiomSupportProjectionMode, 'include')
+  });
+}
+
+/**
+ * Returns whether a term should be present in the renderable graph projection.
+ *
+ * @param {object} term RDF/JS term.
+ * @param {{typeIris?: string[], kind?: string}} classification
+ * @param {{blankNodeProjectionMode?: 'include'|'exclude', axiomSupportProjectionMode?: 'include'|'exclude'}} projectionPolicy
+ * @returns {boolean}
+ */
+export function shouldProjectRdfTermToGraph(term, classification = {}, projectionPolicy = createRdfGraphProjectionPolicy()) {
+  if (!term) return false;
+  if (term.termType !== 'BlankNode') return true;
+  if (classification.kind === 'axiom-support') return projectionPolicy.axiomSupportProjectionMode !== 'exclude';
+  return projectionPolicy.blankNodeProjectionMode !== 'exclude';
+}
+
+/**
+ * @param {Map<string, object>} nodeMap
+ * @param {object} term
+ * @param {Record<string,string>} prefixes
+ * @param {{outgoingPredicateIrisByNodeId?: Map<string,string[]>, incomingPredicateIrisByNodeId?: Map<string,string[]>, typeIrisByNodeId?: Map<string,string[]>}} classificationIndex
+ * @param {{blankNodeProjectionMode?: 'include'|'exclude', axiomSupportProjectionMode?: 'include'|'exclude'}} projectionPolicy
+ * @returns {object|null}
+ */
+function projectRdfTermToGraphNode(nodeMap, term, prefixes, classificationIndex, projectionPolicy) {
+  const id = createGraphTermId(term);
+  const typeIris = Array.from(new Set(classificationIndex.typeIrisByNodeId?.get(id) || []));
+  const kind = classifyOntologyNode({ id, term, typeIris }, classificationIndex);
+  if (!shouldProjectRdfTermToGraph(term, { typeIris, kind }, projectionPolicy)) return null;
+  return ensureNode(nodeMap, term, prefixes);
+}
+
+/**
+ * @param {string} mode
+ * @param {'include'|'exclude'} fallback
+ * @returns {'include'|'exclude'}
+ */
+function normalizeProjectionMode(mode, fallback) {
+  return mode === 'include' || mode === 'exclude' ? mode : fallback;
 }
 
 /**

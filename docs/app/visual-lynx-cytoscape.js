@@ -28,6 +28,8 @@ const ui = {
   focusNode: document.getElementById('focusNodeInputBox'),
   fileInput: document.getElementById('graphFileInput'),
   inputFormat: document.getElementById('graphInputFormat'),
+  projectBlankNodes: document.getElementById('projectBlankNodes'),
+  projectAxiomSupportNodes: document.getElementById('projectAxiomSupportNodes'),
   layoutPreset: document.getElementById('layoutPreset'),
   relayout: document.getElementById('relayoutBtn'),
   fitGraph: document.getElementById('fitGraphBtn'),
@@ -131,6 +133,7 @@ async function renderGraphFromCurrentInput() {
   latestGraphState = projectRdfToGraphState(parsed.quads, {
     focusNodeIri: String(ui.focusNode?.value || '').trim(),
     renderLiteralsAsNodes: false,
+    ...readGraphProjectionOptions(),
     ui: {
       activeFilters: {
         hideBlankNodes: ui.hideBlankNodes?.checked !== false,
@@ -142,6 +145,13 @@ async function renderGraphFromCurrentInput() {
   renderCurrentGraphState();
   renderFilterPanel();
   setStatus(`Rendered ${latestGraphState.nodes.length} node(s), ${latestGraphState.edges.length} edge(s).`, 'success');
+}
+
+function readGraphProjectionOptions() {
+  return {
+    blankNodeProjectionMode: ui.projectBlankNodes?.checked ? 'include' : 'exclude',
+    axiomSupportProjectionMode: ui.projectAxiomSupportNodes?.checked ? 'include' : 'exclude'
+  };
 }
 
 function readGraphFilterOptions() {

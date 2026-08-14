@@ -46,4 +46,15 @@ describe('Cytoscape visualization Phase 2 ontology classification', () => {
     expect(projectGraphStateToCytoscapeElements(state).some((element) => element.data.kind === 'axiom-support')).toBe(false);
     expect(projectGraphStateToCytoscapeElements(state, { hideAxiomSupportNodes: false }).some((element) => element.data.kind === 'axiom-support')).toBe(true);
   });
+
+  test('classifies anonymous OWL class blank nodes as axiom support', () => {
+    const anonymousClass = blankNode('n3-143');
+    const state = projectRdfToGraphState([
+      quad(anonymousClass, namedNode(COMMON_NAMESPACE_IRIS.rdf.type), namedNode(COMMON_NAMESPACE_IRIS.owl.Class))
+    ]);
+    const anonymousClassNode = state.nodes.find((node) => node.term?.termType === 'BlankNode');
+
+    expect(anonymousClassNode.kind).toBe('axiom-support');
+    expect(isAxiomSupportNode(anonymousClassNode, state.indexes)).toBe(true);
+  });
 });

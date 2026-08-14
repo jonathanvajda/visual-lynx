@@ -17,7 +17,9 @@ export {
 
 export {
   classifyNodeKind,
-  projectRdfToGraphState
+  createRdfGraphProjectionPolicy,
+  projectRdfToGraphState,
+  shouldProjectRdfTermToGraph
 } from './rdf-to-graph.js';
 
 export {
